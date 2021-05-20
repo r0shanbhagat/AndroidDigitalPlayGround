@@ -1,0 +1,113 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id "androidx.navigation.safeargs"
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.demo.assignment"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            /* postprocessing {
+               removeUnusedCode true
+               removeUnusedResources true
+               obfuscate true
+               optimizeCode true
+               proguardFile 'proguard-rules.pro'
+           }*/
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        /*debug {
+            applicationIdSuffix '.debug'
+        }*/
+    }
+
+    compileOptions {
+        sourceCompatibility "${javaVersion}"
+        targetCompatibility "${javaVersion}"
+    }
+    buildFeatures {
+        //noinspection DataBindingWithoutKapt
+        dataBinding true
+    }
+
+    /*
+   flavorDimensions 'dimension'
+   productFlavors {
+       internal {
+           applicationId 'com.example.arc.internal'
+           resValue "string", "app_name", '"Arc Internal"'
+       }
+       production {
+           applicationId 'com.example.arc'
+           resValue "string", "app_name", '"Arc"'
+       }
+   }*/
+}
+
+dependencies {
+    /**
+     ******************************* Android Common Component************************************
+     **/
+    implementation "androidx.appcompat:appcompat:$supportLibVersion"
+    implementation "com.google.android.material:material:$material"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    /**
+     ******************************* Navigation Component ************************************
+     **/
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+
+    /**
+     ******************************* Life cycle Extension ************************************
+     **/
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
+
+    /**
+     ******************************* Retrofit ************************************
+     **/
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    /**
+     ******************************* RxAndroid ************************************
+     **/
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+
+    /**
+     ******************************* Unit Testing ************************************
+     **/
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+}
+
