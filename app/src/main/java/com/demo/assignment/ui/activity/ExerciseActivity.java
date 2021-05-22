@@ -2,27 +2,43 @@ package com.demo.assignment.ui.activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-
+import com.demo.assignment.AssignmentApp;
 import com.demo.assignment.R;
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.core.BaseActivity;
+import com.demo.assignment.core.BaseViewModel;
+import com.demo.assignment.databinding.ActivityExerciseBinding;
+import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends BaseActivity<BaseViewModel, ActivityExerciseBinding> {
+
+    @NonNull
+    @Override
+    protected BaseViewModel createViewModel() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_exercise;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((AssignmentApp) getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise);
         /*
          * Adding Navigation Callback for Analytics
          */
         addNavigateCallback();
     }
+
 
     /**
      * Adding Navigation Callback
@@ -36,7 +52,7 @@ public class ExerciseActivity extends AppCompatActivity {
         }
         //Adding OnDestinationChangedListener
         Objects.requireNonNull(navController).addOnDestinationChangedListener((controller, destination, arguments) ->
-                AppUtil.showLog(ExerciseActivity.class.getSimpleName(),
+                AppUtils.showLog(ExerciseActivity.class.getSimpleName(),
                         Objects.requireNonNull(destination.getLabel()).toString()));
     }
 }

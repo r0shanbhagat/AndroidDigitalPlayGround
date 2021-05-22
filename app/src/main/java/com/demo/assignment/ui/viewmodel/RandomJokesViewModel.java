@@ -1,16 +1,12 @@
 package com.demo.assignment.ui.viewmodel;
 
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-
+import com.demo.assignment.core.BaseObservable;
+import com.demo.assignment.core.BaseViewModel;
 import com.demo.assignment.repository.ApiService;
-import com.demo.assignment.repository.BaseNetworkObservable;
-import com.demo.assignment.repository.NetworkRepository;
 import com.demo.assignment.repository.model.RandomJokesModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,24 +16,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RandomJokesViewModel extends AndroidViewModel {
+public class RandomJokesViewModel extends BaseViewModel {
     private final MutableLiveData<RandomJokesViewState> responseData;
+    private final ApiService apiService;
     private final MutableLiveData<String> firstName;
     private final MutableLiveData<String> lastName;
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
     private CompositeDisposable mDisposable;
 
     /**
-     * @param application :Application Context
+     * @param apiService
      */
-    public RandomJokesViewModel(@NonNull Application application) {
-        super(application);
+    @Inject
+    public RandomJokesViewModel(@NonNull ApiService apiService) {
+        this.apiService = apiService;
         responseData = new MutableLiveData<>();
         mDisposable = new CompositeDisposable();
         firstName = new MutableLiveData<>();
@@ -79,14 +79,13 @@ public class RandomJokesViewModel extends AndroidViewModel {
      */
     public void fetchJokesList() {
         onLoading();
-        ApiService apiService = NetworkRepository.getService(getApplication());
         Map<String, String> data = new HashMap<>();
         data.put("firstName", getFirstName().getValue());
         data.put("lastName", getLastName().getValue());
         Observable<RandomJokesModel> observable = apiService.getJokesList(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
-        observable.subscribe(new BaseNetworkObservable<RandomJokesModel>() {
+        observable.subscribe(new BaseObservable<RandomJokesModel>() {
             @Override
             public void success(RandomJokesModel jokesModel) {
                 onSuccess(jokesModel);
@@ -117,6 +116,7 @@ public class RandomJokesViewModel extends AndroidViewModel {
      */
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
+        //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
         responseData.postValue(RandomJokesViewState.SUCCESS_STATE);
     }
 

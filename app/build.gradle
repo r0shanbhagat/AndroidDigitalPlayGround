@@ -33,14 +33,8 @@ android {
     }
     buildTypes {
         release {
-            /* postprocessing {
-               removeUnusedCode true
-               removeUnusedResources true
-               obfuscate true
-               optimizeCode true
-               proguardFile 'proguard-rules.pro'
-           }*/
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         /*debug {
@@ -72,38 +66,52 @@ android {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     /**
-     ******************************* Android Common Component************************************
+     ******************************* Android Common Component***************************************
      **/
     implementation "androidx.appcompat:appcompat:$supportLibVersion"
     implementation "com.google.android.material:material:$material"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.cardview:cardview:1.0.0"
 
     /**
-     ******************************* Navigation Component ************************************
+     ******************************* Navigation Component ******************************************
      **/
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     /**
-     ******************************* Life cycle Extension ************************************
+     ******************************* Life cycle Extension ******************************************
      **/
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     /**
-     ******************************* Retrofit ************************************
+     ******************************* Retrofit ******************************************************
      **/
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
     /**
-     ******************************* RxAndroid ************************************
+     ******************************* RxAndroid *****************************************************
      **/
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
 
     /**
-     ******************************* Unit Testing ************************************
+     ******************************* Image Loading *************************************************
+     **/
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+    /**
+     ******************************* DI ************************************************************
+     **/
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    /**
+     ******************************* Unit Testing **************************************************
      **/
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

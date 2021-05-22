@@ -14,7 +14,7 @@ import com.demo.assignment.R
 import com.demo.assignment.databinding.FragmentLoginBinding
 import com.demo.assignment.repository.model.LoginModel
 import com.demo.assignment.util.AppConstant
-import com.demo.assignment.util.AppUtil
+import com.demo.assignment.util.AppUtils
 
 
 class LoginFragment : Fragment() {
@@ -53,8 +53,8 @@ class LoginFragment : Fragment() {
      * onSubmitClick
      */
     fun onSubmitClick() {
-        AppUtil.hideSoftInput(requireActivity())
-        AppUtil.applyAnimation(NavOptions.Builder())
+        AppUtils.hideSoftInput(requireActivity())
+        AppUtils.applyAnimation(NavOptions.Builder())
         // find navigation
         val bundle = Bundle()
         bundle.putString(AppConstant.ARGS_FIRST_NAME, binding!!.model?.firstName)
