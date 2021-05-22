@@ -1,6 +1,7 @@
 package com.demo.assignment.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,25 +10,35 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.demo.assignment.AssignmentApp;
 import com.demo.assignment.R;
 import com.demo.assignment.databinding.FragmentRandomJokesBinding;
-import com.demo.assignment.repository.HttpInterceptor;
+import com.demo.assignment.repository.LoggingInterceptor;
 import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
 import com.demo.assignment.util.AppConstant;
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.SwipeViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
+
 
 public class RandomJokesFragment extends Fragment {
     private static final String TAG = RandomJokesFragment.class.getSimpleName();
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
     private FragmentRandomJokesBinding binding;
     private RandomJokesViewModel mViewModel;
     private JokesAdapter mAdapter;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((AssignmentApp) getActivity().getApplicationContext()).getAppComponent().inject(this);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -64,7 +75,7 @@ public class RandomJokesFragment extends Fragment {
             firstName = bundle.getString(AppConstant.ARGS_FIRST_NAME);
             lastName = bundle.getString(AppConstant.ARGS_LAST_NAME);
         }
-        mViewModel = new ViewModelProvider(requireActivity()).get(RandomJokesViewModel.class);
+        mViewModel = new ViewModelProvider(getViewModelStore(), viewModelFactory).get(RandomJokesViewModel.class);
         mViewModel.getFirstName().setValue(firstName);
         mViewModel.getLastName().setValue(lastName);
 
@@ -82,14 +93,13 @@ public class RandomJokesFragment extends Fragment {
         binding.viewPager.setSwipeListener(new SwipeViewPager.SwipeListener() {
             @Override
             public void onLeftSwipe() {
-                AppUtil.showLog(TAG, "LEFT");
+                AppUtils.showLog(TAG, "LEFT");
             }
 
             @Override
             public boolean onRightSwipe() {
-                AppUtil.showLog(TAG, "RIGHT");
-                if (binding.viewPager.getCurrentItem()
-                        == mAdapter.getCount() - 1) {
+                AppUtils.showLog(TAG, "RIGHT");
+                if (binding.viewPager.getCurrentItem() == mAdapter.getCount() - 1) {
                     mViewModel.fetchJokesList();
                 }
                 return true;
@@ -101,6 +111,7 @@ public class RandomJokesFragment extends Fragment {
      * observeApiResponse
      */
     private void observeApiResponse() {
+        //TODO CHECK with NewsApp
         mViewModel.getJokesData().observe(requireActivity(), dataState -> {
             if (null == dataState) return;
             switch (dataState.getCurrentState()) {
@@ -130,7 +141,7 @@ public class RandomJokesFragment extends Fragment {
     private void showInfoDialog(Throwable throwable) {
         if (isAdded()) {
             String msg = getString(R.string.error_msg);
-            if (throwable instanceof HttpInterceptor.NoInternetException) {
+            if (throwable instanceof LoggingInterceptor.NoInternetException) {
                 msg = getString(R.string.no_internet_msg);
             }
             new AlertDialog

@@ -1,9 +1,7 @@
-/*
-package com.demo.assignment.ui.viewmodel;
+package com.demo.assignment.core.factory;
 
-
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Map;
 
@@ -42,4 +40,4 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         }
     }
 }
-*/
+

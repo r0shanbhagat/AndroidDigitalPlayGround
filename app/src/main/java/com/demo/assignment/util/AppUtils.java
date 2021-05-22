@@ -18,7 +18,7 @@ import com.demo.assignment.R;
 /**
  * The type App utils.
  */
-public final class AppUtil {
+public final class AppUtils {
 
     /**
      * Is mobile network available boolean.
