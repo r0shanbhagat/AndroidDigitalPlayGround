@@ -4,12 +4,11 @@ package com.demo.assignment.ui.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-
+import com.demo.assignment.core.BaseObservable;
+import com.demo.assignment.core.BaseViewModel;
 import com.demo.assignment.repository.ApiService;
-import com.demo.assignment.repository.BaseNetworkObservable;
 import com.demo.assignment.repository.NetworkRepository;
 import com.demo.assignment.repository.model.RandomJokesModel;
 
@@ -26,7 +25,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RandomJokesViewModel extends AndroidViewModel {
+public class RandomJokesViewModel extends BaseViewModel {
     private final MutableLiveData<RandomJokesViewState> responseData;
     private final MutableLiveData<String> firstName;
     private final MutableLiveData<String> lastName;
@@ -86,7 +85,7 @@ public class RandomJokesViewModel extends AndroidViewModel {
         Observable<RandomJokesModel> observable = apiService.getJokesList(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
-        observable.subscribe(new BaseNetworkObservable<RandomJokesModel>() {
+        observable.subscribe(new BaseObservable<RandomJokesModel>() {
             @Override
             public void success(RandomJokesModel jokesModel) {
                 onSuccess(jokesModel);
@@ -117,6 +116,7 @@ public class RandomJokesViewModel extends AndroidViewModel {
      */
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
+        //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
         responseData.postValue(RandomJokesViewState.SUCCESS_STATE);
     }
 

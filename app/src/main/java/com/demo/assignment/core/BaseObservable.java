@@ -1,12 +1,12 @@
-package com.demo.assignment.repository;
+package com.demo.assignment.core;
 
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
-public abstract class BaseNetworkObservable<T> implements Observer<T> {
+public abstract class BaseObservable<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(@NonNull Disposable dispo) {
@@ -21,7 +21,7 @@ public abstract class BaseNetworkObservable<T> implements Observer<T> {
     @Override
     public void onError(@NonNull Throwable t) {
         failure(t);
-        AppUtil.showException(t);
+        AppUtils.showException(t);
     }
 
     @Override

@@ -4,7 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 
 
 /**
@@ -26,7 +26,7 @@ public final class LoadingDialog {
             dialog.show();
             mainDialog = dialog;
         } catch (Exception e) {
-            AppUtil.showException(e);
+            AppUtils.showException(e);
         }
     }
 
@@ -39,7 +39,7 @@ public final class LoadingDialog {
                 mainDialog.dismiss();
             }
         } catch (Exception e) {
-            AppUtil.showException(e);
+            AppUtils.showException(e);
         }
         mainDialog = null;
 

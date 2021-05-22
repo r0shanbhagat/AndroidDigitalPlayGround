@@ -16,7 +16,7 @@ import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
 import com.demo.assignment.util.AppConstant;
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.SwipeViewPager;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +30,10 @@ public class RandomJokesFragment extends Fragment {
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NotNull LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentRandomJokesBinding.inflate(inflater, container, false);
         initViewModel(savedInstanceState);
         initData();
         observeApiResponse();
@@ -41,15 +43,6 @@ public class RandomJokesFragment extends Fragment {
         if (savedInstanceState == null) {
             mViewModel.fetchJokesList();
         }
-
-    }
-
-
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentRandomJokesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -82,12 +75,12 @@ public class RandomJokesFragment extends Fragment {
         binding.viewPager.setSwipeListener(new SwipeViewPager.SwipeListener() {
             @Override
             public void onLeftSwipe() {
-                AppUtil.showLog(TAG, "LEFT");
+                AppUtils.showLog(TAG, "LEFT");
             }
 
             @Override
             public boolean onRightSwipe() {
-                AppUtil.showLog(TAG, "RIGHT");
+                AppUtils.showLog(TAG, "RIGHT");
                 if (binding.viewPager.getCurrentItem()
                         == mAdapter.getCount() - 1) {
                     mViewModel.fetchJokesList();

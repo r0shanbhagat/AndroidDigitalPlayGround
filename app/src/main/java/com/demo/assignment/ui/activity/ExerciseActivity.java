@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-
 import com.demo.assignment.R;
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public class ExerciseActivity extends AppCompatActivity {
         }
         //Adding OnDestinationChangedListener
         Objects.requireNonNull(navController).addOnDestinationChangedListener((controller, destination, arguments) ->
-                AppUtil.showLog(ExerciseActivity.class.getSimpleName(),
+                AppUtils.showLog(ExerciseActivity.class.getSimpleName(),
                         Objects.requireNonNull(destination.getLabel()).toString()));
     }
 }

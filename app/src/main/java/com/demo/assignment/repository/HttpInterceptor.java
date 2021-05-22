@@ -1,7 +1,7 @@
 package com.demo.assignment.repository;
 
 
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 
 import java.io.IOException;
 
@@ -77,7 +77,7 @@ public class HttpInterceptor {
         Logger DEFAULT = new Logger() {
             @Override
             public void log(String message) {
-                AppUtil.showLog("HttpInterceptor", message);
+                AppUtils.showLog("HttpInterceptor", message);
             }
         };
 

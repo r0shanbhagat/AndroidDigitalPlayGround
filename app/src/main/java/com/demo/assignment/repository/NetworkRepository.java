@@ -2,7 +2,7 @@ package com.demo.assignment.repository;
 
 import android.content.Context;
 
-import com.demo.assignment.util.AppUtil;
+import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
@@ -27,13 +27,13 @@ public class NetworkRepository {
         OkHttpClient.Builder httpClient =
                 new OkHttpClient.Builder();
         httpClient.addInterceptor(chain -> {
-            if (!AppUtil.isNetworkConnected(context)) {
+            if (!AppUtils.isNetworkConnected(context)) {
                 throw new HttpInterceptor.NoInternetException("",
                         new Throwable(String.valueOf(HttpInterceptor.NoInternetException.class)));
             }
             Request request = chain.request();
             Response response = chain.proceed(request);
-            AppUtil.showLog("NetworkRepository", "Request:" + request.toString()
+            AppUtils.showLog("NetworkRepository", "Request:" + request.toString()
                     + "\nResponse:" + Objects.requireNonNull(response.body()).toString());
             return response;
         });

@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id "androidx.navigation.safeargs"
+    id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
+
 }
 
 android {
@@ -101,6 +103,12 @@ dependencies {
      ******************************* RxAndroid ************************************
      **/
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+
+    /**
+     ******************************* DI ************************************************************
+     **/
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
 
     /**
      ******************************* Unit Testing ************************************
