@@ -35,19 +35,10 @@ android {
     }
     buildTypes {
         release {
-            /* postprocessing {
-               removeUnusedCode true
-               removeUnusedResources true
-               obfuscate true
-               optimizeCode true
-               proguardFile 'proguard-rules.pro'
-           }*/
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        /*debug {
-            applicationIdSuffix '.debug'
-        }*/
+
     }
 
     compileOptions {
@@ -58,19 +49,6 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding true
     }
-
-    /*
-   flavorDimensions 'dimension'
-   productFlavors {
-       internal {
-           applicationId 'com.example.arc.internal'
-           resValue "string", "app_name", '"Arc Internal"'
-       }
-       production {
-           applicationId 'com.example.arc'
-           resValue "string", "app_name", '"Arc"'
-       }
-   }*/
 }
 
 dependencies {
@@ -80,6 +58,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$supportLibVersion"
     implementation "com.google.android.material:material:$material"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.multidex:multidex:2.0.1"
 
     /**
      ******************************* Navigation Component ************************************

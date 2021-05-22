@@ -11,6 +11,9 @@ import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ExerciseActivity extends AppCompatActivity {
 
     @Override

@@ -1,15 +1,12 @@
 package com.demo.assignment.ui.viewmodel;
 
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.demo.assignment.core.BaseObservable;
-import com.demo.assignment.core.BaseViewModel;
 import com.demo.assignment.repository.ApiService;
-import com.demo.assignment.repository.NetworkRepository;
 import com.demo.assignment.repository.model.RandomJokesModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,24 +16,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RandomJokesViewModel extends BaseViewModel {
+@HiltViewModel
+public class RandomJokesViewModel extends ViewModel {
     private final MutableLiveData<RandomJokesViewState> responseData;
+    private final ApiService apiService;
     private final MutableLiveData<String> firstName;
     private final MutableLiveData<String> lastName;
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
     private CompositeDisposable mDisposable;
 
     /**
-     * @param application :Application Context
+     * @param apiService:ApiService
      */
-    public RandomJokesViewModel(@NonNull Application application) {
-        super(application);
+    @Inject
+    public RandomJokesViewModel(@NonNull ApiService apiService) {
+        this.apiService = apiService;
         responseData = new MutableLiveData<>();
         mDisposable = new CompositeDisposable();
         firstName = new MutableLiveData<>();
@@ -78,7 +81,6 @@ public class RandomJokesViewModel extends BaseViewModel {
      */
     public void fetchJokesList() {
         onLoading();
-        ApiService apiService = NetworkRepository.getService(getApplication());
         Map<String, String> data = new HashMap<>();
         data.put("firstName", getFirstName().getValue());
         data.put("lastName", getLastName().getValue());

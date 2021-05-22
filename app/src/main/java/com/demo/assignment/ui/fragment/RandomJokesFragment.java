@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.demo.assignment.R;
 import com.demo.assignment.databinding.FragmentRandomJokesBinding;
-import com.demo.assignment.repository.HttpInterceptor;
+import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
@@ -21,7 +21,9 @@ import com.demo.assignment.util.SwipeViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class RandomJokesFragment extends Fragment {
     private static final String TAG = RandomJokesFragment.class.getSimpleName();
     private FragmentRandomJokesBinding binding;
@@ -57,7 +59,7 @@ public class RandomJokesFragment extends Fragment {
             firstName = bundle.getString(AppConstant.ARGS_FIRST_NAME);
             lastName = bundle.getString(AppConstant.ARGS_LAST_NAME);
         }
-        mViewModel = new ViewModelProvider(requireActivity()).get(RandomJokesViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(RandomJokesViewModel.class);
         mViewModel.getFirstName().setValue(firstName);
         mViewModel.getLastName().setValue(lastName);
 
@@ -123,7 +125,7 @@ public class RandomJokesFragment extends Fragment {
     private void showInfoDialog(Throwable throwable) {
         if (isAdded()) {
             String msg = getString(R.string.error_msg);
-            if (throwable instanceof HttpInterceptor.NoInternetException) {
+            if (throwable instanceof NoInternetException) {
                 msg = getString(R.string.no_internet_msg);
             }
             new AlertDialog
