@@ -3,6 +3,7 @@ package com.demo.assignment.ui.viewmodel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.demo.assignment.core.BaseObservable;
@@ -27,28 +28,28 @@ import io.reactivex.schedulers.Schedulers;
 
 @HiltViewModel
 public class RandomJokesViewModel extends ViewModel {
-    private final MutableLiveData<RandomJokesViewState> responseData;
     private final ApiService apiService;
-    private final MutableLiveData<String> firstName;
-    private final MutableLiveData<String> lastName;
+    private final MutableLiveData<RandomJokesViewState> mJokeState;
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
+    private final String mFirstName;
+    private final String mLastName;
     private CompositeDisposable mDisposable;
 
     /**
      * @param apiService:ApiService
      */
     @Inject
-    public RandomJokesViewModel(@NonNull ApiService apiService) {
+    public RandomJokesViewModel(@NotNull SavedStateHandle savedStateHandle, @NonNull ApiService apiService) {
         this.apiService = apiService;
-        responseData = new MutableLiveData<>();
         mDisposable = new CompositeDisposable();
-        firstName = new MutableLiveData<>();
-        lastName = new MutableLiveData<>();
+        mJokeState = new MutableLiveData<>();
         jokesList = new MutableLiveData<>(new ArrayList<>());
+        mFirstName = savedStateHandle.get("FirstName");
+        mLastName = savedStateHandle.get("LastName");
     }
 
     public MutableLiveData<RandomJokesViewState> getJokesData() {
-        return responseData;
+        return mJokeState;
     }
 
     /**
@@ -58,32 +59,14 @@ public class RandomJokesViewModel extends ViewModel {
         return jokesList.getValue();
     }
 
-    /**
-     * getFirstName
-     *
-     * @return FirstName
-     */
-    public MutableLiveData<String> getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * getLastName
-     *
-     * @return LastName
-     */
-    public MutableLiveData<String> getLastName() {
-        return lastName;
-    }
-
     /*
      * Fetch Random Jokes List from Server
      */
     public void fetchJokesList() {
         onLoading();
         Map<String, String> data = new HashMap<>();
-        data.put("firstName", getFirstName().getValue());
-        data.put("lastName", getLastName().getValue());
+        data.put("firstName", mFirstName);
+        data.put("lastName", mLastName);
         Observable<RandomJokesModel> observable = apiService.getJokesList(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
@@ -109,7 +92,7 @@ public class RandomJokesViewModel extends ViewModel {
      * Show Loading State
      */
     private void onLoading() {
-        responseData.postValue(RandomJokesViewState.LOADING_STATE);
+        mJokeState.postValue(RandomJokesViewState.LOADING_STATE);
     }
 
     /*
@@ -119,21 +102,21 @@ public class RandomJokesViewModel extends ViewModel {
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
         //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
-        responseData.postValue(RandomJokesViewState.SUCCESS_STATE);
+        mJokeState.postValue(RandomJokesViewState.SUCCESS_STATE);
     }
 
     /**
      * Failure while fetching the jokes from server
      *
-     * @param throwable :Error
+     * @param error :Error
      */
-    private void onFailure(Throwable throwable) {
-        RandomJokesViewState.ERROR_STATE.setError(throwable);
-        responseData.postValue(RandomJokesViewState.ERROR_STATE);
+    private void onFailure(Throwable error) {
+        RandomJokesViewState.ERROR_STATE.setError(error);
+        mJokeState.postValue(RandomJokesViewState.ERROR_STATE);
     }
 
     public void resetLiveData() {
-        responseData.postValue(null);
+        mJokeState.postValue(null);
     }
 
     @Override

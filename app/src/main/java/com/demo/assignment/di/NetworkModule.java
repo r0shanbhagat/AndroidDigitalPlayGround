@@ -9,6 +9,7 @@ import com.demo.assignment.repository.logging.Level;
 import com.demo.assignment.repository.logging.Logger;
 import com.demo.assignment.repository.logging.LoggingInterceptor;
 import com.demo.assignment.repository.logging.NoInternetException;
+import com.demo.assignment.repository.model.LoginModel;
 import com.demo.assignment.util.AppUtils;
 
 import dagger.Module;
@@ -71,4 +72,9 @@ public class NetworkModule {
         return retrofit.create(ApiService.class);
     }
 
+    @Provides
+    @ViewModelScoped
+    LoginModel provideLoginModel() {
+        return new LoginModel();
+    }
 }

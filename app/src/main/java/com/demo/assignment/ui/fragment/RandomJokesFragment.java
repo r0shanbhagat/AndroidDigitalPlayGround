@@ -15,7 +15,6 @@ import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
-import com.demo.assignment.util.AppConstant;
 import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.SwipeViewPager;
 
@@ -28,7 +27,7 @@ public class RandomJokesFragment extends Fragment {
     private static final String TAG = RandomJokesFragment.class.getSimpleName();
     private FragmentRandomJokesBinding binding;
     private RandomJokesViewModel mViewModel;
-    private JokesAdapter mAdapter;
+    private JokesAdapter jokesAdapter;
 
 
     @Override
@@ -36,44 +35,29 @@ public class RandomJokesFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRandomJokesBinding.inflate(inflater, container, false);
-        initViewModel(savedInstanceState);
         initData();
         observeApiResponse();
         /*
-         * In the case of config changes no need to call the api again.
+         * In the case of config changes no need to call the api again:
+         *  else clear viewModel cache and fetch new Jokes
          */
         if (savedInstanceState == null) {
+            mViewModel.getJokesList().clear();
             mViewModel.fetchJokesList();
         }
+
         return binding.getRoot();
-    }
-
-
-    /**
-     * initViewModel
-     */
-    private void initViewModel(Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
-        String firstName = "", lastName = "";
-        if (null != bundle) {
-            firstName = bundle.getString(AppConstant.ARGS_FIRST_NAME);
-            lastName = bundle.getString(AppConstant.ARGS_LAST_NAME);
-        }
-        mViewModel = new ViewModelProvider(this).get(RandomJokesViewModel.class);
-        mViewModel.getFirstName().setValue(firstName);
-        mViewModel.getLastName().setValue(lastName);
-
-        if (savedInstanceState == null) {
-            mViewModel.getJokesList().clear();
-        }
     }
 
     /**
      * initData
      */
     private void initData() {
-        mAdapter = new JokesAdapter(getChildFragmentManager(), mViewModel.getJokesList());
-        binding.viewPager.setAdapter(mAdapter);
+        //Setting Up ViewModel
+        mViewModel = new ViewModelProvider(this).get(RandomJokesViewModel.class);
+        //Setting Up Adapter
+        jokesAdapter = new JokesAdapter(getChildFragmentManager(), mViewModel.getJokesList());
+        binding.viewPager.setAdapter(jokesAdapter);
         binding.viewPager.setSwipeListener(new SwipeViewPager.SwipeListener() {
             @Override
             public void onLeftSwipe() {
@@ -84,21 +68,22 @@ public class RandomJokesFragment extends Fragment {
             public boolean onRightSwipe() {
                 AppUtils.showLog(TAG, "RIGHT");
                 if (binding.viewPager.getCurrentItem()
-                        == mAdapter.getCount() - 1) {
+                        == jokesAdapter.getCount() - 1) {
                     mViewModel.fetchJokesList();
                 }
                 return true;
             }
         });
+
     }
 
     /**
      * observeApiResponse
      */
     private void observeApiResponse() {
-        mViewModel.getJokesData().observe(requireActivity(), dataState -> {
-            if (null == dataState) return;
-            switch (dataState.getCurrentState()) {
+        mViewModel.getJokesData().observe(getViewLifecycleOwner(), jokesState -> {
+            if (null == jokesState) return;
+            switch (jokesState.getCurrentState()) {
                 case 0:
                     ///ShowBaseProgress
                     LoadingDialog.show(getContext());
@@ -111,7 +96,7 @@ public class RandomJokesFragment extends Fragment {
                     break;
                 case -1:
                     LoadingDialog.dismissDialog();
-                    showInfoDialog(dataState.getError());
+                    showInfoDialog(jokesState.getError());
                     mViewModel.resetLiveData();
                     break;
             }
@@ -129,7 +114,7 @@ public class RandomJokesFragment extends Fragment {
                 msg = getString(R.string.no_internet_msg);
             }
             new AlertDialog
-                    .Builder(getActivity(), 5)
+                    .Builder(getActivity())
                     .setMessage(msg)
                     .setTitle("Alert")
                     .setPositiveButton("OK", null)
@@ -141,12 +126,12 @@ public class RandomJokesFragment extends Fragment {
      * Updating the list after new data fetched
      **/
     public void updateList() {
-        mAdapter.notifyDataSetChanged();
+        jokesAdapter.notifyDataSetChanged();
         /*
          * Sliding the viewpager to current slide
          */
         if (null != binding) {
-            binding.viewPager.setCurrentItem(mAdapter.getCount() - 1, true);
+            binding.viewPager.setCurrentItem(jokesAdapter.getCount() - 1, true);
         }
     }
 
