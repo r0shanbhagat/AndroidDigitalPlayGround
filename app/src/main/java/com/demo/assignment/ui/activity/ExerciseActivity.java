@@ -24,7 +24,7 @@ public class ExerciseActivity extends BaseActivity<ActivityExerciseBinding, Base
     }
 
     @Override
-    protected Class<BaseViewModel> getViewModel() {
+    protected BaseViewModel createViewModel() {
         return null;
     }
 
