@@ -56,7 +56,7 @@ public class RandomJokesModelTest {
     }
 
     @Test
-    public void testJokesCateogry() {
+    public void testJokesCategory() {
         Mockito.when(value.getCategories()).thenReturn(categoryList);
         Assert.assertEquals(new ArrayList<>(), value.getCategories());
 

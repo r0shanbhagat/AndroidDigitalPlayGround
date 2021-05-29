@@ -26,8 +26,6 @@ public final class AppUtils {
      * @param context the context
      * @return boolean boolean
      */
-
-
     public static boolean isNetworkConnected(@NonNull Context context) {
         boolean isConnected = false;
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

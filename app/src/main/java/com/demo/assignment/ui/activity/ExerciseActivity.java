@@ -2,11 +2,13 @@ package com.demo.assignment.ui.activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.demo.assignment.R;
+import com.demo.assignment.core.BaseActivity;
+import com.demo.assignment.core.BaseViewModel;
+import com.demo.assignment.databinding.ActivityExerciseBinding;
 import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
@@ -14,12 +16,21 @@ import java.util.Objects;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends BaseActivity<ActivityExerciseBinding, BaseViewModel> {
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_exercise;
+    }
+
+    @Override
+    protected Class<BaseViewModel> getViewModel() {
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise);
         /*
          * Adding Navigation Callback for Analytics
          */

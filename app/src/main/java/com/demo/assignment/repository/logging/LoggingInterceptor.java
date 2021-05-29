@@ -22,12 +22,12 @@ public class LoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = StandardCharsets.UTF_8;
     private final boolean isDebug;
     private final Logger logger;
-    private final LoggingInterceptor.Builder mBuilder;
+    private final Builder mBuilder;
 
     /**
      * Instantiates a new Http interceptor.
      */
-    public LoggingInterceptor(LoggingInterceptor.Builder builder) {
+    public LoggingInterceptor(Builder builder) {
         this.mBuilder = builder;
         this.isDebug = builder.isDebug;
         this.logger = builder.logger;
@@ -154,17 +154,17 @@ public class LoggingInterceptor implements Interceptor {
             return this.level;
         }
 
-        public LoggingInterceptor.Builder setLevel(Level level) {
+        public Builder setLevel(Level level) {
             this.level = level;
             return this;
         }
 
-        public LoggingInterceptor.Builder loggable(boolean isDebug) {
+        public Builder loggable(boolean isDebug) {
             this.isDebug = isDebug;
             return this;
         }
 
-        public LoggingInterceptor.Builder logger(Logger logger) {
+        public Builder logger(Logger logger) {
             this.logger = logger;
             return this;
         }

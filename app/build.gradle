@@ -90,8 +90,8 @@ dependencies {
      ******************************* DI ************************************************************
      **/
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
-    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion" //for Java
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion" //For Kotlin
 
     /**
      ******************************* Unit Testing ************************************
