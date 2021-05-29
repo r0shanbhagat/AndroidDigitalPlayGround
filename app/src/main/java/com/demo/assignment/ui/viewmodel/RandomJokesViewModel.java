@@ -25,7 +25,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class RandomJokesViewModel extends BaseViewModel {
-    private final MutableLiveData<RandomJokesViewState> responseData;
+    private final MutableLiveData<RandomJokesViewState> mJokeState;
     private final ApiService apiService;
     private final MutableLiveData<String> firstName;
     private final MutableLiveData<String> lastName;
@@ -38,7 +38,7 @@ public class RandomJokesViewModel extends BaseViewModel {
     @Inject
     public RandomJokesViewModel(@NonNull ApiService apiService) {
         this.apiService = apiService;
-        responseData = new MutableLiveData<>();
+        mJokeState = new MutableLiveData<>();
         mDisposable = new CompositeDisposable();
         firstName = new MutableLiveData<>();
         lastName = new MutableLiveData<>();
@@ -46,7 +46,7 @@ public class RandomJokesViewModel extends BaseViewModel {
     }
 
     public MutableLiveData<RandomJokesViewState> getJokesData() {
-        return responseData;
+        return mJokeState;
     }
 
     /**
@@ -107,7 +107,7 @@ public class RandomJokesViewModel extends BaseViewModel {
      * Show Loading State
      */
     private void onLoading() {
-        responseData.postValue(RandomJokesViewState.LOADING_STATE);
+        mJokeState.postValue(RandomJokesViewState.LOADING_STATE);
     }
 
     /*
@@ -117,21 +117,21 @@ public class RandomJokesViewModel extends BaseViewModel {
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
         //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
-        responseData.postValue(RandomJokesViewState.SUCCESS_STATE);
+        mJokeState.postValue(RandomJokesViewState.SUCCESS_STATE);
     }
 
     /**
      * Failure while fetching the jokes from server
      *
-     * @param throwable :Error
+     * @param error :Error
      */
-    private void onFailure(Throwable throwable) {
-        RandomJokesViewState.ERROR_STATE.setError(throwable);
-        responseData.postValue(RandomJokesViewState.ERROR_STATE);
+    private void onFailure(Throwable error) {
+        RandomJokesViewState.ERROR_STATE.setError(error);
+        mJokeState.postValue(RandomJokesViewState.ERROR_STATE);
     }
 
     public void resetLiveData() {
-        responseData.postValue(null);
+        mJokeState.postValue(null);
     }
 
     @Override

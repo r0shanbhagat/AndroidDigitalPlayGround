@@ -26,6 +26,8 @@ public final class AppUtils {
      * @param context the context
      * @return boolean boolean
      */
+
+
     public static boolean isNetworkConnected(@NonNull Context context) {
         boolean isConnected = false;
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,7 +73,7 @@ public final class AppUtils {
 
     /**
      * @param navOptionBuilder navOptionBuilder
-     * Used to apply animation in fragment navigation
+     *                         Used to apply animation in fragment navigation
      */
     public static void applyAnimation(NavOptions.Builder navOptionBuilder) {
         navOptionBuilder.setEnterAnim(R.anim.right_in);
@@ -82,6 +84,7 @@ public final class AppUtils {
 
     /**
      * Hide soft keyboard from view
+     *
      * @param mActivity :Activity
      */
     public static void hideSoftInput(Activity mActivity) {
@@ -93,7 +96,6 @@ public final class AppUtils {
         InputMethodManager im = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
-
 
 
 }

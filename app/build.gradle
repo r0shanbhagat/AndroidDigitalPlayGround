@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id "androidx.navigation.safeargs"
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -68,33 +68,33 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     /**
-     ******************************* Android Common Component***************************************
+     ******************************* Android Common Component************************************
      **/
     implementation "androidx.appcompat:appcompat:$supportLibVersion"
     implementation "com.google.android.material:material:$material"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.multidex:multidex:2.0.1"
 
     /**
-     ******************************* Navigation Component ******************************************
+     ******************************* Navigation Component ************************************
      **/
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     /**
-     ******************************* Life cycle Extension ******************************************
+     ******************************* Life cycle Extension ************************************
      **/
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     /**
-     ******************************* Retrofit ******************************************************
+     ******************************* Retrofit ************************************
      **/
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
     /**
-     ******************************* RxAndroid *****************************************************
+     ******************************* RxAndroid ************************************
      **/
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
 
@@ -116,6 +116,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
+    //androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
 }
 

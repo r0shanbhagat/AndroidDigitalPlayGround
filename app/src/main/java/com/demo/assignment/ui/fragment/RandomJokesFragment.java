@@ -13,11 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.demo.assignment.AssignmentApp;
 import com.demo.assignment.R;
 import com.demo.assignment.databinding.FragmentRandomJokesBinding;
-import com.demo.assignment.repository.LoggingInterceptor;
+import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
-import com.demo.assignment.util.AppConstant;
 import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.SwipeViewPager;
 
@@ -32,7 +31,7 @@ public class RandomJokesFragment extends Fragment {
     ViewModelProvider.Factory viewModelFactory;
     private FragmentRandomJokesBinding binding;
     private RandomJokesViewModel mViewModel;
-    private JokesAdapter mAdapter;
+    private JokesAdapter jokesAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -88,18 +87,20 @@ public class RandomJokesFragment extends Fragment {
      * initData
      */
     private void initData() {
-        mAdapter = new JokesAdapter(getChildFragmentManager(), mViewModel.getJokesList());
-        binding.viewPager.setAdapter(mAdapter);
+        //Setting Up Adapter
+        jokesAdapter = new JokesAdapter(getChildFragmentManager(), mViewModel.getJokesList());
+        binding.viewPager.setAdapter(jokesAdapter);
         binding.viewPager.setSwipeListener(new SwipeViewPager.SwipeListener() {
             @Override
             public void onLeftSwipe() {
-                AppUtils.showLog(TAG, "LEFT");
+                AppUtils.showLog(TAG, "LEFT SWIPE");
             }
 
             @Override
             public boolean onRightSwipe() {
-                AppUtils.showLog(TAG, "RIGHT");
-                if (binding.viewPager.getCurrentItem() == mAdapter.getCount() - 1) {
+                AppUtils.showLog(TAG, "RIGHT SWIPE");
+                if (binding.viewPager.getCurrentItem()
+                        == jokesAdapter.getCount() - 1) {
                     mViewModel.fetchJokesList();
                 }
                 return true;
@@ -111,10 +112,9 @@ public class RandomJokesFragment extends Fragment {
      * observeApiResponse
      */
     private void observeApiResponse() {
-        //TODO CHECK with NewsApp
-        mViewModel.getJokesData().observe(requireActivity(), dataState -> {
-            if (null == dataState) return;
-            switch (dataState.getCurrentState()) {
+        mViewModel.getJokesData().observe(getViewLifecycleOwner(), jokesState -> {
+            if (null == jokesState) return;
+            switch (jokesState.getCurrentState()) {
                 case 0:
                     ///ShowBaseProgress
                     LoadingDialog.show(getContext());
@@ -127,7 +127,7 @@ public class RandomJokesFragment extends Fragment {
                     break;
                 case -1:
                     LoadingDialog.dismissDialog();
-                    showInfoDialog(dataState.getError());
+                    showInfoDialog(jokesState.getError());
                     mViewModel.resetLiveData();
                     break;
             }
@@ -141,11 +141,11 @@ public class RandomJokesFragment extends Fragment {
     private void showInfoDialog(Throwable throwable) {
         if (isAdded()) {
             String msg = getString(R.string.error_msg);
-            if (throwable instanceof LoggingInterceptor.NoInternetException) {
+            if (throwable instanceof NoInternetException) {
                 msg = getString(R.string.no_internet_msg);
             }
             new AlertDialog
-                    .Builder(getActivity(), 5)
+                    .Builder(getActivity())
                     .setMessage(msg)
                     .setTitle("Alert")
                     .setPositiveButton("OK", null)
@@ -157,12 +157,12 @@ public class RandomJokesFragment extends Fragment {
      * Updating the list after new data fetched
      **/
     public void updateList() {
-        mAdapter.notifyDataSetChanged();
+        jokesAdapter.notifyDataSetChanged();
         /*
          * Sliding the viewpager to current slide
          */
         if (null != binding) {
-            binding.viewPager.setCurrentItem(mAdapter.getCount() - 1, true);
+            binding.viewPager.setCurrentItem(jokesAdapter.getCount() - 1, true);
         }
     }
 

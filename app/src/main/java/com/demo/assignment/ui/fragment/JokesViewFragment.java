@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-
 import com.demo.assignment.databinding.ListItemRandomJokesBinding;
 import com.demo.assignment.util.AppConstant;
 
@@ -21,7 +20,6 @@ public class JokesViewFragment extends Fragment {
     private ListItemRandomJokesBinding binding;
 
     /**
-     *
      * @param jokes :Jokes String Text
      * @return instance of JokesViewFragment
      */

@@ -9,8 +9,15 @@ import com.demo.assignment.di.component.AppComponent;
 import com.demo.assignment.di.component.DaggerAppComponent;
 
 
-public class AssignmentApp extends Application {
+public class AssignmentApp extends MultiDexApplication {
     private AppComponent appComponent;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

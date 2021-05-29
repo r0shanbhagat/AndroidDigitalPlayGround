@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class BaseActivity<VM extends BaseViewModel, B extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
 
     protected VM viewModel;
     protected B binding;
@@ -25,8 +25,8 @@ public abstract class BaseActivity<VM extends BaseViewModel, B extends ViewDataB
     @NonNull
     protected abstract VM createViewModel();
 
+
     protected abstract
     @LayoutRes
     int getLayoutResId();
-
 }
