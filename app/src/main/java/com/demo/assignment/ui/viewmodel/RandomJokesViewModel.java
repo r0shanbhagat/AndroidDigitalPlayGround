@@ -1,10 +1,11 @@
 package com.demo.assignment.ui.viewmodel;
 
 
-import android.app.Application;
+import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.demo.assignment.core.BaseObservable;
 import com.demo.assignment.core.BaseViewModel;
@@ -21,31 +22,34 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class RandomJokesViewModel extends BaseViewModel {
-    private final MutableLiveData<RandomJokesViewState> responseData;
-    private final MutableLiveData<String> firstName;
-    private final MutableLiveData<String> lastName;
+    private final ApiService apiService;
+    private final MutableLiveData<RandomJokesViewState> mJokeState;
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
+    private final String mFirstName;
+    private final String mLastName;
     private CompositeDisposable mDisposable;
 
     /**
-     * @param application :Application Context
+     * @param firstName         :FirstName
+     * @param lastName:LastName
      */
-    public RandomJokesViewModel(@NonNull Application application) {
-        super(application);
-        responseData = new MutableLiveData<>();
+    public RandomJokesViewModel(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
+        this.apiService = NetworkRepository.getService(context);
         mDisposable = new CompositeDisposable();
-        firstName = new MutableLiveData<>();
-        lastName = new MutableLiveData<>();
+        mJokeState = new MutableLiveData<>();
         jokesList = new MutableLiveData<>(new ArrayList<>());
+        mFirstName = firstName;
+        mLastName = lastName;
     }
 
     public MutableLiveData<RandomJokesViewState> getJokesData() {
-        return responseData;
+        return mJokeState;
     }
 
     /**
@@ -55,33 +59,14 @@ public class RandomJokesViewModel extends BaseViewModel {
         return jokesList.getValue();
     }
 
-    /**
-     * getFirstName
-     *
-     * @return FirstName
-     */
-    public MutableLiveData<String> getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * getLastName
-     *
-     * @return LastName
-     */
-    public MutableLiveData<String> getLastName() {
-        return lastName;
-    }
-
     /*
      * Fetch Random Jokes List from Server
      */
     public void fetchJokesList() {
         onLoading();
-        ApiService apiService = NetworkRepository.getService(getApplication());
         Map<String, String> data = new HashMap<>();
-        data.put("firstName", getFirstName().getValue());
-        data.put("lastName", getLastName().getValue());
+        data.put("firstName", mFirstName);
+        data.put("lastName", mLastName);
         Observable<RandomJokesModel> observable = apiService.getJokesList(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
@@ -107,7 +92,7 @@ public class RandomJokesViewModel extends BaseViewModel {
      * Show Loading State
      */
     private void onLoading() {
-        responseData.postValue(RandomJokesViewState.LOADING_STATE);
+        mJokeState.postValue(RandomJokesViewState.LOADING_STATE);
     }
 
     /*
@@ -117,21 +102,21 @@ public class RandomJokesViewModel extends BaseViewModel {
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
         //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
-        responseData.postValue(RandomJokesViewState.SUCCESS_STATE);
+        mJokeState.postValue(RandomJokesViewState.SUCCESS_STATE);
     }
 
     /**
      * Failure while fetching the jokes from server
      *
-     * @param throwable :Error
+     * @param error :Error
      */
-    private void onFailure(Throwable throwable) {
-        RandomJokesViewState.ERROR_STATE.setError(throwable);
-        responseData.postValue(RandomJokesViewState.ERROR_STATE);
+    private void onFailure(Throwable error) {
+        RandomJokesViewState.ERROR_STATE.setError(error);
+        mJokeState.postValue(RandomJokesViewState.ERROR_STATE);
     }
 
     public void resetLiveData() {
-        responseData.postValue(null);
+        mJokeState.postValue(null);
     }
 
     @Override
@@ -140,6 +125,30 @@ public class RandomJokesViewModel extends BaseViewModel {
         if (null != mDisposable) {
             mDisposable.clear();
             mDisposable = null;
+        }
+    }
+
+    /**
+     * A creator is used to inject the project ID into the ViewModel
+     */
+    public static class Factory extends ViewModelProvider.NewInstanceFactory {
+        private Context context;
+        private String firstName, lastName;
+
+        public Factory(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
+            this.context = context;
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        @Override
+        @NonNull
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(RandomJokesViewModel.class)) {
+                //noinspection unchecked
+                return (T) new RandomJokesViewModel(context, firstName, lastName);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
 

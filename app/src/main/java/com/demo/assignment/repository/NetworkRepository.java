@@ -2,52 +2,70 @@ package com.demo.assignment.repository;
 
 import android.content.Context;
 
+import com.demo.assignment.BuildConfig;
+import com.demo.assignment.repository.logging.Level;
+import com.demo.assignment.repository.logging.Logger;
+import com.demo.assignment.repository.logging.LoggingInterceptor;
+import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.util.AppUtils;
-
-import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkRepository {
-    //Base Url
-    private static final String BASE_URL = "https://api.icndb.com/";
     private static NetworkRepository projectRepository;
     private final ApiService apiService;
 
     /**
      * NetworkRepository
+     *
      * @param context context
      */
     private NetworkRepository(Context context) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(ApiConstants.BASE_URL)
+                .client(provideOkHttp(context))
+                .build();
+        apiService = retrofit.create(ApiService.class);
+    }
+
+    /**
+     * LoggingInterceptor for Retrofit
+     *
+     * @return :LoggingInterceptor
+     */
+    private LoggingInterceptor provideInterceptor() {
+        return new LoggingInterceptor.Builder()
+                .loggable(BuildConfig.DEBUG)
+                .logger(Logger.DEFAULT)
+                .setLevel(Level.BODY)
+                .build();
+    }
+
+    /**
+     * OkHttpClient
+     *
+     * @param context:Context
+     * @return :OkHttpClient
+     */
+    private OkHttpClient provideOkHttp(Context context) {
         OkHttpClient.Builder httpClient =
                 new OkHttpClient.Builder();
         httpClient.addInterceptor(chain -> {
             if (!AppUtils.isNetworkConnected(context)) {
-                throw new HttpInterceptor.NoInternetException("",
-                        new Throwable(String.valueOf(HttpInterceptor.NoInternetException.class)));
+                throw new NoInternetException("",
+                        new Throwable(String.valueOf(NoInternetException.class)));
             }
             Request request = chain.request();
-            Response response = chain.proceed(request);
-            AppUtils.showLog("NetworkRepository", "Request:" + request.toString()
-                    + "\nResponse:" + Objects.requireNonNull(response.body()).toString());
-            return response;
+            return chain.proceed(request);
         });
-
-        /*
-         * Setting Retrofit properties
-         */
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        apiService = retrofit.create(ApiService.class);
+        httpClient.addInterceptor(provideInterceptor());
+        return httpClient.build();
     }
 
     /**
@@ -60,6 +78,4 @@ public class NetworkRepository {
         }
         return projectRepository.apiService;
     }
-
-
 }

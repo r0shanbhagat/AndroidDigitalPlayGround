@@ -34,9 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:focusable="true"
                 android:hint="@string/first_name"
                 android:inputType="text"
-                android:focusable="true"
                 android:maxLength="20"
                 android:maxLines="1"
                 android:text="@={model.firstName}" />
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:enabled="@{model.submitEnable}"
-            android:onClick="@{()->login.onSubmitClick()}"
+            android:onClick="@{(v)->login.onSubmitClick(v)}"
             android:text="@string/btnsubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilLastName" />

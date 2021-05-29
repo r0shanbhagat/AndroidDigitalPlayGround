@@ -2,21 +2,36 @@ package com.demo.assignment.ui.activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.demo.assignment.R;
+import com.demo.assignment.core.BaseActivity;
+import com.demo.assignment.core.BaseViewModel;
+import com.demo.assignment.databinding.ActivityExerciseBinding;
 import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
-public class ExerciseActivity extends AppCompatActivity {
+import io.reactivex.annotations.NonNull;
+
+public class ExerciseActivity extends BaseActivity<ActivityExerciseBinding, BaseViewModel> {
+
+    @NonNull
+    @Override
+    protected BaseViewModel createViewModel() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_exercise;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise);
         /*
          * Adding Navigation Callback for Analytics
          */

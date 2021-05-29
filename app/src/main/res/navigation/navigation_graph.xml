@@ -10,9 +10,25 @@
         android:name="com.demo.assignment.ui.fragment.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
+        <!--
+        In case you want to use Argument instead actions
+        <argument
+             android:name="flowStepNumber"
+             app:argType="integer"
+             android:defaultValue="1"/>
+         LoginFragmentArgs.fromBundle(getArguments()).getFlowStepNumber();
+         -->
+
         <action
             android:id="@+id/next_action"
-            app:destination="@id/randomJokesFragment"/>
+            app:destination="@id/randomJokesFragment">
+            <argument
+                android:name="FirstName"
+                app:argType="string" />
+            <argument
+                android:name="LastName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/randomJokesFragment"
