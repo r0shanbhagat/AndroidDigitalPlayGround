@@ -33,7 +33,7 @@ public class RandomJokesViewModel extends BaseViewModel {
     private CompositeDisposable mDisposable;
 
     /**
-     * @param apiService
+     * @param apiService :Api Service
      */
     @Inject
     public RandomJokesViewModel(@NonNull ApiService apiService) {

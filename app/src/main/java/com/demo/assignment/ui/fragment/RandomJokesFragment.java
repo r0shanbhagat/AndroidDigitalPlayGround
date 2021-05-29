@@ -17,6 +17,7 @@ import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.ui.adapter.JokesAdapter;
 import com.demo.assignment.ui.dialog.LoadingDialog;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
+import com.demo.assignment.util.AppConstant;
 import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.SwipeViewPager;
 
@@ -29,6 +30,7 @@ public class RandomJokesFragment extends Fragment {
     private static final String TAG = RandomJokesFragment.class.getSimpleName();
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
     private FragmentRandomJokesBinding binding;
     private RandomJokesViewModel mViewModel;
     private JokesAdapter jokesAdapter;
@@ -39,9 +41,12 @@ public class RandomJokesFragment extends Fragment {
         ((AssignmentApp) getActivity().getApplicationContext()).getAppComponent().inject(this);
     }
 
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NotNull LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentRandomJokesBinding.inflate(inflater, container, false);
         initViewModel(savedInstanceState);
         initData();
         observeApiResponse();
@@ -51,15 +56,6 @@ public class RandomJokesFragment extends Fragment {
         if (savedInstanceState == null) {
             mViewModel.fetchJokesList();
         }
-
-    }
-
-
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentRandomJokesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

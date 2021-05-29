@@ -1,5 +1,6 @@
-package com.demo.assignment.ui.fragment;
+package com.demo.assignment.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -11,15 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.demo.assignment.AssignmentApp
+import com.demo.assignment.core.factory.ViewModelFactory
 import com.demo.assignment.databinding.FragmentLoginBinding
-import com.demo.assignment.repository.model.LoginModel
 import com.demo.assignment.ui.viewmodel.LoginViewModel
 import com.demo.assignment.util.AppUtils
+import javax.inject.Inject
 
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding: FragmentLoginBinding;
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
 
     // implement the TextWatcher callback listener
@@ -34,13 +39,18 @@ class LoginFragment : Fragment() {
         override fun afterTextChanged(s: Editable) {}
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as AssignmentApp).appComponent.inject(this)
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this,
-                LoginViewModel.Factory(LoginModel())).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(viewModelStore, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.login = this
         binding.etLastName.addTextChangedListener(textWatcher)

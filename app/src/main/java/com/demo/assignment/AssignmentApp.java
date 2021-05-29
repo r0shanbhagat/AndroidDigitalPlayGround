@@ -1,9 +1,9 @@
 package com.demo.assignment;
 
-import android.app.Activity;
-import android.app.Application;
+import android.content.Context;
 
-import androidx.fragment.app.Fragment;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.demo.assignment.di.component.AppComponent;
 import com.demo.assignment.di.component.DaggerAppComponent;
@@ -21,7 +21,7 @@ public class AssignmentApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        appComponent=  DaggerAppComponent.builder().application(this).build();
+        appComponent = DaggerAppComponent.builder().application(this).build();
     }
 
     public AppComponent getAppComponent() {

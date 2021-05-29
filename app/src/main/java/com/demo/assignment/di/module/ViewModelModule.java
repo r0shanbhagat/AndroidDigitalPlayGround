@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.demo.assignment.core.factory.ViewModelFactory;
 import com.demo.assignment.di.scope.ViewModelKey;
+import com.demo.assignment.ui.viewmodel.LoginViewModel;
 import com.demo.assignment.ui.viewmodel.RandomJokesViewModel;
 
 import dagger.Binds;
@@ -19,7 +20,12 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(RandomJokesViewModel.class)
-    abstract ViewModel bindsJokesViewModel(RandomJokesViewModel viewModel);
+    abstract ViewModel bindJokesViewModel(RandomJokesViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel.class)
+    abstract ViewModel bindLoginViewModel(LoginViewModel viewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindsViewModelFactory(ViewModelFactory viewModelFactory);

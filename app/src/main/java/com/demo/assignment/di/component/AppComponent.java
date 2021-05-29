@@ -3,6 +3,7 @@ package com.demo.assignment.di.component;
 import com.demo.assignment.AssignmentApp;
 import com.demo.assignment.di.module.AppModule;
 import com.demo.assignment.ui.activity.ExerciseActivity;
+import com.demo.assignment.ui.fragment.LoginFragment;
 import com.demo.assignment.ui.fragment.RandomJokesFragment;
 
 import javax.inject.Singleton;
@@ -18,6 +19,8 @@ public interface AppComponent<V> {
     void inject(ExerciseActivity activity);
 
     void inject(RandomJokesFragment randomJokesFragment);
+
+    void inject(LoginFragment loginFragment);
 
 
     @Component.Builder
