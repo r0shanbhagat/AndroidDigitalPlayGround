@@ -17,4 +17,10 @@ public class AssignmentApp extends MultiDexApplication {
         MultiDex.install(this);
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //TODO Global level Event Handling
+    }
+
 }
