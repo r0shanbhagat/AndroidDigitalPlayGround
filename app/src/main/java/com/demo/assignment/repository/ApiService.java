@@ -1,15 +1,16 @@
 package com.demo.assignment.repository;
 
-import com.demo.assignment.repository.model.RandomJokesModel;
 
-import java.util.Map;
+import com.demo.assignment.repository.model.HerosModel;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.QueryMap;
 
 public interface ApiService {
 
-    @GET("/jokes/random?limitTo=[nerdy]")
-    Observable<RandomJokesModel> getJokesList(@QueryMap Map<String, String> parameter);
+    @GET("json/movies.json")
+    Observable<List<HerosModel>> getHeroesList();
+
 }

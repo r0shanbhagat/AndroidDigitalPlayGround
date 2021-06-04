@@ -2,6 +2,17 @@ package com.demo.assignment.core;
 
 import androidx.lifecycle.ViewModel;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 public class BaseViewModel extends ViewModel {
-    //TODO Add Logic
+    protected CompositeDisposable mDisposable;
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (null != mDisposable) {
+            mDisposable.clear();
+            mDisposable = null;
+        }
+    }
 }

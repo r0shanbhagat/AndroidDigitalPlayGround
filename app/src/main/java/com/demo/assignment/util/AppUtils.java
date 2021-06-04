@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavOptions;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.assignment.BuildConfig;
 import com.demo.assignment.R;
@@ -95,5 +97,17 @@ public final class AppUtils {
         im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
+
+    /**
+     * Sets recycler basic properties.
+     *
+     * @param context      the context
+     * @param recyclerView the recycler view
+     */
+    public static void setRecyclerViewProp(Context context, RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
 
 }

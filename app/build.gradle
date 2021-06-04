@@ -75,6 +75,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     /**
+     ******************************* UI Shimmer ************************************
+     **/
+    implementation 'com.ethanhua:skeleton:1.1.1'
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+    /**
      ******************************* Retrofit ************************************
      **/
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -85,6 +91,12 @@ dependencies {
      ******************************* RxAndroid ************************************
      **/
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+
+    /**
+     ******************************* Image Loading *************************************************
+     **/
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     /**
      ******************************* DI ************************************************************

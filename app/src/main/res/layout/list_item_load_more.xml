@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemModel"
+            type="com.demo.assignment.repository.model.HerosModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/ivItemImage"
+                android:layout_width="90dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="ivItemImage"
+                android:scaleType="fitXY"
+                app:imageUrl="@{itemModel.image}"
+                tools:ignore="HardcodedText"
+                tools:src="@mipmap/ic_launcher" />
+
+            <RelativeLayout
+                android:id="@+id/rlContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/ivItemImage"
+                android:layout_toEndOf="@+id/ivItemImage">
+
+                <TextView
+                    android:id="@+id/tvItemTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="@{itemModel.title}"
+                    android:textColor="@color/black"
+                    tools:text="Product Name" />
+
+                <TextView
+                    android:id="@+id/tvItemWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvItemTitle"
+                    android:text="@{itemModel.rating}"
+                    tools:text="200 gm" />
+
+                <View
+                    android:id="@+id/viewLine"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvItemTitle"
+                    android:layout_alignBottom="@+id/tvItemPrice"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_toEndOf="@+id/tvItemWeight"
+                    android:background="@color/colorWhiteDull" />
+
+                <TextView
+                    android:id="@+id/tvItemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvItemTitle"
+                    android:layout_toEndOf="@+id/viewLine"
+                    android:text="@{itemModel.releaseYear}"
+                    android:textColor="@color/purple_700"
+                    tools:text="Rs 200" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvItemWeight"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="true"
+                    android:text="@{itemModel.title}"
+                    tools:text="This is ther " />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhiteDull" />
+    </LinearLayout>
+</layout>
