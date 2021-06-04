@@ -44,6 +44,7 @@ public class SkeletonScreenView {
     public static void hide() {
         if (null != skeletonScreen) {
             skeletonScreen.hide();
+            skeletonScreen = null;
         }
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="itemModel"
-            type="com.demo.assignment.repository.model.HerosModel" />
+            type="com.demo.assignment.repository.model.MoviesModel" />
     </data>
 
     <LinearLayout
@@ -28,7 +28,7 @@
                 android:layout_marginEnd="15dp"
                 android:contentDescription="ivItemImage"
                 android:scaleType="fitXY"
-                app:imageUrl="@{itemModel.image}"
+                app:imageUrl="@{itemModel.posterPath}"
                 tools:ignore="HardcodedText"
                 tools:src="@mipmap/ic_launcher" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvItemTitle"
-                    android:text="@{itemModel.rating}"
+                    android:text="@{itemModel.popularity}"
                     tools:text="200 gm" />
 
                 <View
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvItemTitle"
                     android:layout_toEndOf="@+id/viewLine"
-                    android:text="@{itemModel.releaseYear}"
+                    android:text="@{itemModel.releaseDate}"
                     android:textColor="@color/purple_700"
                     tools:text="Rs 200" />
 
@@ -83,7 +83,7 @@
                     android:layout_below="@+id/tvItemWeight"
                     android:layout_marginTop="10dp"
                     android:singleLine="true"
-                    android:text="@{itemModel.title}"
+                    android:text="@{itemModel.originalTitle}"
                     tools:text="This is ther " />
             </RelativeLayout>
 

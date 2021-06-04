@@ -40,7 +40,7 @@ public abstract class BaseViewState<T> {
     }
 
     public enum State {
-        LOADING(0), SUCCESS(1), FAILED(-1);
+        LOADING(0), SUCCESS(1), FAILED(-1), EMPTY(2);
         public final int value;
 
         State(int val) {

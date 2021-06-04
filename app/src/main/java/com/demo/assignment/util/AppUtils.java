@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.assignment.BuildConfig;
 import com.demo.assignment.R;
+import com.demo.assignment.repository.model.MoviesModel;
+
+import java.util.List;
 
 /**
  * The type App utils.
@@ -30,17 +33,12 @@ public final class AppUtils {
      */
     public static boolean isNetworkConnected(@NonNull Context context) {
         boolean isConnected = false;
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = connMgr.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if ((ni.getTypeName().equalsIgnoreCase("MOBILE") && ni.isConnected())
-                    || (ni.getTypeName().equalsIgnoreCase("WIFI") && ni.isConnected())) {
-                isConnected = true;
-                break;
-            }
-        }
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) isConnected = true;
         return isConnected;
     }
+
 
     /**
      * Show log. You can disable Logs by setting "BuildConfig.LOG" value to False
@@ -110,4 +108,21 @@ public final class AppUtils {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
+    /**
+     * @param list:List
+     * @return :boolean
+     */
+    public static boolean isListNotEmpty(List<?> list) {
+        return null != list && !list.isEmpty();
+    }
+
+    /**
+     * @param moviesModel :MoviesModel
+     * @return :String
+     */
+    public static String formatYearLabel(MoviesModel moviesModel) {
+        return moviesModel.getReleaseDate().substring(0, 4)  // we want the year only
+                + " | "
+                + moviesModel.getOriginalLanguage().toUpperCase();
+    }
 }

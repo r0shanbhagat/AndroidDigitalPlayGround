@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import com.demo.assignment.R;
 import com.demo.assignment.core.BaseActivity;
 import com.demo.assignment.core.BaseViewModel;
-import com.demo.assignment.load.MainActivity;
 
 
 public class SplashActivity extends BaseActivity {
@@ -33,7 +32,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //Launching Main Screen after SPLASH_DISPLAY_LENGTH
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, LoadMoreActivity.class));
             finish();
         }, SPLASH_DISPLAY_LENGTH);
     }
