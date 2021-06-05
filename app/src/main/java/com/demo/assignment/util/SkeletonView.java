@@ -16,7 +16,7 @@ import com.ethanhua.skeleton.SkeletonScreen;
  * @version 3.0
  * @since 9/1/21
  */
-public class SkeletonScreenView {
+public class SkeletonView {
     private static SkeletonScreen skeletonScreen;
 
     public static void show(View bindableView, int skeletonLayoutResID) {

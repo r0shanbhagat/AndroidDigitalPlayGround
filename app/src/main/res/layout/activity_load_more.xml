@@ -11,110 +11,127 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="com.suleiman.pagination.MainActivity">
 
-        <RelativeLayout
-            android:id="@+id/rlParent"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent">
 
-
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvItemList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp" />
-
-                <TextView
-                    android:id="@+id/tv_empty_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="No Item Found"
-                    android:textColor="@color/black"
-                    android:visibility="gone" />
-
-
-            </FrameLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlFooterItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="#FFC107"
-                android:elevation="5dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
-
                 <RelativeLayout
-                    android:id="@+id/rlItem"
+                    android:id="@+id/rlParent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tvViewCart"
-                    android:padding="10dp">
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <TextView
-                        android:id="@+id/tvTotalItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:text="2 Item"
-                        android:textColor="@color/white" />
 
-                    <View
-                        android:id="@+id/viewLine"
-                        android:layout_width="1dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tvTotalItem"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toEndOf="@+id/tvTotalItem"
-                        android:background="@color/white" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/tvTotalPrice"
-                        android:layout_width="wrap_content"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvItemList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp" />
+
+                        <TextView
+                            android:id="@+id/tv_empty_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="No Item Found"
+                            android:textColor="@color/black"
+                            android:visibility="gone" />
+
+
+                    </FrameLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlFooterItem"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/viewLine"
-                        android:text="Rs 49.50"
-                        android:textColor="@color/white" />
+                        android:layout_alignParentBottom="true"
+                        android:background="#FFC107"
+                        android:elevation="5dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <RelativeLayout
+                            android:id="@+id/rlItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/tvViewCart"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/tvTotalItem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:text="2 Item"
+                                android:textColor="@color/white" />
+
+                            <View
+                                android:id="@+id/viewLine"
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/tvTotalItem"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_toEndOf="@+id/tvTotalItem"
+                                android:background="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tvTotalPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@+id/viewLine"
+                                android:text="Rs 49.50"
+                                android:textColor="@color/white" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            android:id="@+id/tvViewCart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/rlItem"
+                            android:layout_alignBottom="@+id/rlItem"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center"
+                            android:text="view_cart"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white" />
+
+
+                    </RelativeLayout>
+
                 </RelativeLayout>
 
 
-                <TextView
-                    android:id="@+id/tvViewCart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/rlItem"
-                    android:layout_alignBottom="@+id/rlItem"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"
-                    android:text="view_cart"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/error"
+            layout="@layout/error_layout" />
+    </FrameLayout>
 
 </layout>

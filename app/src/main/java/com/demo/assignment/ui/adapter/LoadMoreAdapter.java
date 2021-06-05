@@ -86,64 +86,13 @@ public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, Movies
         }
     }
 
+
+    /*
+     * Utility Method Starts here
+     */
     public void updateList(List<MoviesModel> moviesList) {
         itemList.addAll(moviesList);
         notifyItemInserted(itemList.size() - 1);
-    }
-
-    /**
-     * Displays Pagination retry footer view along with appropriate errorMsg
-     *
-     * @param show:boolean
-     * @param errorMsg     to display if page load fails
-     */
-    public void showRetry(boolean show, @Nullable String errorMsg) {
-        retryPageLoad = show;
-        notifyItemChanged(itemList.size() - 1);
-
-        if (errorMsg != null)
-            this.errorMsg = errorMsg;
-    }
-
-    public void addLoadingFooter() {
-        isLoadingAdded = true;
-        itemList.add(new MoviesModel());
-        notifyItemInserted(itemList.size() - 1);
-    }
-
-    public void removeLoadingFooter() {
-        isLoadingAdded = false;
-        if (AppUtils.isListNotEmpty(itemList)) {
-            int position = itemList.size() - 1;
-            MoviesModel moviesModel = getItem(position);
-            if (moviesModel != null) {
-                itemList.remove(position);
-                notifyItemRemoved(position);
-            }
-        }
-    }
-
-    private static class ItemVH extends RecyclerView.ViewHolder {
-        private final ListItemLoadMoreBinding binding;
-        private MoviesModel itemModel;
-
-        private ItemVH(ListItemLoadMoreBinding viewDataBinding, final IItemClick<MoviesModel> holderClick) {
-            super(viewDataBinding.getRoot());
-            binding = viewDataBinding;
-            itemView.setOnClickListener(v -> {
-                if (null == holderClick) {
-                    AppUtils.showLog("Holder", "Trying to work on a null object ,returning.");
-                    return;
-                }
-                holderClick.onItemClick(itemModel);
-            });
-
-        }
-
-        private void bindView(MoviesModel itemModel) {
-            this.itemModel = itemModel;
-            binding.setItemModel(itemModel);
-        }
     }
 
     /**
@@ -201,6 +150,70 @@ public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, Movies
                 binding.loadmoreErrorlayout.setVisibility(View.GONE);
                 binding.loadmoreProgress.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    /**
+     * Displays Pagination retry footer view along with appropriate errorMsg
+     *
+     * @param show:boolean
+     * @param errorMsg     to display if page load fails
+     */
+    public void showRetry(boolean show, @Nullable String errorMsg) {
+        retryPageLoad = show;
+        notifyItemChanged(itemList.size() - 1);
+
+        if (errorMsg != null)
+            this.errorMsg = errorMsg;
+    }
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        itemList.add(new MoviesModel());
+        notifyItemInserted(itemList.size() - 1);
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+        if (AppUtils.isListNotEmpty(itemList)) {
+            int position = itemList.size() - 1;
+            MoviesModel moviesModel = getItem(position);
+            if (moviesModel != null) {
+                itemList.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        itemList.clear();
+        notifyDataSetChanged();
+    }
+
+    private static class ItemVH extends RecyclerView.ViewHolder {
+        private final ListItemLoadMoreBinding binding;
+        private MoviesModel itemModel;
+
+        private ItemVH(ListItemLoadMoreBinding viewDataBinding, final IItemClick<MoviesModel> holderClick) {
+            super(viewDataBinding.getRoot());
+            binding = viewDataBinding;
+            itemView.setOnClickListener(v -> {
+                if (null == holderClick) {
+                    AppUtils.showLog("Holder", "Trying to work on a null object ,returning.");
+                    return;
+                }
+                holderClick.onItemClick(itemModel);
+            });
+
+        }
+
+        private void bindView(MoviesModel itemModel) {
+            this.itemModel = itemModel;
+            AppUtils.loadImageWithCallback(binding.moviePoster, itemModel.getPosterPath(), () -> {
+                binding.movieProgress.setVisibility(View.GONE);
+            });
+            binding.setItemModel(itemModel);
         }
     }
 

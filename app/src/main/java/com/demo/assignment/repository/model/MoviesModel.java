@@ -6,6 +6,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.request.RequestOptions;
 import com.demo.assignment.repository.ApiConstants;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -62,6 +64,7 @@ public class MoviesModel extends BaseObservable {
     public static void loadImage(ImageView iv, String imageUrl) {
         Glide.with(iv.getContext())
                 .load(ApiConstants.BASE_URL_IMG + imageUrl)
+                .apply(new RequestOptions().transform(new FitCenter()))
                 .into(iv);
     }
 

@@ -2,21 +2,31 @@ package com.demo.assignment.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavOptions;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.demo.assignment.BuildConfig;
 import com.demo.assignment.R;
+import com.demo.assignment.repository.ApiConstants;
 import com.demo.assignment.repository.model.MoviesModel;
+import com.demo.assignment.ui.callback.ImageLoadingStatus;
 
 import java.util.List;
 
@@ -124,5 +134,31 @@ public final class AppUtils {
         return moviesModel.getReleaseDate().substring(0, 4)  // we want the year only
                 + " | "
                 + moviesModel.getOriginalLanguage().toUpperCase();
+    }
+
+    /**
+     * @param ivImage                   : ImageView
+     * @param itemData:String
+     * @param status:ImageLoadingStatus
+     */
+    public static void loadImageWithCallback(@NonNull ImageView ivImage, String itemData, ImageLoadingStatus status) {
+        Glide.with(ivImage.getContext())
+                .load(ApiConstants.BASE_URL_IMG + itemData)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+                .centerCrop()
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        status.onComplete();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        status.onComplete();
+                        return false;
+                    }
+                })
+                .into(ivImage);
     }
 }

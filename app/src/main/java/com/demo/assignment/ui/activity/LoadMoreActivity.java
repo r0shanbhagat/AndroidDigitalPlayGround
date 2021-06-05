@@ -13,24 +13,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.demo.assignment.R;
 import com.demo.assignment.core.BaseActivity;
 import com.demo.assignment.databinding.ActivityLoadMoreBinding;
+import com.demo.assignment.repository.logging.NoInternetException;
 import com.demo.assignment.repository.model.MoviesModel;
 import com.demo.assignment.ui.adapter.LoadMoreAdapter;
 import com.demo.assignment.ui.callback.IItemClick;
 import com.demo.assignment.ui.viewmodel.LoadMoreViewModel;
 import com.demo.assignment.util.AppUtils;
 import com.demo.assignment.util.RecyclerPagingListener;
-import com.demo.assignment.util.SkeletonScreenView;
+import com.demo.assignment.util.SkeletonView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, LoadMoreViewModel> {
-    private LoadMoreAdapter mAdapter;
+
+    @Inject
+    LoadMoreAdapter mAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -47,20 +51,20 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
         super.onCreate(savedInstanceState);
         init();
         observeResponse();
-        viewModel.fetchMoviesList(this);
+        if (savedInstanceState == null) {
+            fetchMovies();
+        }
     }
 
     /**
      * Init the Data here
      */
     private void init() {
-        mAdapter = new LoadMoreAdapter(new ArrayList<>());
-        binding.rvItemList.setItemAnimator(new DefaultItemAnimator());
-        binding.rvItemList.setAdapter(mAdapter);
-        //Show SkeletonScreenView
-        SkeletonScreenView.show(binding.rvItemList, mAdapter, R.layout.layout_default_item_skeleton);
         setupLoadMore();
         setClickListener();
+        binding.rvItemList.setItemAnimator(new DefaultItemAnimator());
+        binding.rvItemList.setAdapter(mAdapter);
+
     }
 
     private void observeResponse() {
@@ -74,7 +78,11 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
                     handleSuccess(dataState.getData().getMoviesModels());
                     break;
                 case -1:
-                    mAdapter.showRetry(true, viewModel.fetchErrorMessage(this, dataState.getError()));
+                    if (AppUtils.isListNotEmpty(mAdapter.getItemList())) {
+                        mAdapter.showRetry(true, viewModel.fetchErrorMessage(this, dataState.getError()));
+                        return;
+                    }
+                    showErrorView(dataState.getError());
                     break;
             }
         });
@@ -84,6 +92,13 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
      * setClickListener
      */
     private void setClickListener() {
+        binding.swipeContainer.setOnRefreshListener(() -> {
+            fetchMovies();
+            binding.swipeContainer.setRefreshing(false);
+
+        });
+
+
         mAdapter.setItemClickListener(new IItemClick<MoviesModel>() {
             @Override
             public void onItemClick(MoviesModel item) {
@@ -95,19 +110,21 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
                 viewModel.fetchMoviesList(LoadMoreActivity.this);
             }
         });
+
+        binding.error.btnRetry.setOnClickListener(v -> fetchMovies());
     }
 
     /**
      * @param moviesList:List
      */
     private void handleSuccess(List<MoviesModel> moviesList) {
-        SkeletonScreenView.hide();
         mAdapter.removeLoadingFooter();
         viewModel.updatePageCount();
         mAdapter.updateList(moviesList);
         if (!viewModel.isLastPage()) {
             mAdapter.addLoadingFooter();
         }
+        SkeletonView.hide();
     }
 
 
@@ -122,12 +139,14 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
             public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 //Handling Bottom Layout view
-                if (dy > 2 && binding.rlFooterItem.getVisibility() == View.VISIBLE) {
-                    binding.rlFooterItem.startAnimation(buttonIn);
-                    binding.rlFooterItem.setVisibility(View.GONE);
-                } else if (dy <= 2 && binding.rlFooterItem.getVisibility() != View.VISIBLE) {
-                    binding.rlFooterItem.setVisibility(View.VISIBLE);
-                    binding.rlFooterItem.startAnimation(buttonOut);
+                if (AppUtils.isListNotEmpty(mAdapter.getItemList())) {
+                    if (dy > 2 && binding.rlFooterItem.getVisibility() == View.VISIBLE) {
+                        binding.rlFooterItem.startAnimation(buttonIn);
+                        binding.rlFooterItem.setVisibility(View.GONE);
+                    } else if (dy <= 2 && binding.rlFooterItem.getVisibility() != View.VISIBLE) {
+                        binding.rlFooterItem.setVisibility(View.VISIBLE);
+                        binding.rlFooterItem.startAnimation(buttonOut);
+                    }
                 }
             }
 
@@ -147,6 +166,30 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
                 return viewModel.isLoading();
             }
         });
+
     }
+
+    private void fetchMovies() {
+        if (AppUtils.isNetworkConnected(this)) {
+            binding.error.errorLayout.setVisibility(View.GONE);
+            SkeletonView.show(binding.rvItemList, mAdapter, R.layout.layout_default_item_skeleton);
+            mAdapter.clear();
+            viewModel.fetchMoviesList(LoadMoreActivity.this);
+        } else {
+            showErrorView(new NoInternetException("",
+                    new Throwable(String.valueOf(NoInternetException.class))));
+        }
+    }
+
+    private void showErrorView(Throwable throwable) {
+        if (!AppUtils.isListNotEmpty(mAdapter.getItemList()) &&
+                binding.error.errorLayout.getVisibility() == View.GONE) {
+            binding.error.errorLayout.setVisibility(View.VISIBLE);
+            binding.error.errorTxtCause.setText(viewModel.fetchErrorMessage(this, throwable));
+            SkeletonView.hide();
+        }
+
+    }
+
 
 }
