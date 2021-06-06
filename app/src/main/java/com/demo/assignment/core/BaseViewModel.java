@@ -2,7 +2,7 @@ package com.demo.assignment.core;
 
 import androidx.lifecycle.ViewModel;
 
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class BaseViewModel extends ViewModel {
     protected CompositeDisposable mDisposable;

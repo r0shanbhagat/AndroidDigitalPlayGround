@@ -107,7 +107,7 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
 
             @Override
             public void retryPageLoad() {
-                viewModel.fetchMoviesList(LoadMoreActivity.this);
+                viewModel.fetchMoviesList();
             }
         });
 
@@ -153,7 +153,7 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
             @Override
             protected void loadMoreItems() {
                 AppUtils.showLog("TAG", "loadMoreItems");
-                viewModel.fetchMoviesList(LoadMoreActivity.this);
+                viewModel.fetchMoviesList();
             }
 
             @Override
@@ -174,7 +174,7 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
             binding.error.errorLayout.setVisibility(View.GONE);
             SkeletonView.show(binding.rvItemList, mAdapter, R.layout.layout_default_item_skeleton);
             mAdapter.clear();
-            viewModel.fetchMoviesList(LoadMoreActivity.this);
+            viewModel.fetchMoviesList();
         } else {
             showErrorView(new NoInternetException("",
                     new Throwable(String.valueOf(NoInternetException.class))));

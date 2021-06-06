@@ -3,6 +3,9 @@ package com.demo.assignment.di;
 import android.content.Context;
 
 import com.demo.assignment.BuildConfig;
+import com.demo.assignment.R;
+import com.demo.assignment.di.qualifier.ErrorQualifier;
+import com.demo.assignment.di.qualifier.RequestQualifier;
 import com.demo.assignment.repository.ApiConstants;
 import com.demo.assignment.repository.ApiService;
 import com.demo.assignment.repository.logging.Level;
@@ -18,11 +21,12 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -41,6 +45,27 @@ public class NetworkModule {
 
     @Provides
     @Singleton
+    @RequestQualifier
+    Interceptor requestInterceptor(@ApplicationContext Context context) {
+        return chain -> {
+            Request original = chain.request();
+            HttpUrl originalHttpUrl = original.url();
+            HttpUrl url = originalHttpUrl.newBuilder()
+                    // Add request interceptor to add API key as query string parameter to each request
+                    .addQueryParameter("api_key", context.getString(R.string.my_api_key))
+                    .addQueryParameter("language", "en_US")
+                    .build();
+            Request.Builder requestBuilder = original.newBuilder()
+                    .url(url);
+
+            Request request = requestBuilder.build();
+            return chain.proceed(request);
+        };
+    }
+
+    @Provides
+    @Singleton
+    @ErrorQualifier
     Interceptor provideErrorInterceptor(@ApplicationContext Context context) {
         return chain -> {
             if (!AppUtils.isNetworkConnected(context)) {
@@ -54,9 +79,11 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttp(Interceptor error, LoggingInterceptor logging) {
+    OkHttpClient provideOkHttp(@RequestQualifier Interceptor request,
+                               @ErrorQualifier Interceptor error, LoggingInterceptor logging) {
         OkHttpClient.Builder httpClient =
                 new OkHttpClient.Builder();
+        httpClient.addInterceptor(request);
         httpClient.addInterceptor(error);
         httpClient.addInterceptor(logging);
         return httpClient.build();
@@ -67,7 +94,7 @@ public class NetworkModule {
     Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .baseUrl(ApiConstants.BASE_URL)
                 .client(client)
                 .build();

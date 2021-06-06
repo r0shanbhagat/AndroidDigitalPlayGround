@@ -22,11 +22,11 @@ import java.util.concurrent.TimeoutException;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @HiltViewModel
 public class LoadMoreViewModel extends BaseViewModel {
@@ -59,12 +59,10 @@ public class LoadMoreViewModel extends BaseViewModel {
     /*
      * Fetch Random Jokes List from Server
      */
-    public void fetchMoviesList(Context context) {
+    public void fetchMoviesList() {
         onLoading();
-        Observable<TopRatedMovies> observable = apiService.getTopRatedMovies(
-                context.getString(R.string.my_api_key),
-                "en_US",
-                Objects.requireNonNull(currentPageCount.get()))
+        Observable<TopRatedMovies> observable = apiService
+                .getTopRatedMovies(Objects.requireNonNull(currentPageCount.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
         observable.subscribe(new BaseObservable<TopRatedMovies>() {
