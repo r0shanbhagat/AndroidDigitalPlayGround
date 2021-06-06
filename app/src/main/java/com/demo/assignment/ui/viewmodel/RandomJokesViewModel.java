@@ -33,7 +33,6 @@ public class RandomJokesViewModel extends BaseViewModel {
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
     private final String mFirstName;
     private final String mLastName;
-    private CompositeDisposable mDisposable;
 
     /**
      * @param firstName         :FirstName
@@ -41,7 +40,7 @@ public class RandomJokesViewModel extends BaseViewModel {
      */
     public RandomJokesViewModel(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
         this.apiService = NetworkRepository.getService(context);
-        mDisposable = new CompositeDisposable();
+        disposable = new CompositeDisposable();
         mJokeState = new MutableLiveData<>();
         jokesList = new MutableLiveData<>(new ArrayList<>());
         mFirstName = firstName;
@@ -83,7 +82,7 @@ public class RandomJokesViewModel extends BaseViewModel {
 
             @Override
             public void onSubscribe(@NotNull Disposable dispo) {
-                mDisposable.add(dispo);
+                disposable.add(dispo);
             }
         });
     }
@@ -117,15 +116,6 @@ public class RandomJokesViewModel extends BaseViewModel {
 
     public void resetLiveData() {
         mJokeState.postValue(null);
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        if (null != mDisposable) {
-            mDisposable.clear();
-            mDisposable = null;
-        }
     }
 
     /**
