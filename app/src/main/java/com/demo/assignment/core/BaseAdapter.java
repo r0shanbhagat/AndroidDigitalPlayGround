@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 
-public abstract class BaseAdapter<T extends RecyclerView.ViewHolder, M> extends RecyclerView.Adapter<T> {
+public abstract class BaseAdapter<M, T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> {
     public List<M> itemList;
     private IItemClick<M> itemClick;
 

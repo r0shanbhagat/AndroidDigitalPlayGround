@@ -4,75 +4,68 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagingDataAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.demo.assignment.R;
-import com.demo.assignment.core.BaseAdapter;
 import com.demo.assignment.databinding.ItemBannerBinding;
-import com.demo.assignment.databinding.ItemFooterProgressBinding;
 import com.demo.assignment.databinding.ListItemLoadMoreBinding;
 import com.demo.assignment.repository.model.MoviesModel;
 import com.demo.assignment.ui.callback.IItemClick;
 import com.demo.assignment.util.AppUtils;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 
-public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, MoviesModel> {
+public class LoadMoreAdapter extends PagingDataAdapter<MoviesModel, RecyclerView.ViewHolder> {
 
-    private static final int ITEM = 0;
-    private static final int LOADING = 1;
+    private static final int LOADING = 0;
+    private static final int ITEM = 1;
     private static final int BANNER = 2;
-    private boolean isLoadingAdded, retryPageLoad;
-    private String errorMsg;
+    private IItemClick<MoviesModel> itemClick;
 
-    public LoadMoreAdapter(List<MoviesModel> listItems) {
-        super(listItems);
+    /**
+     * @param diffCallback:DiffUtil
+     */
+    public LoadMoreAdapter(@NotNull DiffUtil.ItemCallback<MoviesModel> diffCallback) {
+        super(diffCallback);
+    }
+
+    public void setItemClickListener(IItemClick<MoviesModel> itemClick) {
+        this.itemClick = itemClick;
     }
 
 
+    @NotNull
     @Override
-    public RecyclerView.ViewHolder setViewHolder(ViewGroup viewGroup, int viewType) {
-        RecyclerView.ViewHolder viewHolder = null;
-        switch (viewType) {
-            case ITEM:
-                ListItemLoadMoreBinding itemBinding =
-                        DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                                R.layout.list_item_load_more, viewGroup, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        RecyclerView.ViewHolder viewHolder;
+        if (viewType == BANNER) {
+            ItemBannerBinding bannerBinding =
+                    DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                            R.layout.item_banner, viewGroup, false);
+            viewHolder = new BannerVH(bannerBinding, itemClick);
+        } else {
+            ListItemLoadMoreBinding itemBinding =
+                    DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                            R.layout.list_item_load_more, viewGroup, false);
 
-                viewHolder = new ItemVH(itemBinding, getClickListener());
-                break;
-            case LOADING:
-                ItemFooterProgressBinding footerBinding =
-                        DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                                R.layout.item_footer_progress, viewGroup, false);
-                viewHolder = new FooterProgressVH(footerBinding, getClickListener());
-                break;
-            case BANNER:
-                ItemBannerBinding bannerBinding =
-                        DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                                R.layout.item_banner, viewGroup, false);
-                viewHolder = new BannerVH(bannerBinding, getClickListener());
-                break;
+            viewHolder = new ItemVH(itemBinding, itemClick);
         }
         return viewHolder;
     }
 
     @Override
-    public void onBindData(RecyclerView.ViewHolder holder, int position, MoviesModel itemVal) {
-        switch (getItemViewType(position)) {
-            case ITEM:
-                ((ItemVH) holder).bindView(itemVal);
-                break;
-            case LOADING:
-                ((FooterProgressVH) holder).bindView();
-                break;
-            case BANNER:
-                ((BannerVH) holder).bindView(itemVal);
-                break;
+    public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
+        MoviesModel itemVal = getItem(position);
+        int itemViewType = getItemViewType(position);
+        if (itemViewType == BANNER) {
+            ((BannerVH) holder).bindView(itemVal);
+        } else {
+            ((ItemVH) holder).bindView(itemVal);
         }
     }
 
@@ -82,18 +75,10 @@ public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, Movies
         if (position == 0) {
             return BANNER;
         } else {
-            return (position == itemList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+            return (position == getItemCount()) ? ITEM : LOADING;
         }
     }
 
-
-    /*
-     * Utility Method Starts here
-     */
-    public void updateList(List<MoviesModel> moviesList) {
-        itemList.addAll(moviesList);
-        notifyItemInserted(itemList.size() - 1);
-    }
 
     /**
      * Header ViewHolder
@@ -121,75 +106,6 @@ public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, Movies
         }
     }
 
-    private class FooterProgressVH extends RecyclerView.ViewHolder {
-        private final ItemFooterProgressBinding binding;
-        private final IItemClick<MoviesModel> iClick;
-
-        private FooterProgressVH(ItemFooterProgressBinding binding, final IItemClick<MoviesModel> iClick) {
-            super(binding.getRoot());
-            this.binding = binding;
-            this.iClick = iClick;
-            binding.loadmoreRetry.setOnClickListener(v -> handleRetryScenario());
-            binding.loadmoreErrorlayout.setOnClickListener(v -> handleRetryScenario());
-        }
-
-        private void handleRetryScenario() {
-            if (null != iClick) {
-                iClick.retryPageLoad();
-                showRetry(false, null);
-            }
-        }
-
-        private void bindView() {
-            if (retryPageLoad) {
-                binding.loadmoreErrorlayout.setVisibility(View.VISIBLE);
-                binding.loadmoreProgress.setVisibility(View.GONE);
-                binding.loadmoreErrortxt.setText(errorMsg != null ? errorMsg
-                        : binding.loadmoreErrortxt.getContext().getString(R.string.error_msg_unknown));
-            } else {
-                binding.loadmoreErrorlayout.setVisibility(View.GONE);
-                binding.loadmoreProgress.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    /**
-     * Displays Pagination retry footer view along with appropriate errorMsg
-     *
-     * @param show:boolean
-     * @param errorMsg     to display if page load fails
-     */
-    public void showRetry(boolean show, @Nullable String errorMsg) {
-        retryPageLoad = show;
-        notifyItemChanged(itemList.size() - 1);
-
-        if (errorMsg != null)
-            this.errorMsg = errorMsg;
-    }
-
-    public void addLoadingFooter() {
-        isLoadingAdded = true;
-        itemList.add(new MoviesModel());
-        notifyItemInserted(itemList.size() - 1);
-    }
-
-    public void removeLoadingFooter() {
-        isLoadingAdded = false;
-        if (AppUtils.isListNotEmpty(itemList)) {
-            int position = itemList.size() - 1;
-            MoviesModel moviesModel = getItem(position);
-            if (moviesModel != null) {
-                itemList.remove(position);
-                notifyItemRemoved(position);
-            }
-        }
-    }
-
-    // Clean all elements of the recycler
-    public void clear() {
-        itemList.clear();
-        notifyDataSetChanged();
-    }
 
     private static class ItemVH extends RecyclerView.ViewHolder {
         private final ListItemLoadMoreBinding binding;
@@ -210,9 +126,8 @@ public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, Movies
 
         private void bindView(MoviesModel itemModel) {
             this.itemModel = itemModel;
-            AppUtils.loadImageWithCallback(binding.moviePoster, itemModel.getPosterPath(), () -> {
-                binding.movieProgress.setVisibility(View.GONE);
-            });
+            AppUtils.loadImageWithCallback(binding.moviePoster, itemModel.getPosterPath(), () ->
+                    binding.movieProgress.setVisibility(View.GONE));
             binding.setItemModel(itemModel);
         }
     }
