@@ -2,6 +2,7 @@ package com.demo.assignment.ui.activity;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -13,7 +14,6 @@ import com.demo.assignment.util.AppUtils;
 
 import java.util.Objects;
 
-import io.reactivex.annotations.NonNull;
 
 public class ExerciseActivity extends BaseActivity<ActivityExerciseBinding, BaseViewModel> {
 

@@ -3,6 +3,7 @@ package com.demo.assignment.ui.viewmodel;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,12 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class RandomJokesViewModel extends BaseViewModel {
     private final ApiService apiService;
@@ -122,8 +123,9 @@ public class RandomJokesViewModel extends BaseViewModel {
      * A creator is used to inject the project ID into the ViewModel
      */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
-        private Context context;
-        private String firstName, lastName;
+        private final Context context;
+        private final String firstName;
+        private final String lastName;
 
         public Factory(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
             this.context = context;

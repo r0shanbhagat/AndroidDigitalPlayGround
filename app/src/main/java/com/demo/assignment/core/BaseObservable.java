@@ -1,10 +1,12 @@
 package com.demo.assignment.core;
 
+
 import com.demo.assignment.util.AppUtils;
 
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 
 public abstract class BaseObservable<T> implements Observer<T> {
 

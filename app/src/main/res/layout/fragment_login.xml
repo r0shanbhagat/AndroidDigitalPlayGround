@@ -39,6 +39,7 @@
                 android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
+                android:onTextChanged="@{model.onTextChanged}"
                 android:text="@={model.firstName}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,6 +63,7 @@
                 android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
+                android:onTextChanged="@{model.onTextChanged}"
                 android:text="@={model.lastName}" />
 
         </com.google.android.material.textfield.TextInputLayout>

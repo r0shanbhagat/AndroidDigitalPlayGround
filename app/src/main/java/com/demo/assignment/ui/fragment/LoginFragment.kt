@@ -1,9 +1,6 @@
-package com.demo.assignment.ui.fragment;
+package com.demo.assignment.ui.fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,20 +16,8 @@ import com.demo.assignment.util.AppUtils
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding: FragmentLoginBinding;
+    private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
-
-    // implement the TextWatcher callback listener
-    private val textWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            // check whether both the fields are empty or not
-            binding.model?.isSubmitEnable = (!TextUtils.isEmpty(binding.etFirstName.text)
-                    && !TextUtils.isEmpty(binding.etLastName.text))
-        }
-
-        override fun afterTextChanged(s: Editable) {}
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -43,8 +28,6 @@ class LoginFragment : Fragment() {
                 LoginViewModel.Factory(LoginModel())).get(LoginViewModel::class.java)
 
         binding.login = this
-        binding.etLastName.addTextChangedListener(textWatcher)
-        binding.etFirstName.addTextChangedListener(textWatcher)
         observeLoginModel()
         return binding.root
     }

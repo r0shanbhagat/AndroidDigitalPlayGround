@@ -12,8 +12,9 @@ import com.demo.assignment.util.AppUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class NetworkRepository {
     private static NetworkRepository projectRepository;
@@ -27,7 +28,7 @@ public class NetworkRepository {
     private NetworkRepository(Context context) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .baseUrl(ApiConstants.BASE_URL)
                 .client(provideOkHttp(context))
                 .build();
