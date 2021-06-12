@@ -34,7 +34,7 @@ public class MoviesModel extends BaseObservable {
     private List<Integer> genreIds = new ArrayList<Integer>();
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
@@ -141,14 +141,14 @@ public class MoviesModel extends BaseObservable {
     /**
      * @return The id
      */
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
     /**
      * @param id The id
      */
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

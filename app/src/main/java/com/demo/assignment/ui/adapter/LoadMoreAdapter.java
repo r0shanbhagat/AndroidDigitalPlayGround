@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +19,6 @@ import com.demo.assignment.util.AppUtils;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
 
 
 public class LoadMoreAdapter extends BaseAdapter<RecyclerView.ViewHolder, MoviesModel> {

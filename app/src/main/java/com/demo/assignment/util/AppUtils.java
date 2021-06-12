@@ -29,6 +29,7 @@ import com.demo.assignment.repository.model.MoviesModel;
 import com.demo.assignment.ui.callback.ImageLoadingStatus;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * The type App utils.
@@ -131,9 +132,14 @@ public final class AppUtils {
      * @return :String
      */
     public static String formatYearLabel(MoviesModel moviesModel) {
-        return moviesModel.getReleaseDate().substring(0, 4)  // we want the year only
-                + " | "
-                + moviesModel.getOriginalLanguage().toUpperCase();
+        try {
+            return moviesModel.getReleaseDate().substring(0, 4)  // we want the year only
+                    + " | "
+                    + moviesModel.getOriginalLanguage().toUpperCase();
+        } catch (NullPointerException npe) {
+            showLog("Util", npe.getLocalizedMessage());
+        }
+        return "N/A";
     }
 
     /**
@@ -160,5 +166,21 @@ public final class AppUtils {
                     }
                 })
                 .into(ivImage);
+    }
+
+    /**
+     * @param throwable to identify the type of error
+     * @return appropriate error message
+     */
+    public static String fetchErrorMessage(Context mContext, Throwable throwable) {
+        String errorMsg = mContext.getResources().getString(R.string.error_msg_unknown);
+
+        if (!AppUtils.isNetworkConnected(mContext)) {
+            errorMsg = mContext.getResources().getString(R.string.error_msg_no_internet);
+        } else if (throwable instanceof TimeoutException) {
+            errorMsg = mContext.getResources().getString(R.string.error_msg_timeout);
+        }
+
+        return errorMsg;
     }
 }

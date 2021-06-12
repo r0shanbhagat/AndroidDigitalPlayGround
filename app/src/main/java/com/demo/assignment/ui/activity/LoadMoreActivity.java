@@ -79,7 +79,7 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
                     break;
                 case -1:
                     if (AppUtils.isListNotEmpty(mAdapter.getItemList())) {
-                        mAdapter.showRetry(true, viewModel.fetchErrorMessage(this, dataState.getError()));
+                        mAdapter.showRetry(true, AppUtils.fetchErrorMessage(this, dataState.getError()));
                         return;
                     }
                     showErrorView(dataState.getError());
@@ -185,7 +185,7 @@ public class LoadMoreActivity extends BaseActivity<ActivityLoadMoreBinding, Load
         if (!AppUtils.isListNotEmpty(mAdapter.getItemList()) &&
                 binding.error.errorLayout.getVisibility() == View.GONE) {
             binding.error.errorLayout.setVisibility(View.VISIBLE);
-            binding.error.errorTxtCause.setText(viewModel.fetchErrorMessage(this, throwable));
+            binding.error.errorTxtCause.setText(AppUtils.fetchErrorMessage(this, throwable));
             SkeletonView.hide();
         }
 

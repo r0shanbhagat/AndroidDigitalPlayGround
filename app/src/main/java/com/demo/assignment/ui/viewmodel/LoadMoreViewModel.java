@@ -1,13 +1,10 @@
 package com.demo.assignment.ui.viewmodel;
 
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 
-import com.demo.assignment.R;
 import com.demo.assignment.core.BaseObservable;
 import com.demo.assignment.core.BaseViewModel;
 import com.demo.assignment.repository.ApiService;
@@ -17,7 +14,6 @@ import com.demo.assignment.util.AppUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
 
@@ -129,23 +125,6 @@ public class LoadMoreViewModel extends BaseViewModel {
 
     public boolean isLastPage() {
         return Objects.requireNonNull(currentPageCount.get()).equals(Objects.requireNonNull(totalPageCount.get()));
-    }
-
-
-    /**
-     * @param throwable to identify the type of error
-     * @return appropriate error message
-     */
-    public String fetchErrorMessage(Context mContext, Throwable throwable) {
-        String errorMsg = mContext.getResources().getString(R.string.error_msg_unknown);
-
-        if (!AppUtils.isNetworkConnected(mContext)) {
-            errorMsg = mContext.getResources().getString(R.string.error_msg_no_internet);
-        } else if (throwable instanceof TimeoutException) {
-            errorMsg = mContext.getResources().getString(R.string.error_msg_timeout);
-        }
-
-        return errorMsg;
     }
 
 
