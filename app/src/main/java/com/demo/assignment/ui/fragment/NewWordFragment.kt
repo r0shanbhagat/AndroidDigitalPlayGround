@@ -53,7 +53,7 @@ class NewWordFragment : DialogFragment() {
         AppUtils.hideSoftInput(requireActivity())
         setFragmentResult(AppConstant.REQUEST_KEY_WORD, bundleOf(
                 AppConstant.WORD to binding.model?.word))
-        binding.model!!.word = ""
+        binding.model?.onClear()
         // findNavController().popBackStack()
         dismiss()
 

@@ -30,4 +30,10 @@ class WordModel : BaseObservable() {
     }
 
 
+    fun onClear() {
+        word = ""
+        isSubmitEnable = false
+    }
+
+
 }
