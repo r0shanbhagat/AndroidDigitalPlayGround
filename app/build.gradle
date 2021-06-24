@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
 }
 
@@ -34,19 +35,9 @@ android {
     }
     buildTypes {
         release {
-            /* postprocessing {
-               removeUnusedCode true
-               removeUnusedResources true
-               obfuscate true
-               optimizeCode true
-               proguardFile 'proguard-rules.pro'
-           }*/
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        /*debug {
-            applicationIdSuffix '.debug'
-        }*/
     }
 
     compileOptions {
@@ -58,18 +49,9 @@ android {
         dataBinding true
     }
 
-    /*
-   flavorDimensions 'dimension'
-   productFlavors {
-       internal {
-           applicationId 'com.example.arc.internal'
-           resValue "string", "app_name", '"Arc Internal"'
-       }
-       production {
-           applicationId 'com.example.arc'
-           resValue "string", "app_name", '"Arc"'
-       }
-   }*/
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -78,6 +60,7 @@ dependencies {
      ******************************* Android Common Component************************************
      **/
     implementation "androidx.appcompat:appcompat:$supportLibVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
     implementation "com.google.android.material:material:$material" ////New Material Design
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "androidx.multidex:multidex:2.0.1"
@@ -94,17 +77,23 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     /**
-     ******************************* Network ************************************
-     **/
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
-
-    /**
      ******************************* RxAndroid ************************************
      * Info:https://github.com/ReactiveX/RxAndroid
      **/
     implementation "io.reactivex.rxjava3:rxandroid:$rxAndroid"
+
+    /**
+     ******************************* DI ************************************************************
+     **/
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion" //For Kotlin
+
+    /**
+     ******************************* Database ************************************
+     **/
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-rxjava3:$roomVersion"
 
     /**
      ******************************* Unit Testing ************************************

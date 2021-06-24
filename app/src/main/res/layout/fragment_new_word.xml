@@ -5,19 +5,20 @@
     <data>
 
         <variable
-            name="login"
-            type="com.demo.assignment.ui.fragment.LoginFragment" />
+            name="view"
+            type="com.demo.assignment.ui.fragment.NewWordFragment" />
 
 
         <variable
             name="model"
-            type="com.demo.assignment.repository.model.LoginModel" />
+            type="com.demo.assignment.repository.model.WordModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/layout_parent_margin">
+        android:layout_margin="@dimen/layout_parent_margin"
+        android:background="@color/white">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilFirstName"
@@ -26,6 +27,7 @@
             android:layout_margin="@dimen/activity_horizontal_margin"
             app:counterEnabled="true"
             app:counterMaxLength="20"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -35,38 +37,15 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:focusable="true"
-                android:hint="@string/first_name"
+                android:hint="@string/add_word"
                 android:inputType="text"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:onTextChanged="@{model.onTextChanged}"
-                android:text="@={model.firstName}" />
+                android:onTextChanged="@{model::onTextChanged}"
+                android:text="@={model.word}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilLastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilFirstName">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:hint="@string/last_name"
-                android:inputType="text"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:onTextChanged="@{model.onTextChanged}"
-                android:text="@={model.lastName}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSubmit"
@@ -74,10 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:enabled="@{model.submitEnable}"
-            android:onClick="@{(v)->login.onSubmitClick(v)}"
+            android:onClick="@{(v)->view.onSubmitClick(v)}"
             android:text="@string/btnsubmit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilLastName" />
+            app:layout_constraintTop_toBottomOf="@+id/tilFirstName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

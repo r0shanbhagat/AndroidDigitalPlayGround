@@ -5,20 +5,13 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.demo.assignment.BR
 
-class LoginModel : BaseObservable() {
+class WordModel : BaseObservable() {
 
     @get:Bindable
-    var firstName: String = ""
+    var word: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.firstName)
-        }
-
-    @get:Bindable
-    var lastName: String = ""
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.lastName)
+            notifyPropertyChanged(BR.word)
         }
 
 
@@ -32,9 +25,8 @@ class LoginModel : BaseObservable() {
     @Suppress("UNUSED_PARAMETER")
     fun onTextChanged(text: CharSequence, start: Int, before: Int,
                       count: Int) {
-        isSubmitEnable = (!TextUtils.isEmpty(firstName)
+        isSubmitEnable = !TextUtils.isEmpty(word)
                 && !TextUtils.isEmpty(text)
-                && !TextUtils.isEmpty(lastName))
     }
 
 
