@@ -10,4 +10,6 @@
     <color name="colorBackground">#EFEFEF</color>
     <color name="window_background_color">#EDEDED</color>
     <color name="colorWhiteDull">#E6E6E6</color>
+    <color name="transparent_full">#00022648</color>
+
 </resources>

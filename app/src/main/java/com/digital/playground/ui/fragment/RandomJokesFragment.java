@@ -1,6 +1,5 @@
 package com.digital.playground.ui.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.digital.playground.R;
 import com.digital.playground.databinding.FragmentRandomJokesBinding;
 import com.digital.playground.repository.logging.NoInternetException;
 import com.digital.playground.ui.adapter.JokesAdapter;
+import com.digital.playground.ui.dialog.DialogUtil;
 import com.digital.playground.ui.dialog.LoadingDialog;
 import com.digital.playground.ui.viewmodel.RandomJokesViewModel;
 import com.digital.playground.util.AppUtils;
@@ -117,12 +117,9 @@ public class RandomJokesFragment extends Fragment {
             if (throwable instanceof NoInternetException) {
                 msg = getString(R.string.no_internet_msg);
             }
-            new AlertDialog
-                    .Builder(getActivity())
-                    .setMessage(msg)
-                    .setTitle("Alert")
-                    .setPositiveButton("OK", null)
-                    .create().show();
+            DialogUtil.show(getContext(), msg, (dialogInterface, i) -> {
+                //TODO Add Error View
+            });
         }
     }
 
