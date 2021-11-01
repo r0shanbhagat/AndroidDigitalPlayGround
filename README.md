@@ -1,11 +1,11 @@
 
-**#Assignment Basic** 
+**Android Digital Playground** 
 
-A Sample project of the **Random Jokes** app that uses ViewModels, LiveData and Data Binding with an MVI architecture.
-You can enter your first name and last name and we're going to fetch the best random jokes from server. You can swipe on the Page [Left swipe ,Right swipe] , 
-in right swipe everytime we're going to fetch the new jokes if network is available else will show the error Dialog and in the Left swipe we're going to show your cached jokes that you had seen last time.
+A Sample project that shows the **List of Movies** using latest android components. App  uses ViewModels, LiveData and Data Binding with an MVI architecture.
+we're going to fetch the list of random movies from server. You can scroll on the Page down to loadmore movies from movie database , 
 
-<img width="265" height="500" alt="Registration " src="https://user-images.githubusercontent.com/22414106/119788689-fb72d480-beef-11eb-8db7-9a263a0d858d.png"><img width="289" height="500" alt="Random Jokes" src="https://user-images.githubusercontent.com/22414106/119788720-00378880-bef0-11eb-8def-113a62ad15ec.png">
+<img width="265" height="500" alt="Listing " src="https://user-images.githubusercontent.com/22414106/139662460-a93c8dcf-9136-4e54-8698-769558ffdc5f.png"><img width="265" height="500" alt="Load more" src="https://user-images.githubusercontent.com/22414106/139662471-1567e596-8246-4798-b507-76030ed199d3.png">
+
 
 **#Used Technologies and Patterns**
 Lang: Java /Kotlin
