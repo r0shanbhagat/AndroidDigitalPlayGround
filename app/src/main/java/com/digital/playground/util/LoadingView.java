@@ -1,4 +1,4 @@
-package com.demo.assignment.util;
+package com.digital.playground.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
-import com.demo.assignment.R;
+import com.digital.playground.R;
 
 public class LoadingView extends LinearLayout {
 
