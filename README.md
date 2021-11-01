@@ -1,5 +1,5 @@
 
-**#Assignment Basic** 
+**#Android  Digital Playground**
 
 A Sample project of the **Random Jokes** app that uses ViewModels, LiveData and Data Binding with an MVI architecture.
 You can enter your first name and last name and we're going to fetch the best random jokes from server. You can swipe on the Page [Left swipe ,Right swipe] , 
@@ -11,7 +11,7 @@ in right swipe everytime we're going to fetch the new jokes if network is availa
 Lang: Java /Kotlin
 * LiveData
 * Data Binding
-* RxJava2
+* RxJava3
 * Dagger2
 * Hilt
 * OkHttp3
