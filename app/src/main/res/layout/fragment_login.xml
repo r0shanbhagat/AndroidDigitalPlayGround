@@ -6,12 +6,12 @@
 
         <variable
             name="login"
-            type="com.demo.assignment.ui.fragment.LoginFragment" />
+            type="com.digital.playground.ui.fragment.LoginFragment" />
 
 
         <variable
             name="model"
-            type="com.demo.assignment.repository.model.LoginModel" />
+            type="com.digital.playground.repository.model.LoginModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,7 +11,7 @@ in right swipe everytime we're going to fetch the new jokes if network is availa
 Lang: Java /Kotlin
 * LiveData
 * Data Binding
-* RxJava2
+* RxJava3
 * Dagger2
 * Hilt
 * OkHttp3
