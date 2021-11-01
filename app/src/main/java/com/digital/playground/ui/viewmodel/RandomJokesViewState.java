@@ -1,22 +1,14 @@
 package com.digital.playground.ui.viewmodel;
 
 
-import com.digital.playground.core.BaseViewState;
-import com.digital.playground.repository.model.RandomJokesModel;
+import com.digital.playground.core.ViewState;
 
-public class RandomJokesViewState extends BaseViewState<RandomJokesModel> {
-    public static final RandomJokesViewState ERROR_STATE = new RandomJokesViewState(null, State.FAILED.value, new Throwable());
-    public static final RandomJokesViewState LOADING_STATE = new RandomJokesViewState(null, State.LOADING.value, null);
-    public static final RandomJokesViewState SUCCESS_STATE = new RandomJokesViewState(new RandomJokesModel(), State.SUCCESS.value, null);
+public class RandomJokesViewState extends ViewState {
+    public static final ViewState ERROR_STATE = new RandomJokesViewState(FAILED);
+    public static final ViewState LOADING_STATE = new RandomJokesViewState(LOADING);
+    public static final ViewState SUCCESS_STATE = new RandomJokesViewState(SUCCESS);
 
-    /**
-     * @param data         :Data
-     * @param currentState :currentState
-     * @param error        :Exception
-     */
-    public RandomJokesViewState(RandomJokesModel data, int currentState, Throwable error) {
-        this.data = data;
-        this.currentState = currentState;
-        this.error = error;
+    public RandomJokesViewState(@State int currentState) {
+        super(currentState);
     }
 }

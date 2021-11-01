@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digital.playground.R;
+import com.digital.playground.core.ViewState;
 import com.digital.playground.databinding.FragmentRandomJokesBinding;
 import com.digital.playground.repository.logging.NoInternetException;
 import com.digital.playground.ui.adapter.JokesAdapter;
@@ -19,6 +20,8 @@ import com.digital.playground.util.AppUtils;
 import com.digital.playground.util.SwipeViewPager;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 
 public class RandomJokesFragment extends Fragment {
@@ -50,7 +53,7 @@ public class RandomJokesFragment extends Fragment {
     private void intiViewModel() {
         //Setting Up ViewModel
         Bundle args = getArguments();
-        String firstName = args.getString("FirstName");
+        String firstName = Objects.requireNonNull(args).getString("FirstName");
         String lastName = args.getString("LastName");
         RandomJokesViewModel.Factory factory = new RandomJokesViewModel.Factory(requireContext(), firstName, lastName);
         mViewModel = new ViewModelProvider(this, factory).get(RandomJokesViewModel.class);
@@ -85,22 +88,22 @@ public class RandomJokesFragment extends Fragment {
      * observeApiResponse
      */
     private void observeApiResponse() {
-        mViewModel.getJokesData().observe(getViewLifecycleOwner(), jokesState -> {
-            if (null == jokesState) return;
-            switch (jokesState.getCurrentState()) {
-                case 0:
+        mViewModel.getJokesData().observe(getViewLifecycleOwner(), viewState -> {
+            if (null == viewState) return;
+            switch (viewState.getCurrentState()) {
+                case ViewState.LOADING:
                     ///ShowBaseProgress
                     LoadingDialog.show(getContext());
                     mViewModel.resetLiveData();
                     break;
-                case 1:
+                case ViewState.SUCCESS:
                     LoadingDialog.dismissDialog();
                     updateList();
                     mViewModel.resetLiveData();
                     break;
-                case -1:
+                case ViewState.FAILED:
                     LoadingDialog.dismissDialog();
-                    showInfoDialog(jokesState.getError());
+                    showInfoDialog(viewState.getError());
                     mViewModel.resetLiveData();
                     break;
             }

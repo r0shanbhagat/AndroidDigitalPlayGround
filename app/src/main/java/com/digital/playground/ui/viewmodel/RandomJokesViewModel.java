@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.digital.playground.core.BaseObservable;
 import com.digital.playground.core.BaseViewModel;
+import com.digital.playground.core.ViewState;
 import com.digital.playground.repository.ApiService;
 import com.digital.playground.repository.NetworkRepository;
 import com.digital.playground.repository.model.RandomJokesModel;
@@ -30,7 +31,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RandomJokesViewModel extends BaseViewModel {
     private final ApiService apiService;
-    private final MutableLiveData<RandomJokesViewState> mJokeState;
+    private final MutableLiveData<ViewState> mJokeState;
     private final MutableLiveData<List<RandomJokesModel>> jokesList;
     private final String mFirstName;
     private final String mLastName;
@@ -48,7 +49,7 @@ public class RandomJokesViewModel extends BaseViewModel {
         mLastName = lastName;
     }
 
-    public MutableLiveData<RandomJokesViewState> getJokesData() {
+    public MutableLiveData<ViewState> getJokesData() {
         return mJokeState;
     }
 
@@ -70,7 +71,7 @@ public class RandomJokesViewModel extends BaseViewModel {
         Observable<RandomJokesModel> observable = apiService.getJokesList(data)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
-        observable.subscribe(new BaseObservable<RandomJokesModel>() {
+        observable.subscribe(new BaseObservable<>() {
             @Override
             public void success(RandomJokesModel jokesModel) {
                 onSuccess(jokesModel);
