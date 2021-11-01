@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Assignment Basic</string>
+    <string name="app_name">Android Digital Playground</string>
     <string name="my_api_key">ec01f8c2eb6ac402f2ca026dc2d9b8fd</string>
     <string name="btnsubmit">Submit</string>
     <string name="last_name">Last name</string>
     <string name="first_name">First name</string>
-    <string name="error_msg">Sorry! Couldn\'t fetched movies.</string>
+    <string name="error_msg">Oops! Something went wrong. Possibly with your Network connection. Please try again.</string>
     <string name="no_internet_msg">This feature required internet connection. Please check your internet setting and try again.</string>
 
     <string name="error_msg_no_internet">Not connected to internet</string>

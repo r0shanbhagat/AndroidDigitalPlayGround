@@ -7,7 +7,7 @@
 
         <variable
             name="homeActivity"
-            type="com.demo.assignment.ui.activity.LoadMoreActivity" />
+            type="com.digital.playground.ui.activity.LoadMoreActivity" />
 
     </data>
 

@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.demo.assignment.util.AppUtils" />
+        <import type="com.digital.playground.util.AppUtils" />
 
         <variable
             name="itemModel"
-            type="com.demo.assignment.repository.model.MoviesModel" />
+            type="com.digital.playground.repository.model.MoviesModel" />
     </data>
 
     <androidx.cardview.widget.CardView
