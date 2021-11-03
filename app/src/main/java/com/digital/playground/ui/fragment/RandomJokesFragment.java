@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.digital.playground.R;
 import com.digital.playground.core.ViewState;
 import com.digital.playground.databinding.FragmentRandomJokesBinding;
+import com.digital.playground.repository.NetworkRepository;
 import com.digital.playground.repository.logging.NoInternetException;
 import com.digital.playground.ui.adapter.JokesAdapter;
 import com.digital.playground.ui.dialog.DialogUtil;
@@ -55,7 +56,8 @@ public class RandomJokesFragment extends Fragment {
         Bundle args = getArguments();
         String firstName = Objects.requireNonNull(args).getString("FirstName");
         String lastName = args.getString("LastName");
-        RandomJokesViewModel.Factory factory = new RandomJokesViewModel.Factory(requireContext(), firstName, lastName);
+        RandomJokesViewModel.Factory factory =
+                new RandomJokesViewModel.Factory(NetworkRepository.getService(getContext()), firstName, lastName);
         mViewModel = new ViewModelProvider(this, factory).get(RandomJokesViewModel.class);
     }
 

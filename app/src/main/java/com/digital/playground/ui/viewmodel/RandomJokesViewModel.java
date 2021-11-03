@@ -1,8 +1,6 @@
 package com.digital.playground.ui.viewmodel;
 
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,7 +10,6 @@ import com.digital.playground.core.BaseObservable;
 import com.digital.playground.core.BaseViewModel;
 import com.digital.playground.core.ViewState;
 import com.digital.playground.repository.ApiService;
-import com.digital.playground.repository.NetworkRepository;
 import com.digital.playground.repository.model.RandomJokesModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,8 +37,8 @@ public class RandomJokesViewModel extends BaseViewModel {
      * @param firstName         :FirstName
      * @param lastName:LastName
      */
-    public RandomJokesViewModel(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
-        this.apiService = NetworkRepository.getService(context);
+    public RandomJokesViewModel(ApiService apiService, @NonNull String firstName, @NonNull String lastName) {
+        this.apiService = apiService;
         disposable = new CompositeDisposable();
         mJokeState = new MutableLiveData<>();
         jokesList = new MutableLiveData<>(new ArrayList<>());
@@ -124,12 +121,12 @@ public class RandomJokesViewModel extends BaseViewModel {
      * A creator is used to inject the project ID into the ViewModel
      */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
-        private final Context context;
+        private final ApiService apiService;
         private final String firstName;
         private final String lastName;
 
-        public Factory(@NonNull Context context, @NonNull String firstName, @NonNull String lastName) {
-            this.context = context;
+        public Factory(@NonNull ApiService apiService, @NonNull String firstName, @NonNull String lastName) {
+            this.apiService = apiService;
             this.firstName = firstName;
             this.lastName = lastName;
         }
@@ -139,7 +136,7 @@ public class RandomJokesViewModel extends BaseViewModel {
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(RandomJokesViewModel.class)) {
                 //noinspection unchecked
-                return (T) new RandomJokesViewModel(context, firstName, lastName);
+                return (T) new RandomJokesViewModel(apiService, firstName, lastName);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
