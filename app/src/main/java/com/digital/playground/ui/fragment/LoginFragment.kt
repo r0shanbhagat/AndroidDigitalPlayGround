@@ -1,35 +1,30 @@
 package com.digital.playground.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.digital.playground.R
+import com.digital.playground.core.BaseFragment
 import com.digital.playground.databinding.FragmentLoginBinding
-import com.digital.playground.repository.model.LoginModel
 import com.digital.playground.ui.viewmodel.LoginViewModel
 import com.digital.playground.util.AppUtils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
-class LoginFragment : Fragment() {
+    override val layoutId: Int
+        get() = R.layout.fragment_login
 
-    private lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    override val viewModel: LoginViewModel
+        get() = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-
-        viewModel = ViewModelProvider(this,
-                LoginViewModel.Factory(LoginModel())).get(LoginViewModel::class.java)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.login = this
         observeLoginModel()
-        return binding.root
     }
 
     /**
@@ -38,7 +33,8 @@ class LoginFragment : Fragment() {
     fun onSubmitClick(v: View) {
         AppUtils.hideSoftInput(requireActivity())
         AppUtils.applyAnimation(NavOptions.Builder())
-        val action = LoginFragmentDirections.nextAction(binding.model!!.firstName, binding.model!!.lastName)
+        val action =
+            LoginFragmentDirections.nextAction(binding.model!!.firstName, binding.model!!.lastName)
         v.findNavController().navigate(action)
 
     }

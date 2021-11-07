@@ -1,22 +1,23 @@
-package com.digital.playground;
+package com.digital.playground
 
-import android.content.Context;
+import android.content.Context
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
+import dagger.hilt.android.HiltAndroidApp
 
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
-
-
-public class AssignmentApp extends MultiDexApplication {
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
+@HiltAndroidApp
+class PlaygroundApp : MultiDexApplication() {
+    companion object {
+        lateinit var mApp: PlaygroundApp
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        //TODO Global level Event Handling
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        mApp = this
     }
 }

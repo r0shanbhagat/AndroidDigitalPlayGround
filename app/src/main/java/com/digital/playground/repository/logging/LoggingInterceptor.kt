@@ -1,178 +1,153 @@
-package com.digital.playground.repository.logging;
+package com.digital.playground.repository.logging
 
+import okhttp3.Interceptor
+import okhttp3.Protocol
+import okhttp3.Response
+import okio.Buffer
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.TimeUnit
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
+class LoggingInterceptor(private val mBuilder: Builder) : Interceptor {
+    private val isDebug: Boolean
+    private val logger: Logger?
 
-import okhttp3.Connection;
-import okhttp3.Headers;
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okio.Buffer;
-import okio.BufferedSource;
-
-public class LoggingInterceptor implements Interceptor {
-    private static final Charset UTF8 = StandardCharsets.UTF_8;
-    private final boolean isDebug;
-    private final Logger logger;
-    private final Builder mBuilder;
-
-    /**
-     * Instantiates a new Http interceptor.
-     */
-    public LoggingInterceptor(Builder builder) {
-        this.mBuilder = builder;
-        this.isDebug = builder.isDebug;
-        this.logger = builder.logger;
-    }
-
-
-    private static String protocol(Protocol protocol) {
-        return protocol == Protocol.HTTP_1_0 ? "HTTP/1.0" : "HTTP/1.1";
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
         /*
          *Log Disabled in the case of Level.NONE || Release build
-         */
-        if (!isDebug || mBuilder.getLevel() == Level.NONE) {
-            return chain.proceed(request);
+         */if (!isDebug || mBuilder.level == Level.NONE) {
+            return chain.proceed(request)
         }
-
-        boolean logBody = mBuilder.getLevel() == Level.BODY;
-        boolean logHeaders = logBody || mBuilder.getLevel() == Level.HEADERS;
-
-        RequestBody requestBody = request.body();
-        boolean hasRequestBody = requestBody != null;
-
-        long startNsRequest = System.nanoTime();
-        Connection connection = chain.connection();
-        Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
-        String requestStartMessage =
-                "--> REQUEST START " + request.url() + ' ' + request.method() + ' ' /*+ requestPath(request.httpUrl()) + ' '*/ + protocol(protocol);
+        val logBody = mBuilder.level == Level.BODY
+        val logHeaders = logBody || mBuilder.level == Level.HEADERS
+        val requestBody = request.body()
+        val hasRequestBody = requestBody != null
+        val startNsRequest = System.nanoTime()
+        val connection = chain.connection()
+        val protocol = if (connection != null) connection.protocol() else Protocol.HTTP_1_1
+        var requestStartMessage =
+            "--> REQUEST START " + request.url() + ' ' + request.method() + ' ' /*+ requestPath(request.httpUrl()) + ' '*/ + protocol(
+                protocol
+            )
         if (!logHeaders && hasRequestBody) {
-            requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
+            requestStartMessage += " (" + requestBody!!.contentLength() + "-byte body)"
         }
-        logger.log(requestStartMessage);
-
+        logger!!.log(requestStartMessage)
         if (logHeaders) {
-            Headers headers = request.headers();
+            val headers = request.headers()
             if (null != headers && headers.size() > 0) {
-                logger.log("Headers START -->");
-                for (int i = 0, count = headers.size(); i < count; i++) {
-                    logger.log(headers.name(i) + ": " + headers.value(i));
+                logger.log("Headers START -->")
+                var i = 0
+                val count = headers.size()
+                while (i < count) {
+                    logger.log(headers.name(i) + ": " + headers.value(i))
+                    i++
                 }
-                logger.log("<-- Headers END");
+                logger.log("<-- Headers END")
             }
-
-            String endMessage = "--> REQUEST END ";//+ request.method();
+            var endMessage = "--> REQUEST END " //+ request.method();
             if (logBody && hasRequestBody) {
-                Buffer buffer = new Buffer();
-                requestBody.writeTo(buffer);
-
-                MediaType contentType = requestBody.contentType();
-                if (contentType != null) {
-                    contentType.charset(UTF8);
-                }
-
-                logger.log("");
-
-                long tookMsRequest = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNsRequest);
-                endMessage += " (" + requestBody.contentLength() + "-byte body) (" + tookMsRequest + "ms)";
+                val buffer = Buffer()
+                requestBody!!.writeTo(buffer)
+                val contentType = requestBody.contentType()
+                contentType?.charset(UTF8)
+                logger.log("")
+                val tookMsRequest =
+                    TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNsRequest)
+                endMessage += " (" + requestBody.contentLength() + "-byte body) (" + tookMsRequest + "ms)"
             }
-            logger.log(endMessage);
+            logger.log(endMessage)
         }
-
-        long startNs = System.nanoTime();
-        Response response = chain.proceed(request);
-        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-
-        ResponseBody responseBody = response.body();
-        logger.log("<-- RESPONSE START " + protocol(response.protocol()) + ' ' + response.code() + ' '
-                + response.message() + " (" + tookMs + "ms"
-                + (!logHeaders ? ", " + responseBody.contentLength() + "-byte body" : "") + ')');
-
+        val startNs = System.nanoTime()
+        val response = chain.proceed(request)
+        val tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs)
+        val responseBody = response.body()
+        logger.log(
+            "<-- RESPONSE START " + protocol(response.protocol()) + ' ' + response.code() + ' '
+                    + response.message() + " (" + tookMs + "ms"
+                    + (if (!logHeaders) ", " + responseBody!!.contentLength() + "-byte body" else "") + ')'
+        )
         if (logHeaders) {
-            Headers headers = response.headers();
+            val headers = response.headers()
             if (null != headers) {
-                logger.log("Headers START -->");
-                for (int i = 0, count = headers.size(); i < count; i++) {
-                    logger.log(headers.name(i) + ": " + headers.value(i));
+                logger.log("Headers START -->")
+                var i = 0
+                val count = headers.size()
+                while (i < count) {
+                    logger.log(headers.name(i) + ": " + headers.value(i))
+                    i++
                 }
-                logger.log("<-- Headers END");
+                logger.log("<-- Headers END")
             }
-
-            String endMessage = "<-- RESPONSE END ";
+            var endMessage = "<-- RESPONSE END "
             if (logBody) {
-                BufferedSource source = responseBody.source();
-                source.request(Long.MAX_VALUE); // Buffer the entire body.
-                Buffer buffer = source.buffer();
-
-                Charset charset = UTF8;
-                MediaType contentType = responseBody.contentType();
+                val source = responseBody!!.source()
+                source.request(Long.MAX_VALUE) // Buffer the entire body.
+                val buffer = source.buffer()
+                var charset = UTF8
+                val contentType = responseBody.contentType()
                 if (contentType != null) {
-                    charset = contentType.charset(UTF8);
+                    charset = contentType.charset(UTF8)
                 }
-
-                if (responseBody.contentLength() != 0) {
-                    logger.log("\n");
-                    logger.log(buffer.clone().readString(charset));
+                if (responseBody.contentLength() != 0L) {
+                    logger.log("\n")
+                    logger.log(buffer.clone().readString(charset))
                 }
-
-                logger.log("response Code >> " + response.code());
-                logger.log("response SuccessFul >> " + response.isSuccessful());
-
-                endMessage += " (" + buffer.size() + "-byte body)";
+                logger.log("response Code >> " + response.code())
+                logger.log("response SuccessFul >> " + response.isSuccessful)
+                endMessage += " (" + buffer.size() + "-byte body)"
             }
-            logger.log(endMessage);
+            logger.log(endMessage)
         }
-        return response;
+        return response
     }
 
     /**
      * Logging Builder
      */
-    public static class Builder {
-        private boolean isDebug;
-        private Level level;
-        private Logger logger;
-
-        public Builder() {
-            this.level = Level.BODY;
+    class Builder {
+        var isDebug = false
+        var level: Level
+            private set
+        var logger: Logger? = null
+        fun setLevel(level: Level): Builder {
+            this.level = level
+            return this
         }
 
-        Level getLevel() {
-            return this.level;
+        fun loggable(isDebug: Boolean): Builder {
+            this.isDebug = isDebug
+            return this
         }
 
-        public Builder setLevel(Level level) {
-            this.level = level;
-            return this;
+        fun logger(logger: Logger?): Builder {
+            this.logger = logger
+            return this
         }
 
-        public Builder loggable(boolean isDebug) {
-            this.isDebug = isDebug;
-            return this;
+        fun build(): LoggingInterceptor {
+            return LoggingInterceptor(this)
         }
 
-        public Builder logger(Logger logger) {
-            this.logger = logger;
-            return this;
-        }
-
-        public LoggingInterceptor build() {
-            return new LoggingInterceptor(this);
+        init {
+            level = Level.BODY
         }
     }
 
-}
+    companion object {
+        private val UTF8 = StandardCharsets.UTF_8
+        private fun protocol(protocol: Protocol): String {
+            return if (protocol == Protocol.HTTP_1_0) "HTTP/1.0" else "HTTP/1.1"
+        }
+    }
 
+    /**
+     * Instantiates a new Http interceptor.
+     */
+    init {
+        isDebug = mBuilder.isDebug
+        logger = mBuilder.logger
+    }
+}

@@ -1,30 +1,32 @@
-package com.digital.playground.repository.logging;
+package com.digital.playground.repository.logging
 
 /**
  * The enum Level.
  */
-public enum Level {
+enum class Level {
     /**
      * No logs.
      */
     NONE,
+
     /**
      * Logs request and response lines.
-     * <p>
+     *
+     *
      * RegisterRequest:
-     * <pre>{@code
-     * --> POST /greeting HTTP/1.1 (3-byte body)
+     * <pre>`--> POST /greeting HTTP/1.1 (3-byte body)
      *
      * <-- HTTP/1.1 200 OK (22ms, 6-byte body)
-     * }*</pre>
+    ` * *</pre>
      */
     BASIC,
+
     /**
      * Logs request and response lines and their respective headers.
-     * <p>
+     *
+     *
      * RegisterRequest:
-     * <pre>{@code
-     * --> POST /greeting HTTP/1.1
+     * <pre>`--> POST /greeting HTTP/1.1
      * Host: example.com
      * Content-Type: plain/text
      * Content-Length: 3
@@ -34,15 +36,16 @@ public enum Level {
      * Content-Type: plain/text
      * Content-Length: 6
      * <-- END HTTP
-     * }*</pre>
+    ` * *</pre>
      */
     HEADERS,
+
     /**
      * Logs request and response lines and their respective headers and bodies (if present).
-     * <p>
+     *
+     *
      * RegisterRequest:
-     * <pre>{@code
-     * --> POST /greeting HTTP/1.1
+     * <pre>`--> POST /greeting HTTP/1.1
      * Host: example.com
      * Content-Type: plain/text
      * Content-Length: 3
@@ -56,7 +59,7 @@ public enum Level {
      *
      * Hello!
      * <-- END HTTP
-     * }*</pre>
+    ` * *</pre>
      */
     BODY
 }

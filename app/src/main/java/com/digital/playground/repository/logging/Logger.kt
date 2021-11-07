@@ -1,21 +1,27 @@
-package com.digital.playground.repository.logging;
+package com.digital.playground.repository.logging
 
-import com.digital.playground.util.AppUtils;
+import com.digital.playground.util.AppUtils.showLog
 
 /**
  * The interface Logger.
  */
-public interface Logger {
-    /**
-     * A {@link Logger} defaults output appropriate for the current platform.
-     */
-    Logger DEFAULT = message ->
-            AppUtils.showLog(LoggingInterceptor.class.getSimpleName(), message);
-
+interface Logger {
     /**
      * Log.
      *
      * @param message the message
      */
-    void log(String message);
+    fun log(message: String)
+
+
+    companion object {
+        /**
+         * A [Logger] defaults output appropriate for the current platform.
+         */
+        val DEFAULT: Logger = object : Logger {
+            override fun log(message: String) {
+                showLog(LoggingInterceptor::class.simpleName, message)
+            }
+        }
+    }
 }

@@ -15,9 +15,17 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NewDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="ActivityTheme" parent="AppTheme">
+        <item name="android:navigationBarColor">@color/purple_500</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <!--    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar"/>-->
+
 
 </resources>

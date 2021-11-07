@@ -1,15 +1,10 @@
-package com.digital.playground.repository;
+package com.digital.playground.repository
 
-import com.digital.playground.repository.model.RandomJokesModel;
+import com.digital.playground.repository.model.MovieModel
+import io.reactivex.rxjava3.core.Observable
+import retrofit2.http.GET
 
-import java.util.Map;
-
-import io.reactivex.rxjava3.core.Observable;
-import retrofit2.http.GET;
-import retrofit2.http.QueryMap;
-
-public interface ApiService {
-
-    @GET("/jokes/random?limitTo=[nerdy]")
-    Observable<RandomJokesModel> getJokesList(@QueryMap Map<String, String> parameter);
+interface ApiService {
+    @GET("/movielist.json")
+    fun getAllMovies(): Observable<List<MovieModel>>
 }

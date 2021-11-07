@@ -1,50 +1,42 @@
-package com.digital.playground.ui.dialog;
+package com.digital.playground.ui.dialog
 
-import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Context
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
+import com.digital.playground.util.AppUtils.showException
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-
-import com.digital.playground.util.AppUtils;
-
-public final class DialogUtil {
-    private static AlertDialog mainDialog;
+object DialogUtil {
+    private var mainDialog: AlertDialog? = null
 
     /*
      * Show Loading Dialog
      * @param context the context
      */
-    public static void show(Context context, String msg, @Nullable DialogInterface.OnClickListener onClickListener) {
+    fun show(context: Context?, msg: String?, onClickListener: DialogInterface.OnClickListener?) {
         try {
-            dismissDialog();
-            mainDialog = new AlertDialog
-                    .Builder(context)
-                    .setMessage(msg)
-                    .setTitle("Alert")
-                    .setPositiveButton("OK", onClickListener)
-                    .create();
-            mainDialog.show();
-        } catch (Exception e) {
-            AppUtils.showException(e);
+            dismissDialog()
+            mainDialog = AlertDialog.Builder(context!!)
+                .setMessage(msg)
+                .setTitle("Alert")
+                .setPositiveButton("OK", onClickListener)
+                .create()
+            mainDialog!!.show()
+        } catch (e: Exception) {
+            showException(e)
         }
     }
-
 
     /**
      * Dismiss existing Loading dialog.
      */
-    public static void dismissDialog() {
+    fun dismissDialog() {
         try {
-            if (null != mainDialog && mainDialog.isShowing()) {
-                mainDialog.dismiss();
+            if (mainDialog?.isShowing == true) {
+                mainDialog!!.dismiss()
             }
-        } catch (Exception e) {
-            AppUtils.showException(e);
+        } catch (e: Exception) {
+            showException(e)
         }
-        mainDialog = null;
-
+        mainDialog = null
     }
-
-
 }

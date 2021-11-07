@@ -1,30 +1,19 @@
 package com.digital.playground.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.digital.playground.core.BaseViewModel
 import com.digital.playground.repository.model.LoginModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class LoginViewModel constructor(loginModel: LoginModel) : ViewModel() {
-    val loginLiveData: MutableLiveData<LoginModel>
+@HiltViewModel
+class LoginViewModel @Inject constructor(loginModel: LoginModel) : BaseViewModel() {
+    val loginLiveData: MutableLiveData<LoginModel> = MutableLiveData()
 
     /**
      *
      */
     init {
-        loginLiveData = MutableLiveData()
         loginLiveData.postValue(loginModel)
     }
-
-    @Suppress("UNCHECKED_CAST")
-    class Factory(private val loginModel: LoginModel) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-                return LoginViewModel(loginModel) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
-
 }

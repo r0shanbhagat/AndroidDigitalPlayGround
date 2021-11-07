@@ -1,45 +1,42 @@
-package com.digital.playground.util;
+package com.digital.playground.util
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import androidx.annotation.NonNull;
-import androidx.navigation.NavOptions;
-
-import com.digital.playground.BuildConfig;
-import com.digital.playground.R;
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.databinding.ViewDataBinding
+import androidx.navigation.NavOptions
+import com.digital.playground.BuildConfig
+import com.digital.playground.R
+import com.digital.playground.core.BaseActivity
+import com.digital.playground.core.BaseViewModel
 
 /**
  * The type App utils.
  */
-public final class AppUtils {
-
+object AppUtils {
     /**
-     * Is mobile network available boolean.
+     * To check whether network is available or not in device.
      *
      * @param context the context
      * @return boolean boolean
      */
-
-
-    public static boolean isNetworkConnected(@NonNull Context context) {
-        boolean isConnected = false;
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = connMgr.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if ((ni.getTypeName().equalsIgnoreCase("MOBILE") && ni.isConnected())
-                    || (ni.getTypeName().equalsIgnoreCase("WIFI") && ni.isConnected())) {
-                isConnected = true;
-                break;
-            }
-        }
-        return isConnected;
+    fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                || capabilities.hasTransport(
+            NetworkCapabilities.TRANSPORT_VPN
+        ))
     }
 
     /**
@@ -48,14 +45,14 @@ public final class AppUtils {
      * @param tagName the tag name
      * @param message the message
      */
-    public static void showLog(String tagName, String message) {
+    fun showLog(tagName: String?, message: String) {
         if (BuildConfig.DEBUG && !TextUtils.isEmpty(message)) {
-            int maxLogSize = 1000;
-            for (int i = 0; i <= message.length() / maxLogSize; i++) {
-                int start = i * maxLogSize;
-                int end = (i + 1) * maxLogSize;
-                end = Math.min(end, message.length());
-                Log.v(tagName, message.substring(start, end));
+            val maxLogSize = 1000
+            for (i in 0..message.length / maxLogSize) {
+                val start = i * maxLogSize
+                var end = (i + 1) * maxLogSize
+                end = Math.min(end, message.length)
+                Log.v(tagName, message.substring(start, end))
             }
         }
     }
@@ -65,37 +62,82 @@ public final class AppUtils {
      *
      * @param t :Throwable
      */
-    public static void showException(Throwable t) {
+    fun showException(t: Throwable?) {
         if (BuildConfig.DEBUG) {
-            Log.e("", Log.getStackTraceString(t));
+            Log.e("", Log.getStackTraceString(t))
         }
     }
 
     /**
      * @param navOptionBuilder navOptionBuilder
-     *                         Used to apply animation in fragment navigation
+     * Used to apply animation in fragment navigation
      */
-    public static void applyAnimation(NavOptions.Builder navOptionBuilder) {
-        navOptionBuilder.setEnterAnim(R.anim.right_in);
-        navOptionBuilder.setExitAnim(R.anim.left_out);
-        navOptionBuilder.setPopExitAnim(R.anim.right_out);
-        navOptionBuilder.setPopEnterAnim(R.anim.left_in);
-    }
+//    fun applyAnimation(navOptionBuilder: NavOptions.Builder) {
+//        navOptionBuilder.setEnterAnim(R.anim.right_in)
+//        navOptionBuilder.setExitAnim(R.anim.left_out)
+//        navOptionBuilder.setPopExitAnim(R.anim.right_out)
+//        navOptionBuilder.setPopEnterAnim(R.anim.left_in)
+//    }
 
     /**
      * Hide soft keyboard from view
      *
      * @param mActivity :Activity
      */
-    public static void hideSoftInput(Activity mActivity) {
-        View view = mActivity.getCurrentFocus();
-        //If no view currently has focus, onCreate a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(mActivity);
-        }
-        InputMethodManager im = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    fun hideSoftInput(context: Context) {
+        val activity = context as Activity
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(
+            activity.currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
+    fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm =
+                view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
+    fun navigateToActivity(
+        callerActivity: BaseActivity<ViewDataBinding, BaseViewModel>,
+        targetActivity: Class<out Activity>,
+        dataBundle: Bundle? = null,
+        isToFinishActivity: Boolean = false,
+    ) {
+        val intent = Intent(callerActivity.applicationContext, targetActivity)
+        dataBundle?.let { intent.putExtras(it) }
+        callerActivity.startActivity(intent)
+        if (isToFinishActivity) {
+            callerActivity.finish()
+        }
+
+    }
+
+    /**
+     * @method used to apply animation in fragment navigation
+     */
+    fun applyAnimation(navOptionBuilder: NavOptions.Builder) {
+        navOptionBuilder.apply {
+            setEnterAnim(R.anim.right_in)
+            setExitAnim(R.anim.left_out)
+            setPopExitAnim(R.anim.right_out)
+            setPopEnterAnim(R.anim.left_in)
+        }
+    }
+
+    /**
+     * @method used to apply animation when current screen need to be popped out
+     */
+    fun applyReverseAnimation(navOptionBuilder: NavOptions.Builder) {
+        navOptionBuilder.apply {
+            setEnterAnim(R.anim.left_in)
+            setExitAnim(R.anim.left_out)
+            setPopExitAnim(R.anim.right_out)
+            setPopEnterAnim(R.anim.left_in)
+        }
+    }
 
 }

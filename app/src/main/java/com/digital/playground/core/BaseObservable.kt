@@ -1,36 +1,24 @@
-package com.digital.playground.core;
+package com.digital.playground.core
 
+import com.digital.playground.util.AppUtils.showException
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 
-import com.digital.playground.util.AppUtils;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-
-
-public abstract class BaseObservable<T> implements Observer<T> {
-
-    @Override
-    public void onSubscribe(@NonNull Disposable dispo) {
+abstract class BaseObservable<T> : Observer<T> {
+    override fun onSubscribe(dispo: Disposable) {
         /* Disposable */
     }
 
-    @Override
-    public void onNext(@NonNull T t) {
-        success(t);
+    override fun onNext(t: T) {
+        success(t)
     }
 
-    @Override
-    public void onError(@NonNull Throwable t) {
-        failure(t);
-        AppUtils.showException(t);
+    override fun onError(t: Throwable) {
+        failure(t)
+        showException(t)
     }
 
-    @Override
-    public void onComplete() {
-    }
-
-    public abstract void success(T response);
-
-    public abstract void failure(Throwable t);
+    override fun onComplete() {}
+    abstract fun success(response: T)
+    abstract fun failure(t: Throwable)
 }

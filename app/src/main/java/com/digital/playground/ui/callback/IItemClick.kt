@@ -1,5 +1,5 @@
-package com.digital.playground.ui.callback;
+package com.digital.playground.ui.callback
 
-public interface IItemClick<T> {
-    void onItemClick(T item);
+interface IItemClick<T> {
+    fun onItemClick(item: T)
 }

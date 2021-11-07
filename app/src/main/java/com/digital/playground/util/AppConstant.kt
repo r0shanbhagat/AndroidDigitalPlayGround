@@ -1,5 +1,7 @@
-package com.digital.playground.util;
+package com.digital.playground.util
 
-public interface AppConstant {
-    String ARGS_JOKES = "args_jokes";
+interface AppConstant {
+    companion object {
+        const val ARGS_JOKES = "args_jokes"
+    }
 }

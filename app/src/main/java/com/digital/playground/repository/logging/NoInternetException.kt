@@ -1,9 +1,5 @@
-package com.digital.playground.repository.logging;
+package com.digital.playground.repository.logging
 
-import java.io.IOException;
+import java.io.IOException
 
-public class NoInternetException extends IOException {
-    public NoInternetException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
-}
+class NoInternetException(msg: String?, cause: Throwable?) : IOException(msg, cause)
