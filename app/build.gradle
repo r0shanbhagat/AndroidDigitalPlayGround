@@ -109,7 +109,15 @@ dependencies {
     /**
      ******************************* Unit Testing ************************************
      **/
-    testImplementation 'org.mockito:mockito-core:4.0.0'
+    // testImplementation 'org.mockito:mockito-core:4.0.0'
+    // testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.powermock:powermock-core:2.0.5'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.5'
+    testImplementation 'org.powermock:powermock-module-junit4:1.6.1'
+    // testImplementation 'org.powermock:powermock-module-junit4-rule-agent:1.6.1'
+    // testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.1'
 }
 

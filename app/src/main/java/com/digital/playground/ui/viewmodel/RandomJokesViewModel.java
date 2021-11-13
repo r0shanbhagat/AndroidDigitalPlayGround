@@ -90,7 +90,7 @@ public class RandomJokesViewModel extends BaseViewModel {
      * Show Loading State
      */
     private void onLoading() {
-        mJokeState.postValue(RandomJokesViewState.LOADING_STATE);
+        mJokeState.postValue(new RandomJokesViewState(RandomJokesViewState.LOADING));
     }
 
     /*
@@ -99,8 +99,9 @@ public class RandomJokesViewModel extends BaseViewModel {
      */
     private void onSuccess(RandomJokesModel jokesModel) {
         getJokesList().add(jokesModel);
-        //RandomJokesViewState.SUCCESS_STATE.setData(jokesModel);
-        mJokeState.postValue(RandomJokesViewState.SUCCESS_STATE);
+        RandomJokesViewState viewState = new RandomJokesViewState(RandomJokesViewState.SUCCESS);
+        viewState.setData(jokesModel);
+        mJokeState.postValue(viewState);
     }
 
     /**
@@ -109,8 +110,7 @@ public class RandomJokesViewModel extends BaseViewModel {
      * @param error :Error
      */
     private void onFailure(Throwable error) {
-        RandomJokesViewState.ERROR_STATE.setError(error);
-        mJokeState.postValue(RandomJokesViewState.ERROR_STATE);
+        mJokeState.postValue(new RandomJokesViewState(RandomJokesViewState.FAILED));
     }
 
     public void resetLiveData() {
