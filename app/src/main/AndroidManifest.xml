@@ -19,7 +19,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.Splash">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
