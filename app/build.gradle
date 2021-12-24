@@ -55,7 +55,6 @@ android {
         targetCompatibility "${javaVersion}"
     }
     buildFeatures {
-        //noinspection DataBindingWithoutKapt
         dataBinding true
     }
 
@@ -80,7 +79,7 @@ dependencies {
      **/
     implementation "androidx.appcompat:appcompat:$supportLibVersion"
     implementation "com.google.android.material:material:$material" ////New Material Design
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation "androidx.multidex:multidex:2.0.1"
 
     /**

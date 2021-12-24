@@ -30,7 +30,8 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
         initSplash()
         /*
          * Adding Navigation Callback for Analytics
-         */addNavigateCallback()
+         */
+        addNavigateCallback()
     }
 
     /**
@@ -44,7 +45,7 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
             navController = navHostFragment.navController
         }
         //Adding OnDestinationChangedListener
-        navController?.addOnDestinationChangedListener { controller: NavController?, destination: NavDestination, arguments: Bundle? ->
+        navController?.addOnDestinationChangedListener { _: NavController?, destination: NavDestination, _: Bundle? ->
             showLog(
                 PlaygroundActivity::class.java.simpleName,
                 destination.label.toString()
@@ -52,6 +53,10 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
         }
     }
 
+    /**
+     * After android sdk 30 onwards there's no seperate activity for Splash we need merge splash
+     * activity code into this
+     */
     private fun initSplash() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val content: View = findViewById(android.R.id.content)
@@ -59,7 +64,7 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
                 ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean =
                     when {
-                        viewModel!!.isSplashTimeout() -> {
+                        viewModel.isSplashTimeout() -> {
                             content.viewTreeObserver.removeOnPreDrawListener(this)
                             true
                         }

@@ -47,11 +47,13 @@ object AppUtils {
      */
     fun showLog(tagName: String?, message: String) {
         if (BuildConfig.DEBUG && !TextUtils.isEmpty(message)) {
-            val maxLogSize = 1000
+            val maxLogSize = message.length + 1
             for (i in 0..message.length / maxLogSize) {
                 val start = i * maxLogSize
                 var end = (i + 1) * maxLogSize
-                end = Math.min(end, message.length)
+                end = if (end > message.length)
+                    message.length
+                else end
                 Log.v(tagName, message.substring(start, end))
             }
         }
@@ -67,17 +69,6 @@ object AppUtils {
             Log.e("", Log.getStackTraceString(t))
         }
     }
-
-    /**
-     * @param navOptionBuilder navOptionBuilder
-     * Used to apply animation in fragment navigation
-     */
-//    fun applyAnimation(navOptionBuilder: NavOptions.Builder) {
-//        navOptionBuilder.setEnterAnim(R.anim.right_in)
-//        navOptionBuilder.setExitAnim(R.anim.left_out)
-//        navOptionBuilder.setPopExitAnim(R.anim.right_out)
-//        navOptionBuilder.setPopEnterAnim(R.anim.left_in)
-//    }
 
     /**
      * Hide soft keyboard from view
