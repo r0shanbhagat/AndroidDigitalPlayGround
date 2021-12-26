@@ -1,74 +1,88 @@
 package com.digital.playground.ui.fragment
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.digital.playground.R
 import com.digital.playground.core.BaseFragment
-import com.digital.playground.core.ViewState
 import com.digital.playground.databinding.FragmentMovieListBinding
-import com.digital.playground.repository.logging.NoInternetException
-import com.digital.playground.repository.model.MovieModel
+import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.adapter.MovieAdapter
-import com.digital.playground.ui.dialog.DialogUtil.show
 import com.digital.playground.ui.viewmodel.MovieListViewModel
+import com.digital.playground.ui.viewmodel.MovieStateEvent
+import com.thecode.dagger_hilt_mvvm.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewModel>() {
-
-    private val adapter = MovieAdapter()
-
+    private val movieViewModel: MovieListViewModel by viewModels()
+    private lateinit var adapter: MovieAdapter
 
     override val layoutId: Int
         get() = R.layout.fragment_movie_list
 
     override val viewModel: MovieListViewModel
-        get() = ViewModelProvider(this).get(MovieListViewModel::class.java)
+        get() = movieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        subscribeObservers()
+        viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        }
+    }
+
+    private fun setupRecyclerView() {
+        adapter = MovieAdapter()
         binding.rvMoviesList.adapter = adapter
-        observeApiResponse()
-        viewModel.getMoviesList()
     }
 
-    /**
-     * observeApiResponse
-     */
-    private fun observeApiResponse() {
-        mViewModel?.movieLiveData?.observe(viewLifecycleOwner) { viewState ->
-            if (null == viewState) return@observe
-            when (viewState.currentState) {
-                ViewState.LOADING -> {
-                    showLoading()
+
+    private fun subscribeObservers() {
+        viewModel.dataState.observe(viewLifecycleOwner, { dataState ->
+            when (dataState) {
+                is DataState.Success<List<Movie>> -> {
+                    displayLoading(false)
+                    populateRecyclerView(dataState.data)
                 }
-                ViewState.SUCCESS -> {
-                    hideLoading()
-                    adapter.setMovieList(viewState.data as List<MovieModel>)
+                is DataState.Loading -> {
+                    displayLoading(true)
                 }
-                ViewState.FAILED -> {
-                    hideLoading()
-                    showInfoDialog(viewState.error!!)
+                is DataState.Error -> {
+                    displayLoading(false)
+                    displayError(dataState.exception.message)
                 }
             }
+        })
+    }
+
+
+    private fun populateRecyclerView(moviesList: List<Movie>) {
+        if (moviesList.isNotEmpty())
+            adapter.setMovieList(moviesList)
+    }
+
+    private fun displayError(message: String?) {
+        if (message.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), "Unknown error", Toast.LENGTH_LONG).show()
         }
     }
 
-
-    /**
-     * Showing No Network Dailog
-     */
-    private fun showInfoDialog(throwable: Throwable) {
-        if (isAdded) {
-            var msg = getString(R.string.error_msg)
-            if (throwable is NoInternetException) {
-                msg = getString(R.string.no_internet_msg)
-            }
-            show(
-                context, msg
-            ) { _: DialogInterface?, _: Int -> }
+    private fun displayLoading(isLoading: Boolean) {
+        if (isLoading) {
+            showLoading()
+        } else {
+            hideLoading()
         }
+        binding.swipeRefreshLayout.isRefreshing = isLoading
     }
+
 }

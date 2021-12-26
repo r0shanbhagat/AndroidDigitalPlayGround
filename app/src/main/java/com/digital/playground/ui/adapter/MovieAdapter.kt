@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.digital.playground.databinding.ListItemMovieBinding
-import com.digital.playground.repository.model.MovieModel
+import com.digital.playground.repository.model.Movie
 
 class MovieAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
-    var movies = mutableListOf<MovieModel>()
+    var movies = mutableListOf<Movie>()
 
-    fun setMovieList(movies: List<MovieModel>) {
-        this.movies = movies.toMutableList()
+    fun setMovieList(movies: List<Movie>?) {
+        this.movies = movies?.toMutableList()!!
         notifyDataSetChanged()
     }
 
@@ -25,8 +25,8 @@ class MovieAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val movie = movies[position]
-        holder.binding.name.text = movie.name
-        Glide.with(holder.itemView.context).load(movie.imageUrl).into(holder.binding.imageview)
+        holder.binding.name.text = movie.title
+        Glide.with(holder.itemView.context).load(movie.image).into(holder.binding.imageview)
 
     }
 

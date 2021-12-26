@@ -4,7 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -17,9 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundViewModel>() {
+    private val playgroundViewModel: PlaygroundViewModel by viewModels()
 
     override fun createViewModel(): PlaygroundViewModel {
-        return ViewModelProvider(this).get(PlaygroundViewModel::class.java)
+        return playgroundViewModel
     }
 
     override val layoutResId: Int

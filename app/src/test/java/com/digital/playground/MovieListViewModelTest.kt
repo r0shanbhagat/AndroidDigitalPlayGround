@@ -3,10 +3,11 @@ package com.digital.playground
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelStoreOwner
-import com.digital.playground.core.ViewState
-import com.digital.playground.repository.ApiService
+import com.digital.playground.network.ApiService
+import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.viewmodel.MovieListViewModel
-import com.digital.playground.ui.viewmodel.MovieViewState
+import com.digital.playground.ui.viewmodel.MovieStateEvent
+import com.thecode.dagger_hilt_mvvm.util.DataState
 import io.reactivex.rxjava3.core.Observable
 import org.junit.*
 import org.junit.runner.RunWith
@@ -32,7 +33,7 @@ class MovieListViewModelTest {
     lateinit var apiClient: ApiService
 
     @Mock
-    lateinit var observer: Observer<ViewState>
+    lateinit var observer: Observer<DataState<List<Movie>>>
 
     @Mock
     private lateinit var viewModel: MovieListViewModel
@@ -47,14 +48,14 @@ class MovieListViewModelTest {
         // viewModel = ViewModelProvider(viewModelStore).get(MovieListViewModel::class.java)
         // val factory = BaseViewModel.Factory(apiClient, "Rajvi", "Bhatia")
 
-        viewModel.movieLiveData.observeForever(observer)
+        viewModel.dataState.observeForever(observer)
     }
 
     @Test
-    fun testNull() {
+    suspend fun testNull() {
         Mockito.`when`(apiClient.getAllMovies()).thenReturn(null)
-        Assert.assertNotNull(viewModel.movieLiveData)
-        Assert.assertTrue(viewModel.movieLiveData.hasObservers())
+        Assert.assertNotNull(viewModel.dataState)
+        Assert.assertTrue(viewModel.dataState.hasObservers())
     }
 
     @Test
@@ -62,9 +63,9 @@ class MovieListViewModelTest {
         // Mock API response
         Mockito.`when`(apiClient.getAllMovies())
             .thenReturn(Observable.just(mutableListOf()))
-        viewModel.getMoviesList()
-        Mockito.verify(observer).onChanged(MovieViewState.LOADING_STATE)
-        Mockito.verify(observer).onChanged(MovieViewState.SUCCESS_STATE)
+        viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        Mockito.verify(observer).onChanged(DataState.Loading)
+        Mockito.verify(observer).onChanged(DataState.Success(movieList))
     }
 
     @Test

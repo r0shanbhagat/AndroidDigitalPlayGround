@@ -18,7 +18,7 @@ import com.digital.playground.ui.dialog.ProgressDialog
  */
 abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
     protected lateinit var binding: B
-    protected var mViewModel: VM? = null
+    protected lateinit var mViewModel: VM
     private lateinit var progressDialog: ProgressDialog
 
 
@@ -48,7 +48,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
      *
      * @return view model instance
      */
-    abstract val viewModel: VM?
+    abstract val viewModel: VM
 
 
     fun showLoading(cancelable: Boolean = false) {

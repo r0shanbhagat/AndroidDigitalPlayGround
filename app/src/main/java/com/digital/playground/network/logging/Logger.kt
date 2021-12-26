@@ -1,4 +1,4 @@
-package com.digital.playground.repository.logging
+package com.digital.playground.network.logging
 
 import com.digital.playground.util.AppUtils.showLog
 

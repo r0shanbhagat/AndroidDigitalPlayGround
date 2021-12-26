@@ -2,12 +2,12 @@ package com.digital.playground.di
 
 import android.content.Context
 import com.digital.playground.BuildConfig
-import com.digital.playground.repository.ApiConstants
-import com.digital.playground.repository.ApiService
-import com.digital.playground.repository.logging.Level
-import com.digital.playground.repository.logging.Logger
-import com.digital.playground.repository.logging.LoggingInterceptor
-import com.digital.playground.repository.logging.NoInternetException
+import com.digital.playground.network.ApiConstants
+import com.digital.playground.network.ApiService
+import com.digital.playground.network.logging.Level
+import com.digital.playground.network.logging.Logger
+import com.digital.playground.network.logging.LoggingInterceptor
+import com.digital.playground.network.logging.NoInternetException
 import com.digital.playground.util.AppUtils.isNetworkConnected
 import dagger.Module
 import dagger.Provides
@@ -17,13 +17,12 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -64,7 +63,6 @@ class NetworkModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .baseUrl(ApiConstants.BASE_URL)
             .client(client)
             .build()

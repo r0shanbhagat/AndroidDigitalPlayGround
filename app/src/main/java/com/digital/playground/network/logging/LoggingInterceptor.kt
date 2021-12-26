@@ -1,4 +1,4 @@
-package com.digital.playground.repository.logging
+package com.digital.playground.network.logging
 
 import okhttp3.Interceptor
 import okhttp3.Protocol
