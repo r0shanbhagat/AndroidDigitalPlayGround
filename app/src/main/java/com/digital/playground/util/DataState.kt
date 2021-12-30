@@ -1,4 +1,4 @@
-package com.thecode.dagger_hilt_mvvm.util
+package com.digital.playground.util
 
 sealed class DataState<out R> {
 

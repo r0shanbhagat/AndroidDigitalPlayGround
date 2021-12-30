@@ -23,8 +23,8 @@
     </fragment>
     <fragment
         android:id="@+id/movieListFragment"
+        android:label="MovieList1"
         android:name="com.digital.playground.ui.fragment.MovieListFragment"
-        android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list" />
 
 </navigation>

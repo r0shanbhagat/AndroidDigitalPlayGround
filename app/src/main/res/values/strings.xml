@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Android Digital Playground</string>
     <string name="btnsubmit">Submit</string>
     <string name="last_name">Last name</string>
     <string name="first_name">First name</string>

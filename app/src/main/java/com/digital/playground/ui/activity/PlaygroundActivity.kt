@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.digital.playground.R
 import com.digital.playground.core.BaseActivity
 import com.digital.playground.databinding.ActivityPlaygroundBinding
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundViewModel>() {
     private val playgroundViewModel: PlaygroundViewModel by viewModels()
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun createViewModel(): PlaygroundViewModel {
         return playgroundViewModel
@@ -28,6 +30,7 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initSplash()
         /*
          * Adding Navigation Callback for Analytics
@@ -39,19 +42,24 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
      * Adding Navigation Callback
      */
     private fun addNavigateCallback() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-        var navController: NavController? = null
-        if (navHostFragment != null) {
-            navController = navHostFragment.navController
-        }
+        setSupportActionBar(binding.toolbar)
+        val navController = findNavController(R.id.nav_host_fragment)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
         //Adding OnDestinationChangedListener
-        navController?.addOnDestinationChangedListener { _: NavController?, destination: NavDestination, _: Bundle? ->
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
             showLog(
                 PlaygroundActivity::class.java.simpleName,
                 destination.label.toString()
             )
         }
+
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
     /**
@@ -59,6 +67,7 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
      * activity code into this
      */
     private fun initSplash() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val content: View = findViewById(android.R.id.content)
             content.viewTreeObserver.addOnPreDrawListener(object :

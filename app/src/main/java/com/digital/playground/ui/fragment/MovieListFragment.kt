@@ -11,7 +11,7 @@ import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.adapter.MovieAdapter
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
-import com.thecode.dagger_hilt_mvvm.util.DataState
+import com.digital.playground.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -32,9 +32,9 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
         setupRecyclerView()
         subscribeObservers()
         viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
-
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+            navigateToFragment(R.id.movieListFragment)
         }
     }
 

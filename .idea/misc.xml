@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/loading_anim.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/activity_playground.xml" value="0.22037037037037038" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/layout/fragment_movie_list.xml" value="0.22037037037037038" />
         <entry key="app/src/main/res/layout/fragment_random_jokes.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/layout_progress_gif.xml" value="0.22037037037037038" />
+        <entry key="app/src/main/res/layout/list_item_movie.xml" value="0.22037037037037038" />
         <entry key="app/src/main/res/layout/list_item_random_jokes.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/layout/progress_dialog.xml" value="0.25181159420289856" />
       </map>

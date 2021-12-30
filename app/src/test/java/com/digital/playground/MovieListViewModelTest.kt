@@ -7,7 +7,7 @@ import com.digital.playground.network.ApiService
 import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
-import com.thecode.dagger_hilt_mvvm.util.DataState
+import com.digital.playground.util.DataState
 import io.reactivex.rxjava3.core.Observable
 import org.junit.*
 import org.junit.runner.RunWith

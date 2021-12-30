@@ -24,7 +24,7 @@ android {
     }
 
     def keystoreProperties = new Properties()
-    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+    keystoreProperties.load(new FileInputStream(rootProject.file("app/keystore/keystore.properties")))
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
@@ -45,9 +45,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        /*debug {
-            applicationIdSuffix '.debug'
-        }*/
     }
 
     compileOptions {
@@ -63,18 +60,17 @@ android {
         dataBinding true
     }
 
-    /*
-   flavorDimensions 'dimension'
+   flavorDimensions 'flavour'
    productFlavors {
-       internal {
-           applicationId 'com.example.arc.internal'
-           resValue "string", "app_name", '"Arc Internal"'
+       dev {
+           resValue "string", "app_name", '"Android Digital Playground Dev"'
+           buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
        }
        production {
-           applicationId 'com.example.arc'
-           resValue "string", "app_name", '"Arc"'
+           resValue "string", "app_name", '"Android Digital Playground"'
+           buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
        }
-   }*/
+   }
 }
 
 dependencies {

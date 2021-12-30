@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.repository.MovieRepository
 import com.digital.playground.repository.model.Movie
-import com.thecode.dagger_hilt_mvvm.util.DataState
+import com.digital.playground.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -20,12 +20,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ActivityTheme" parent="AppTheme">
-        <item name="android:navigationBarColor">@color/purple_500</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-    </style>
+    <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!--    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar"/>-->
+    <style name="Theme.MyApplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>
