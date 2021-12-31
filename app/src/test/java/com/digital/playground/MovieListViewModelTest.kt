@@ -2,83 +2,89 @@ package com.digital.playground
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelStoreOwner
-import com.digital.playground.network.ApiService
-import com.digital.playground.repository.model.Movie
+import com.digital.playground.repository.MovieRepository
+import com.digital.playground.repository.model.MovieModel
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
 import com.digital.playground.util.DataState
-import io.reactivex.rxjava3.core.Observable
-import org.junit.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(JUnit4::class)
+@ExperimentalCoroutinesApi
+@RunWith(MockitoJUnitRunner::class)
 class MovieListViewModelTest {
 
+    // Set the main coroutines dispatcher for unit testing.
     @get:Rule
-    var rule: MockitoRule = MockitoJUnit.rule()
+    var mainCoroutineRule = TestCoroutineRule()
 
+    // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    var instantExecutorRule1 = RxImmediateSchedulerRule()
+    @Mock
+    private lateinit var viewStateObserver: Observer<DataState>
 
     @Mock
-    lateinit var apiClient: ApiService
+    private lateinit var mockMovieResponse: List<MovieModel>
 
     @Mock
-    lateinit var observer: Observer<DataState<List<Movie>>>
+    private lateinit var mockException: Exception
 
     @Mock
-    private lateinit var viewModel: MovieListViewModel
+    private lateinit var repository: MovieRepository
 
-    @Mock
-    lateinit var owner: ViewModelStoreOwner
-
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-
-        // viewModel = ViewModelProvider(viewModelStore).get(MovieListViewModel::class.java)
-        // val factory = BaseViewModel.Factory(apiClient, "Rajvi", "Bhatia")
-
-        viewModel.dataState.observeForever(observer)
+    private val fakeSuccessFlow = flow {
+        emit(DataState.Success(mockMovieResponse))
     }
 
-    @Test
-    suspend fun testNull() {
-        Mockito.`when`(apiClient.getAllMovies()).thenReturn(null)
-        Assert.assertNotNull(viewModel.dataState)
-        Assert.assertTrue(viewModel.dataState.hasObservers())
+    private val fakeFailureFlow = flow {
+        emit(DataState.Error(mockException))
+    }
+
+    private val viewModel: MovieListViewModel by lazy {
+        MovieListViewModel(repository)
+    }
+
+    @Before
+    fun setup() {
+        viewModel.dataState.observeForever(viewStateObserver)
     }
 
     @Test
     fun testApiFetchDataSuccess() {
-        // Mock API response
-        Mockito.`when`(apiClient.getAllMovies())
-            .thenReturn(Observable.just(mutableListOf()))
-        viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
-        Mockito.verify(observer).onChanged(DataState.Loading)
-        Mockito.verify(observer).onChanged(DataState.Success(movieList))
+        runBlockingTest {
+            Mockito.`when`(repository.getMovies()).thenReturn(fakeSuccessFlow)
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+
+            viewStateObserver.onChanged(DataState.Loading)
+            viewStateObserver.onChanged(DataState.Success(mockMovieResponse))
+        }
     }
 
     @Test
-    fun testApiFetchDataError() {
-        Mockito.`when`(apiClient.getAllMovies())
-            .thenReturn(Observable.error(Throwable("Api error")))
-        viewModel.getMoviesList()
-        Mockito.verify(observer).onChanged(MovieViewState.LOADING_STATE)
-        Mockito.verify(observer).onChanged(MovieViewState.ERROR_STATE)
+    fun `when load movie list service throws network failure then ViewState renders failure`() {
+        runBlockingTest {
+            Mockito.`when`(repository.getMovies()).thenReturn(fakeFailureFlow)
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+            viewStateObserver.onChanged(DataState.Loading)
+            viewStateObserver.onChanged(DataState.Error(mockException))
+        }
     }
 
     @After
     fun tearDown() {
         viewModel.resetLiveData()
     }
+
+
 }

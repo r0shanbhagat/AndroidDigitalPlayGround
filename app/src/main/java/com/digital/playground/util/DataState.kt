@@ -1,8 +1,8 @@
 package com.digital.playground.util
 
-sealed class DataState<out R> {
+sealed class DataState {
 
-    data class Success<out T>(val data: T) : DataState<T>()
-    data class Error(val exception: Exception) : DataState<Nothing>()
-    object Loading : DataState<Nothing>()
+    data class Success(val data: Any) : DataState()
+    data class Error(val exception: Exception) : DataState()
+    object Loading : DataState()
 }

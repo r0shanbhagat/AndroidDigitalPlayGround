@@ -32,11 +32,12 @@ ext {
     archLifecycleVersion = "2.2.0"
     constraintLayoutVersion = '2.1.2'
     material = '1.4.0'
-
-    mockitoVersion= '4.0.0'
-
+    facebookShimmer = "0.5.0"
     retrofit = "2.9.0"
     navigationVersion = "2.3.5"
     hiltVersion = "2.35.1"
     glideVersion='4.12.0'
+
+    mockitoVersion= '4.0.0'
+
 }

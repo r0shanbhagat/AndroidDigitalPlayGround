@@ -12,6 +12,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.digital.playground.ui.dialog.ProgressDialog
 import com.digital.playground.util.AppUtils
+import com.facebook.shimmer.ShimmerFrameLayout
 
 /**
  * @Details BaseFragment contains the common functionality and inherit by
@@ -114,5 +115,35 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
             bundle,
             navOptions
         )
+    }
+
+    /**
+     * @method shows the shimmer view ,
+     * and hides the main view container
+     * @param shimmerViewContainer is the shimmer view in your xml view
+     * @param layoutMain is your main root layout
+     * */
+    fun showShimmer(
+        shimmerViewContainer: ShimmerFrameLayout,
+        layoutMain: View
+    ) {
+        shimmerViewContainer.visibility = View.VISIBLE
+        layoutMain.visibility = View.INVISIBLE
+        shimmerViewContainer.startShimmer()
+    }
+
+    /**
+     * @method hides the shimmer layout_ad_space_shake and stops the animation on it,
+     * also shows back the main view container of your view
+     * @param shimmerViewContainer is the shimmer view in your xml view
+     * @param layoutMain is your main root layout_ad_space_shake
+     * */
+    fun hideShimmer(
+        shimmerViewContainer: ShimmerFrameLayout,
+        layoutMain: View
+    ) {
+        shimmerViewContainer.visibility = View.GONE
+        layoutMain.visibility = View.VISIBLE
+        shimmerViewContainer.stopShimmer()
     }
 }

@@ -35,14 +35,8 @@ android {
     }
     buildTypes {
         release {
-            /* postprocessing {
-               removeUnusedCode true
-               removeUnusedResources true
-               obfuscate true
-               optimizeCode true
-               proguardFile 'proguard-rules.pro'
-           }*/
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -60,17 +54,17 @@ android {
         dataBinding true
     }
 
-   flavorDimensions 'flavour'
-   productFlavors {
-       dev {
-           resValue "string", "app_name", '"Android Digital Playground Dev"'
-           buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
-       }
-       production {
-           resValue "string", "app_name", '"Android Digital Playground"'
-           buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
-       }
-   }
+    flavorDimensions 'flavour'
+    productFlavors {
+        dev {
+            resValue "string", "app_name", '"Android Digital Playground Dev"'
+            buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
+        }
+        production {
+            resValue "string", "app_name", '"Android Digital Playground"'
+            buildConfigField 'String', 'BASE_URL', '"http://www.google.com/public/api/v1/"'
+        }
+    }
 }
 
 dependencies {
@@ -81,7 +75,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$material" ////New Material Design
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation "androidx.multidex:multidex:2.0.1"
 
     /**
@@ -94,6 +87,12 @@ dependencies {
      ******************************* ViewModel and LiveData ************************************
      **/
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
+
+    /**
+     ******************************* UI Component************************************
+     **/
+    implementation "com.facebook.shimmer:shimmer:$facebookShimmer"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     /**
      ******************************* Network ************************************
@@ -117,6 +116,11 @@ dependencies {
      ******************************* Unit Testing ************************************
      **/
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    //For InstantTaskExecutorRule
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
+
 }
 

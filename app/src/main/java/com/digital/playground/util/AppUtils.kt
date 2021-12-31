@@ -131,4 +131,5 @@ object AppUtils {
         }
     }
 
+    fun isListNotEmpty(list: List<Any>?) = !(list?.isEmpty() ?: true)
 }

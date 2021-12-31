@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.digital.playground.databinding.ListItemMovieBinding
 import com.digital.playground.repository.model.Movie
+import com.digital.playground.util.AppUtils
 
 class MovieAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
@@ -14,6 +15,14 @@ class MovieAdapter : RecyclerView.Adapter<MainViewHolder>() {
     fun setMovieList(movies: List<Movie>?) {
         this.movies = movies?.toMutableList()!!
         notifyDataSetChanged()
+    }
+
+
+    fun clearList() {
+        if (AppUtils.isListNotEmpty(movies)) {
+            movies.clear()
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {

@@ -2,7 +2,6 @@ package com.digital.playground.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.digital.playground.R
 import com.digital.playground.core.BaseFragment
@@ -11,6 +10,7 @@ import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.adapter.MovieAdapter
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
+import com.digital.playground.util.AppUtils
 import com.digital.playground.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,34 +29,44 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
+        if (savedInstanceState == null) {
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        }
+    }
+
+    private fun init() {
         setupRecyclerView()
         subscribeObservers()
-        viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        displayError()
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
-            navigateToFragment(R.id.movieListFragment)
+            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
     private fun setupRecyclerView() {
         adapter = MovieAdapter()
         binding.rvMoviesList.adapter = adapter
+
     }
 
 
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, { dataState ->
             when (dataState) {
-                is DataState.Success<List<Movie>> -> {
-                    displayLoading(false)
-                    populateRecyclerView(dataState.data)
-                }
                 is DataState.Loading -> {
                     displayLoading(true)
                 }
+                is DataState.Success -> {
+                    displayLoading(false)
+                    populateRecyclerView(dataState.data as List<Movie>)
+                }
                 is DataState.Error -> {
                     displayLoading(false)
-                    displayError(dataState.exception.message)
+                    viewModel.errorState.set(MovieListViewModel.ERROR)
+
                 }
             }
         })
@@ -64,25 +74,30 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
 
 
     private fun populateRecyclerView(moviesList: List<Movie>) {
-        if (moviesList.isNotEmpty())
+        if (AppUtils.isListNotEmpty(moviesList)) {
             adapter.setMovieList(moviesList)
-    }
-
-    private fun displayError(message: String?) {
-        if (message.isNullOrEmpty()) {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         } else {
-            Toast.makeText(requireContext(), "Unknown error", Toast.LENGTH_LONG).show()
+            viewModel.errorState.set(MovieListViewModel.EMPTY_DATA)
         }
     }
+
 
     private fun displayLoading(isLoading: Boolean) {
         if (isLoading) {
-            showLoading()
+            viewModel.errorState.set(MovieListViewModel.LOADING)
+            adapter.clearList()
+            showShimmer(binding.incShimmer.frameLayoutShimmer, binding.rvMoviesList)
         } else {
-            hideLoading()
+            hideShimmer(binding.incShimmer.frameLayoutShimmer, binding.rvMoviesList)
         }
-        binding.swipeRefreshLayout.isRefreshing = isLoading
+    }
+
+    private fun displayError() {
+        binding.errorView.viewModel = viewModel
+        binding.errorView.incNoNetwork.btnRetry.setOnClickListener {
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        }
+
     }
 
 }

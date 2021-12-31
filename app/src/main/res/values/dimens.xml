@@ -4,4 +4,32 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="layout_parent_margin">20dp</dimen>
+
+    <!--Project Standard Text Sizes-->
+    <dimen name="text_size_extremely_small">8sp</dimen>
+    <dimen name="text_size_zero">0sp</dimen>
+    <dimen name="text_size_tiny">10sp</dimen>
+    <dimen name="text_size_extra_small">11sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_normal">14sp</dimen>
+    <dimen name="text_size_mid">16sp</dimen>
+    <dimen name="text_size_mid_large">18sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_extra_large">26sp</dimen>
+
+    <dimen name="text_size_heading">20sp</dimen>
+    <dimen name="text_size_sub_heading">18sp</dimen>
+
+    <!--shimmer view dimensions-->
+    <dimen name="line_view_width_50_percent">150dp</dimen>
+    <dimen name="line_view_width_25_percent">50dp</dimen>
+    <dimen name="line_view_height_20">20dp</dimen>
+    <dimen name="line_view_height">8dp</dimen>
+    <dimen name="line_view_small_height">6dp</dimen>
+    <dimen name="rect_view_height">60dp</dimen>
+    <dimen name="package_detail_height">60dp</dimen>
+    <dimen name="thumb_size">60dp</dimen>
+    <dimen name="common_margin_normal">8dp</dimen>
+    <dimen name="small_margin_padding">5dp</dimen>
+
 </resources>

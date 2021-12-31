@@ -1,10 +1,10 @@
 package com.digital.playground.ui.viewmodel
 
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.repository.MovieRepository
-import com.digital.playground.repository.model.Movie
 import com.digital.playground.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -16,18 +16,25 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(private val repository: MovieRepository) :
     BaseViewModel() {
 
-    private val _dataState: MutableLiveData<DataState<List<Movie>>> = MutableLiveData()
+    companion object {
+        const val EMPTY_DATA = 1
+        const val ERROR = 2
+        const val LOADING = 0
+    }
 
-    val dataState: MutableLiveData<DataState<List<Movie>>>
-        get() = _dataState
+    val dataState: MutableLiveData<DataState> by lazy {
+        MutableLiveData<DataState>()
+    }
+
+    val errorState: ObservableInt = ObservableInt(LOADING)
 
     fun setStateEvent(mainStateEvent: MovieStateEvent) {
         viewModelScope.launch {
             when (mainStateEvent) {
                 is MovieStateEvent.GetMoviesList -> {
                     repository.getMovies()
-                        .onEach { dataState ->
-                            _dataState.value = dataState
+                        .onEach { flowData ->
+                            dataState.value = flowData
                         }
                         .launchIn(viewModelScope)
                 }
@@ -37,6 +44,10 @@ class MovieListViewModel @Inject constructor(private val repository: MovieReposi
                 }
             }
         }
+    }
+
+    fun resetLiveData() {
+        dataState.postValue(null)
     }
 }
 
