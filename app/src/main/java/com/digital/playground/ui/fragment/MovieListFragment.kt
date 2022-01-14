@@ -76,7 +76,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
                     populateRecyclerView(dataState.data as List<Movie>)
                 }
                 is DataState.Error -> {
-                    displayError();
+                    displayError()
                 }
             }
         })
@@ -106,7 +106,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
     private fun displayError() {
         displayLoading(false)
         if (AppUtils.isListNotEmpty(adapter.movies)) {
-            DialogUtil.show(requireContext(), getString(R.string.error_msg));
+            DialogUtil.show(requireContext(), getString(R.string.error_msg))
         } else {
             viewModel.errorState.set(MovieListViewModel.ERROR)
         }
