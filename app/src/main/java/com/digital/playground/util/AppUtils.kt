@@ -18,7 +18,8 @@ import com.digital.playground.core.BaseActivity
 import com.digital.playground.core.BaseViewModel
 
 /**
- * The type App utils.
+ * @Details AppUtils: Common Utility Class to handle the utils functions
+ * @Author Roshan Bhagat
  */
 object AppUtils {
     /**

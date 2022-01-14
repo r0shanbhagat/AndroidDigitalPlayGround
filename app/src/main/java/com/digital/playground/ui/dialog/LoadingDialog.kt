@@ -5,7 +5,8 @@ import android.content.Context
 import com.digital.playground.util.AppUtils.showException
 
 /**
- * LoadingDialog class is responsible for showing the Loader in User screen.
+ * @Details LoadingDialog: class is responsible for showing the Loader in User screen.
+ * @Author Roshan Bhagat
  */
 object LoadingDialog {
     private var mainDialog: Dialog? = null

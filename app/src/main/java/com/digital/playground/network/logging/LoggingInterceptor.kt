@@ -7,7 +7,10 @@ import okio.Buffer
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
-
+/**
+ * @Details LoggingInterceptor
+ * @Author Roshan Bhagat
+ */
 class LoggingInterceptor(private val mBuilder: Builder) : Interceptor {
     private val isDebug: Boolean
     private val logger: Logger?

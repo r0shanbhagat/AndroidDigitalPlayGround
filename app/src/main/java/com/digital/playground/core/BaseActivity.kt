@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
+/**
+ * @Details BaseActivity is abstract class which having the
+ * the common properties of all activity.
+ * @Author Roshan Bhagat
+ */
 abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel> : AppCompatActivity() {
     protected lateinit var viewModel: VM
     protected lateinit var binding: B

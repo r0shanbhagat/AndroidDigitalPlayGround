@@ -3,9 +3,14 @@ package com.digital.playground.repository
 import com.digital.playground.network.ApiService
 import com.digital.playground.repository.mapper.MovieMapper
 import com.digital.playground.util.DataState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/**
+ * @Details MovieRepository
+ * @Author Roshan Bhagat
+ */
 class MovieRepository
 constructor(
     private val apiService: ApiService,
@@ -13,7 +18,7 @@ constructor(
 ) {
     suspend fun getMovies(): Flow<DataState> = flow {
         emit(DataState.Loading)
-        //delay(1000)
+        delay(3000)
         try {
             val moviesData = apiService.getAllMovies()
             val movieList = movieMapper.mapFromEntityList(moviesData)

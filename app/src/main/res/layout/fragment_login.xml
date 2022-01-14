@@ -73,6 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="@drawable/selector_login_button"
+            android:textColor="@color/login_button"
             android:enabled="@{model.submitEnable}"
             android:onClick="@{(v)->login.onSubmitClick(v)}"
             android:text="@string/btnsubmit"

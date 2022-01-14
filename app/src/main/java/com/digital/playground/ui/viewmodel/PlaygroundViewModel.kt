@@ -4,7 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.digital.playground.core.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+/**
+ * @Details PlaygroundViewModel:
+ * @Author Roshan Bhagat
+ */
 class PlaygroundViewModel : BaseViewModel() {
     private var dataLoaded: Boolean = false
 

@@ -4,7 +4,10 @@ import android.text.TextUtils
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.digital.playground.BR
-
+/**
+ * @Details LoginModel
+ * @Author Roshan Bhagat
+ */
 class LoginModel : BaseObservable() {
 
     @get:Bindable

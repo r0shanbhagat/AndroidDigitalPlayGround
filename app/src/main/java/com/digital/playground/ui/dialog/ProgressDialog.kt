@@ -9,7 +9,10 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import com.digital.playground.R
 import com.digital.playground.databinding.ProgressDialogBinding
-
+/**
+ * @Details ProgressDialog:
+ * @Author Roshan Bhagat
+ */
 class ProgressDialog(context: Context) : Dialog(context) {
 
     init {

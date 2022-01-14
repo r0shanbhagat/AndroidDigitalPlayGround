@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.digital.playground.ui.dialog.ProgressDialog
@@ -18,7 +20,6 @@ import com.facebook.shimmer.ShimmerFrameLayout
  * @Details BaseFragment contains the common functionality and inherit by
  * all other fragment in project.
  * @Author Roshan Bhagat
- * @Date 07-Nov-2021
  */
 abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
     protected lateinit var binding: B
@@ -74,6 +75,17 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
     fun isLoading(): Boolean {
         return progressDialog.isShowing
     }
+
+    /**
+     * more elegant way to create kotlin ViewModel factory
+     * Eg: ViewModelProvider(this,  viewModelFactory { LoginViewModel("Robert") }).get(LoginViewModel::class.java)
+     */
+    @Suppress("UNCHECKED_CAST")
+    protected inline fun <VM : ViewModel> viewModelFactory(crossinline f: () -> VM) =
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(aClass: Class<T>): T = f() as T
+        }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

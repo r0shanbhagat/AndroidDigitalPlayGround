@@ -1,7 +1,8 @@
 package com.digital.playground.network.logging
 
 /**
- * The enum Level.
+ * @Details Level
+ * @Author Roshan Bhagat
  */
 enum class Level {
     /**

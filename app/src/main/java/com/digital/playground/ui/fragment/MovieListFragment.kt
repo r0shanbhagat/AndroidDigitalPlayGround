@@ -8,6 +8,7 @@ import com.digital.playground.core.BaseFragment
 import com.digital.playground.databinding.FragmentMovieListBinding
 import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.adapter.MovieAdapter
+import com.digital.playground.ui.dialog.DialogUtil
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
 import com.digital.playground.util.AppUtils
@@ -15,14 +16,17 @@ import com.digital.playground.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+/**
+ * @Details MovieListFragment:
+ * @Author Roshan Bhagat
+ */
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewModel>() {
     private val movieViewModel: MovieListViewModel by viewModels()
     private lateinit var adapter: MovieAdapter
 
-    override val layoutId: Int
-        get() = R.layout.fragment_movie_list
+    override val layoutId: Int = R.layout.fragment_movie_list
 
     override val viewModel: MovieListViewModel
         get() = movieViewModel
@@ -38,11 +42,11 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
     private fun init() {
         setupRecyclerView()
         subscribeObservers()
-        displayError()
+        setupListener()
 
         binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isEnabled = false
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
-            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -52,7 +56,15 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
 
     }
 
+    private fun setupListener() {
+        binding.errorView.viewModel = viewModel
+        binding.errorView.incNoNetwork.btnRetry.setOnClickListener {
+            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        }
 
+    }
+
+    @Suppress("UNCHECKED_CAST")
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, { dataState ->
             when (dataState) {
@@ -64,9 +76,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
                     populateRecyclerView(dataState.data as List<Movie>)
                 }
                 is DataState.Error -> {
-                    displayLoading(false)
-                    viewModel.errorState.set(MovieListViewModel.ERROR)
-
+                    displayError();
                 }
             }
         })
@@ -85,19 +95,23 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
     private fun displayLoading(isLoading: Boolean) {
         if (isLoading) {
             viewModel.errorState.set(MovieListViewModel.LOADING)
-            adapter.clearList()
             showShimmer(binding.incShimmer.frameLayoutShimmer, binding.rvMoviesList)
         } else {
+            binding.swipeRefreshLayout.isRefreshing = false
+            binding.swipeRefreshLayout.isEnabled = true
             hideShimmer(binding.incShimmer.frameLayoutShimmer, binding.rvMoviesList)
         }
     }
 
     private fun displayError() {
-        binding.errorView.viewModel = viewModel
-        binding.errorView.incNoNetwork.btnRetry.setOnClickListener {
-            viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        displayLoading(false)
+        if (AppUtils.isListNotEmpty(adapter.movies)) {
+            DialogUtil.show(requireContext(), getString(R.string.error_msg));
+        } else {
+            viewModel.errorState.set(MovieListViewModel.ERROR)
         }
 
     }
+
 
 }

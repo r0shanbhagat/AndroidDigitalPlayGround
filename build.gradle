@@ -28,10 +28,10 @@ ext {
     javaVersion = JavaVersion.VERSION_11
 
     kotlinVersion = '1.5.0'
-    appCompatVersion = '1.4.0'
+    appCompatVersion = '1.4.1'
     archLifecycleVersion = "2.2.0"
-    constraintLayoutVersion = '2.1.2'
-    material = '1.4.0'
+    constraintLayoutVersion = '2.1.3'
+    material = '1.5.0'
     facebookShimmer = "0.5.0"
     retrofit = "2.9.0"
     navigationVersion = "2.3.5"

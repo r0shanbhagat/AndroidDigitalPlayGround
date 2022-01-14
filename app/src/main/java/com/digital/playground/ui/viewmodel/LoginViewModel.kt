@@ -6,6 +6,10 @@ import com.digital.playground.repository.model.LoginModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/**
+ * @Details LoginViewModel:
+ * @Author Roshan Bhagat
+ */
 @HiltViewModel
 class LoginViewModel @Inject constructor(loginModel: LoginModel) : BaseViewModel() {
     val loginLiveData: MutableLiveData<LoginModel> = MutableLiveData()

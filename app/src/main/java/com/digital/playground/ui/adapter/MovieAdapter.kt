@@ -7,13 +7,16 @@ import com.bumptech.glide.Glide
 import com.digital.playground.databinding.ListItemMovieBinding
 import com.digital.playground.repository.model.Movie
 import com.digital.playground.util.AppUtils
-
+/**
+ * @Details MovieAdapter
+ * @Author Roshan Bhagat
+ */
 class MovieAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     var movies = mutableListOf<Movie>()
 
-    fun setMovieList(movies: List<Movie>?) {
-        this.movies = movies?.toMutableList()!!
+    fun setMovieList(updatedMovies: List<Movie>?) {
+        this.movies = updatedMovies?.toMutableList()!!
         notifyDataSetChanged()
     }
 

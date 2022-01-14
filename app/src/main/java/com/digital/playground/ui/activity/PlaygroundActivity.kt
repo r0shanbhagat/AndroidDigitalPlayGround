@@ -15,18 +15,18 @@ import com.digital.playground.databinding.ActivityPlaygroundBinding
 import com.digital.playground.ui.viewmodel.PlaygroundViewModel
 import com.digital.playground.util.AppUtils.showLog
 import dagger.hilt.android.AndroidEntryPoint
-
+/**
+ * @Details PlaygroundActivity
+ * @Author Roshan Bhagat
+ */
 @AndroidEntryPoint
 class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundViewModel>() {
     private val playgroundViewModel: PlaygroundViewModel by viewModels()
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    override fun createViewModel(): PlaygroundViewModel {
-        return playgroundViewModel
-    }
+    override fun createViewModel(): PlaygroundViewModel = playgroundViewModel
 
-    override val layoutResId: Int
-        get() = R.layout.activity_playground
+    override val layoutResId: Int = R.layout.activity_playground
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class PlaygroundActivity : BaseActivity<ActivityPlaygroundBinding, PlaygroundVie
     }
 
     /**
-     * After android sdk 30 onwards there's no seperate activity for Splash we need merge splash
+     * After android sdk 30 onwards there's no separate activity for Splash we need merge splash
      * activity code into this
      */
     private fun initSplash() {

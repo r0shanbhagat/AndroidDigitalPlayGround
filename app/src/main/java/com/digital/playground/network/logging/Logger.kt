@@ -3,7 +3,8 @@ package com.digital.playground.network.logging
 import com.digital.playground.util.AppUtils.showLog
 
 /**
- * The interface Logger.
+ * @Details Logger
+ * @Author Roshan Bhagat
  */
 interface Logger {
     /**

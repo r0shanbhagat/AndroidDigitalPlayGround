@@ -4,7 +4,10 @@ import com.digital.playground.repository.model.Movie
 import com.digital.playground.repository.model.MovieModel
 import com.digital.playground.util.EntityMapper
 import javax.inject.Inject
-
+/**
+ * @Details MovieMapper
+ * @Author Roshan Bhagat
+ */
 class MovieMapper
 @Inject
 constructor() : EntityMapper<MovieModel, Movie> {
