@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 /**
  * @Details MovieListViewModel:
  * @Author Roshan Bhagat
@@ -23,6 +24,7 @@ class MovieListViewModel @Inject constructor(private val repository: MovieReposi
         const val EMPTY_DATA = 1
         const val ERROR = 2
         const val LOADING = 0
+        const val LISTING_ITEM = 1
     }
 
     val dataState: MutableLiveData<DataState> by lazy {

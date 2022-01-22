@@ -1,11 +1,18 @@
 package com.digital.playground.repository.model
+
+import com.google.gson.annotations.SerializedName
+
 /**
- * @Details Movie
+ * @Details MovieModel
  * @Author Roshan Bhagat
  */
 data class Movie(
-    var title: String,
-    var body: String,
-    var image: String,
-    var category: String
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("imageUrl")
+    val imageUrl: String,
+    @SerializedName("category")
+    val category: String,
+    @SerializedName("desc")
+    val desc: String,
 )

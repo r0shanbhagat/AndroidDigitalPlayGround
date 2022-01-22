@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="itemModel"
+            type="com.digital.playground.ui.adapter.MovieListingModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
+            app:url="@{itemModel.image}"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <TextView
@@ -28,6 +32,7 @@
             android:layout_height="40dp"
             android:background="@color/white"
             android:gravity="center_vertical"
+            android:text="@{itemModel.title}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

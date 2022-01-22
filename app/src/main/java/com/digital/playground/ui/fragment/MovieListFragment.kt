@@ -6,8 +6,10 @@ import androidx.fragment.app.viewModels
 import com.digital.playground.R
 import com.digital.playground.core.BaseFragment
 import com.digital.playground.databinding.FragmentMovieListBinding
-import com.digital.playground.repository.model.Movie
-import com.digital.playground.ui.adapter.MovieAdapter
+import com.digital.playground.ui.adapter.Adapter
+import com.digital.playground.ui.adapter.ItemViewModel
+import com.digital.playground.ui.adapter.MovieListingModel
+import com.digital.playground.ui.callback.IItemClick
 import com.digital.playground.ui.dialog.DialogUtil
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
@@ -24,7 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewModel>() {
     private val movieViewModel: MovieListViewModel by viewModels()
-    private lateinit var adapter: MovieAdapter
+    private lateinit var adapter: Adapter
 
     override val layoutId: Int = R.layout.fragment_movie_list
 
@@ -51,7 +53,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
     }
 
     private fun setupRecyclerView() {
-        adapter = MovieAdapter()
+        adapter = Adapter()
         binding.rvMoviesList.adapter = adapter
 
     }
@@ -60,6 +62,13 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
         binding.errorView.viewModel = viewModel
         binding.errorView.incNoNetwork.btnRetry.setOnClickListener {
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
+        }
+
+        adapter.callback = object : IItemClick<ItemViewModel> {
+            override fun onItemClick(item: ItemViewModel) {
+                val movieModel: MovieListingModel = item as MovieListingModel
+                DialogUtil.show(requireContext(), movieModel.title)
+            }
         }
 
     }
@@ -73,7 +82,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
                 }
                 is DataState.Success -> {
                     displayLoading(false)
-                    populateRecyclerView(dataState.data as List<Movie>)
+                    populateRecyclerView(dataState.data as List<MovieListingModel>)
                 }
                 is DataState.Error -> {
                     displayError()
@@ -83,9 +92,9 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
     }
 
 
-    private fun populateRecyclerView(moviesList: List<Movie>) {
+    private fun populateRecyclerView(moviesList: List<MovieListingModel>) {
         if (AppUtils.isListNotEmpty(moviesList)) {
-            adapter.setMovieList(moviesList)
+            adapter.updateItems(moviesList)
         } else {
             viewModel.errorState.set(MovieListViewModel.EMPTY_DATA)
         }
@@ -105,7 +114,7 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding, MovieListViewMo
 
     private fun displayError() {
         displayLoading(false)
-        if (AppUtils.isListNotEmpty(adapter.movies)) {
+        if (AppUtils.isListNotEmpty(adapter.listItems)) {
             DialogUtil.show(requireContext(), getString(R.string.error_msg))
         } else {
             viewModel.errorState.set(MovieListViewModel.ERROR)

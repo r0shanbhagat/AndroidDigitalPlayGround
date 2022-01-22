@@ -133,4 +133,6 @@ object AppUtils {
     }
 
     fun isListNotEmpty(list: List<Any>?) = !(list?.isEmpty() ?: true)
+
+    fun isValidString(value: String?) = !TextUtils.isEmpty(value)
 }

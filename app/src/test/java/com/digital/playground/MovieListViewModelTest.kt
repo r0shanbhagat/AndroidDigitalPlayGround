@@ -3,7 +3,7 @@ package com.digital.playground
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.digital.playground.repository.MovieRepository
-import com.digital.playground.repository.model.MovieModel
+import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
 import com.digital.playground.util.DataState
@@ -35,7 +35,7 @@ class MovieListViewModelTest {
     private lateinit var viewStateObserver: Observer<DataState>
 
     @Mock
-    private lateinit var mockMovieResponse: List<MovieModel>
+    private lateinit var mockMovieResponse: List<Movie>
 
     @Mock
     private lateinit var mockException: Exception

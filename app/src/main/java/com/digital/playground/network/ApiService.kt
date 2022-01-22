@@ -1,6 +1,6 @@
 package com.digital.playground.network
 
-import com.digital.playground.repository.model.MovieModel
+import com.digital.playground.repository.model.Movie
 import retrofit2.http.GET
 /**
  * @Details ApiService
@@ -8,5 +8,5 @@ import retrofit2.http.GET
  */
 interface ApiService {
     @GET("/movielist.json")
-    suspend fun getAllMovies(): List<MovieModel>
+    suspend fun getAllMovies(): List<Movie>
 }
