@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.digital.playground"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -48,10 +47,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "${javaVersion}".toString()
-    }
-
-    buildFeatures {
-        dataBinding true
     }
 
     flavorDimensions 'flavour'

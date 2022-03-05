@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.hilt_version = '2.38.1'
+    ext.hilt_version = '2.41'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
+        classpath 'com.android.tools.build:gradle:7.1.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -22,9 +22,8 @@ task clean(type: Delete) {
 
 ext {
     minSdkVersion = 24
-    targetSdkVersion = 31
-    compileSdkVersion = 31
-    buildToolsVersion = "30.0.3"
+    targetSdkVersion = 32
+    compileSdkVersion = 32
     javaVersion = JavaVersion.VERSION_11
 
     kotlinVersion = '1.5.0'
@@ -34,8 +33,8 @@ ext {
     material = '1.5.0'
     facebookShimmer = "0.5.0"
     retrofit = "2.9.0"
-    navigationVersion = "2.3.5"
-    hiltVersion = "2.35.1"
+    navigationVersion = "2.4.1"
+    hiltVersion = "2.41"
     glideVersion='4.12.0'
 
     mockitoVersion= '4.0.0'
