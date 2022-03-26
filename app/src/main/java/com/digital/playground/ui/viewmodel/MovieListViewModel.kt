@@ -7,8 +7,6 @@ import com.digital.playground.core.BaseViewModel
 import com.digital.playground.repository.MovieRepository
 import com.digital.playground.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,11 +35,9 @@ class MovieListViewModel @Inject constructor(private val repository: MovieReposi
         viewModelScope.launch {
             when (mainStateEvent) {
                 is MovieStateEvent.GetMoviesList -> {
-                    repository.getMovies()
-                        .onEach { flowData ->
-                            dataState.value = flowData
-                        }
-                        .launchIn(viewModelScope)
+                    dataState.value = DataState.Loading
+                    val moviesList = repository.getMovies()
+                    dataState.value = DataState.Success(moviesList)
                 }
 
                 is MovieStateEvent.None -> {

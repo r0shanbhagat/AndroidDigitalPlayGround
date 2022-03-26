@@ -3,12 +3,12 @@ package com.digital.playground
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.digital.playground.repository.MovieRepository
+import com.digital.playground.repository.mapper.MovieMapper
 import com.digital.playground.repository.model.Movie
 import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.ui.viewmodel.MovieStateEvent
 import com.digital.playground.util.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
@@ -43,13 +43,15 @@ class MovieListViewModelTest {
     @Mock
     private lateinit var repository: MovieRepository
 
-    private val fakeSuccessFlow = flow {
-        emit(DataState.Success(mockMovieResponse))
+    private val mapper: MovieMapper by lazy {
+        MovieMapper()
     }
 
-    private val fakeFailureFlow = flow {
-        emit(DataState.Error(mockException))
-    }
+    @Mock
+    private lateinit var fakeSuccessResponse: List<MovieListViewModel>
+
+    @Mock
+    private lateinit var fakeFailureResponse: List<MovieListViewModel>
 
     private val viewModel: MovieListViewModel by lazy {
         MovieListViewModel(repository)
@@ -63,7 +65,7 @@ class MovieListViewModelTest {
     @Test
     fun testApiFetchDataSuccess() {
         runBlockingTest {
-            Mockito.`when`(repository.getMovies()).thenReturn(fakeSuccessFlow)
+            Mockito.`when`(repository.getMovies()).thenReturn(fakeSuccessResponse)
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
 
             viewStateObserver.onChanged(DataState.Loading)
@@ -74,7 +76,7 @@ class MovieListViewModelTest {
     @Test
     fun `when load movie list service throws network failure then ViewState renders failure`() {
         runBlockingTest {
-            Mockito.`when`(repository.getMovies()).thenReturn(fakeFailureFlow)
+            Mockito.`when`(repository.getMovies()).thenReturn(fakeFailureResponse)
             viewModel.setStateEvent(MovieStateEvent.GetMoviesList)
             viewStateObserver.onChanged(DataState.Loading)
             viewStateObserver.onChanged(DataState.Error(mockException))
