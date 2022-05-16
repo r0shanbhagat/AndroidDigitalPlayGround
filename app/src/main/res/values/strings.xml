@@ -1,11 +1,17 @@
 <resources>
-    <string name="btnsubmit">Submit</string>
-    <string name="last_name">Last name</string>
-    <string name="first_name">First name</string>
+    <string name="movieListFragment">Movie List</string>
+    <string name="empty_value">""</string>
     <string name="error_msg">Oops! Something went wrong. Possibly with your Network connection. Please try again.</string>
     <string name="no_internet_msg">This feature required internet connection. Please check your internet setting and try again.</string>
     <string name="retry">Retry</string>
     <string name="no_data_available">No data available.</string>
     <string name="no_connection">No Internet!</string>
 
+    <string name="btnSearch">Search</string>
+    <string name="search_hint">Enter Movie Name</string>
+
+    <string name="rating">%1$s / 10</string>
+    <string name="directors">&lt;b>Directors:&lt;/b> %1$s</string>
+    <string name="actors">&lt;b>Actors:&lt;/b> %1$s</string>
+    <string name="awards">&lt;b>Awards:&lt;/b> %1$s</string>
 </resources>

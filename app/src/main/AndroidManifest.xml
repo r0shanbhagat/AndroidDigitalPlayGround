@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.digital.playground">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,12 +12,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup">
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.activity.PlaygroundActivity"
+            android:name="com.digital.playground.ui.view.MovieActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="fullSensor"
+            android:label="Movie List"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

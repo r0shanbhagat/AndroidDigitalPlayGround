@@ -10,20 +10,20 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
-import com.digital.playground.ui.dialog.ProgressDialog
-import com.digital.playground.util.AppUtils
+import com.digital.playground.ui.view.dialog.ProgressDialog
 import com.facebook.shimmer.ShimmerFrameLayout
+
 
 /**
  * @Details BaseFragment contains the common functionality and inherit by
  * all other fragment in project.
  * @Author Roshan Bhagat
+ * @param B
+ * @param VM
+ * @constructor Create Base fragment
  */
-abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     protected lateinit var binding: B
-    private lateinit var mViewModel: VM
     private lateinit var progressDialog: ProgressDialog
 
 
@@ -33,10 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
         savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        mViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.executePendingBindings()
-        binding.setVariable(bindingVariable, mViewModel)
         progressDialog = ProgressDialog(requireContext())
 
         return binding.root
@@ -48,12 +45,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
     @get:LayoutRes
     abstract val layoutId: Int
 
-    /**
-     * Override for set view model
-     *
-     * @return view model instance
-     */
-    abstract val viewModel: VM
 
     /**
      * Override for set binding variable
@@ -62,72 +53,46 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
      */
     open val bindingVariable: Int = 0
 
+    /**
+     * Show loading
+     *
+     * @param cancelable
+     */
     fun showLoading(cancelable: Boolean = false) {
         progressDialog.show()
         progressDialog.setCanceledOnTouchOutside(cancelable)
         progressDialog.setCancelable(cancelable)
     }
 
+    /**
+     * Hide loading
+     *
+     */
     fun hideLoading() {
         progressDialog.dismiss()
     }
 
+    /**
+     * Is loading
+     *
+     * @return
+     */
     fun isLoading(): Boolean {
         return progressDialog.isShowing
     }
 
     /**
-     * more elegant way to create kotlin ViewModel factory
-     * Eg: ViewModelProvider(this,  viewModelFactory { LoginViewModel("Robert") }).get(LoginViewModel::class.java)
+     * View model factory
+     *
+     * @param VM
+     * @param f
+     * @receiver
      */
     @Suppress("UNCHECKED_CAST")
     protected inline fun <VM : ViewModel> viewModelFactory(crossinline f: () -> VM) =
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(aClass: Class<T>): T = f() as T
         }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (this::binding.isInitialized) {
-            binding.unbind()
-        }
-    }
-
-
-    /**
-     * @method used to navigate from one fragment to other with an animation and bundle data
-     * @param target is the id of fragment to be pushed into stack
-     * @param bundle is the data container from calling fragment to target
-     * @param popUpTo is nullable which is the id of fragment to which pop is required
-     * @param isInclusivePop if this is true, popUpTo fragment will be included in pop process
-     */
-    fun navigateToFragment(
-        target: Int,
-        bundle: Bundle? = null,
-        popUpTo: Int? = null,
-        isInclusivePop: Boolean = false,
-        applyAnimation: Boolean = true,
-        showEnterAnim: Boolean = true
-    ) {
-        val navOptionBuilder = NavOptions.Builder()
-
-        if (popUpTo != null) {
-            navOptionBuilder.setPopUpTo(popUpTo, isInclusivePop)
-        }
-        if (applyAnimation)
-            if (showEnterAnim) {
-                AppUtils.applyAnimation(navOptionBuilder)
-            } else {
-                AppUtils.applyReverseAnimation(navOptionBuilder)
-            }
-        val navOptions = navOptionBuilder.build()
-        Navigation.findNavController(binding.root).navigate(
-            target,
-            bundle,
-            navOptions
-        )
-    }
 
     /**
      * @method shows the shimmer view ,
@@ -158,4 +123,13 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel> : Fragment(
         layoutMain.visibility = View.VISIBLE
         shimmerViewContainer.stopShimmer()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (this::binding.isInitialized) {
+            binding.unbind()
+        }
+    }
+
+
 }

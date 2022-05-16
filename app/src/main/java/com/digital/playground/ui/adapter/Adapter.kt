@@ -40,8 +40,8 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
         holder.bind(itemModel)
     }
 
-    fun updateItems(updatedItems: List<ItemViewModel>?) {
-        updatedItems?.let {
+    fun updateItems(updatedItems: List<ItemViewModel>) {
+        updatedItems.let {
             val diffCallback = MovieDiffCallback(listItems, updatedItems)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             listItems.clear()

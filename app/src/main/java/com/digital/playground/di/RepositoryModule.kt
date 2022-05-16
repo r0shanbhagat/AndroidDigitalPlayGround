@@ -1,27 +1,36 @@
 package com.digital.playground.di
 
-import com.digital.playground.network.ApiService
-import com.digital.playground.repository.MovieRepository
-import com.digital.playground.repository.mapper.MovieMapper
+import com.digital.playground.data.MovieRepository
+import com.digital.playground.data.api.MovieService
+import com.digital.playground.data.mapper.MovieMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
+import kotlinx.coroutines.CoroutineDispatcher
+
 /**
  * @Details RepositoryModule
  * @Author Roshan Bhagat
+ * @constructor Create Repository module
  */
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
-object RepositoryModule {
+class RepositoryModule {
 
-    @Singleton
+    /**
+     * Provide movie repository
+     *
+     * @param apiService
+     * @param ioDispatcher
+     * @return
+     */
     @Provides
     fun provideMovieRepository(
-        apiService: ApiService,
-        movieMapper: MovieMapper
-    ): MovieRepository {
-        return MovieRepository(apiService, movieMapper)
-    }
+        apiService: MovieService,
+        movieMapper: MovieMapper,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): com.digital.playground.contract.Repository =
+        MovieRepository(apiService, movieMapper, ioDispatcher)
+
 }

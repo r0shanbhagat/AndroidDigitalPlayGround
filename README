@@ -1,0 +1,76 @@
+	 	 Android Application Clean Architecture
+
+src
+	├─ Contract  (Common Interface for the application resides here)
+                      ├─ repository (IRepository interface implemented by Repository Implementer)
+			          ├─ EntityMapper (Mapper convert the response to Pojo)
+
+	├─ Core     (Base/Core code related to the application resides here)
+                      ├─ activity (Base Activity resides here)
+                      ├─ fragment (Base Fragment resides here)
+                      ├─ viewmodel (Base ViewModel resides here)
+
+	├─ Data     (api, mapper, model class of application resides here)
+                      ├─ api (API EndPoints for n/w calls)
+                      ├─ mapper (Convert the n/w response into Bean)
+                      ├─ model (Pojo class for API response reside here)
+                      ├─ repository Design pattern used to separate the ViewModel and API service call
+
+    ├─ di       (All the API related to dependency injection)
+                      ├─ appModule (Application level module and provider for App level data)
+                      ├─ dispatcherModule (Application level Coroutine dispatcher data)
+                      ├─ fragmentModule (Provider for fragment UI)
+                      ├─ networkModule (Networking related module and provides all API for N/W)
+                      ├─ repositoryModule (Repository design Pattern related code)
+
+	├─ ui
+                     ├─ adapter (Code related to adapter for list)
+                     ├─ callback (Interface for communication)
+                     ├─ view (View for App)
+                         ├─ dialog (Dialog)
+                         ├─ fragment (fragments)
+                         ├─ activity (activity)
+                     ├─ viewmodel (Contains app level viewmodel)
+
+    ├─ util
+                     ├─ AppUtils (Utility class contains util methods)
+                     ├─ BindingAdapters (BindingAdapter is applied to methods that are used to manipulate how values with expressions are set to views.)
+                     ├─ Constants (Store constant files for entire App)
+                     ├─ ContextExt (Extension function for context)
+                     ├─ DialogUtil (Dialog Util)
+                     ├─ NoInternetException (Custom Exception class to handle NoInternetException Log)
+                     ├─ ViewExt (Extension function for view)
+                     ├─ ViewState (Holder for MVI Architecture)
+
+OmDbApp
+
+Assignment Output 
+
+1. Enter Movie Name:
+O/p: Based on User entered movie fetch the data from service.
+
+2. Show List of Movie:
+O/p: Successfully Returned and List of movies and display on the screen.
+
+3. Show Detail Screen:
+O/p: Tapping on individual movies now we're able to see the details of movie
+
+
+Tech Stack
+
+[Kotlin-DSL, LiveData, DataBinding, OkHttp3, Hilt, Retrofit2, Navigation Architecture , MVVM (Model-View-ViewModel) + MVI (ViewState-State Reducer) , Jetpack component
+
+Other Best Practices Used ::
+
+Followed Google Coding Guidelines and Clean Architecture
+Used MVI design pattern with Repository , This separation of concerns allows the data layer to be used on multiple screens, share information between different parts of the app, and reproduce business logic outside of the UI for unit testing.
+Used Hilt ,Navigation Architecture, Coroutine etc
+Clean separation b/w UI layer, data layer and business layer using advance dependency injections
+All network related calls has been decoupled from modules and  made through API service Class. Its being used for code extensibility.
+(Network connection can be made here though Retrofit or OKHttp3)
+Used Android Jetpack component to match with google coding standard
+Easier to write unit test case
+Handled Error scenario partially due to limited time slot.
+
+#REF
+for "data" package->https://github.com/android/architecture-samples/tree/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/data
