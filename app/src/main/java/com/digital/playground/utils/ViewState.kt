@@ -5,7 +5,7 @@ package com.digital.playground.utils
  * the business logic in more clear way
  * @Author Roshan Bhagat
  */
-sealed class ViewState {
+open class ViewState {
 
     /**
      * Success

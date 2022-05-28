@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.digital.playground.R
+import com.digital.playground.core.BaseFragment
 import com.digital.playground.data.model.Movie
 import com.digital.playground.databinding.FragmentMovieDetailBinding
 import com.digital.playground.ui.adapter.MovieModel
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit
 @AndroidEntryPoint
 class DetailFragment(
     override val layoutId: Int = R.layout.fragment_movie_detail
-) : com.digital.playground.core.BaseFragment<FragmentMovieDetailBinding>() {
+) : BaseFragment<FragmentMovieDetailBinding>() {
 
     private val viewModel by viewModels<DetailViewModel>()
 

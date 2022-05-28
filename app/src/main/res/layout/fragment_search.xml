@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/selector_login_button"
+            android:background="@drawable/btn_login"
             android:enabled="@{model.submitEnable}"
             android:onClick="@{()->search.onSubmitClick()}"
             android:text="@string/btnSearch"

@@ -1,6 +1,7 @@
 package com.digital.playground.di
 
-import com.digital.playground.data.MovieRepository
+import com.digital.playground.contract.Repository
+import com.digital.playground.data.MoviesRepository
 import com.digital.playground.data.api.MovieService
 import com.digital.playground.data.mapper.MovieMapper
 import dagger.Module
@@ -30,7 +31,7 @@ class RepositoryModule {
         apiService: MovieService,
         movieMapper: MovieMapper,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): com.digital.playground.contract.Repository =
-        MovieRepository(apiService, movieMapper, ioDispatcher)
+    ): Repository =
+        MoviesRepository(apiService, movieMapper, ioDispatcher)
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.digital.playground.contract.Repository
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: com.digital.playground.contract.Repository
+    private val repository: Repository
 ) : BaseViewModel() {
 
     private val _movieResult = MutableLiveData<ViewState>()

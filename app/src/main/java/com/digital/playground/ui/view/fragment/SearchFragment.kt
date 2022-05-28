@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.digital.playground.R
+import com.digital.playground.core.BaseFragment
 import com.digital.playground.databinding.FragmentSearchBinding
 import com.digital.playground.ui.viewmodel.SearchViewModel
 import com.digital.playground.utils.applyAnimation
@@ -18,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SearchFragment(override val layoutId: Int = R.layout.fragment_search) :
-    com.digital.playground.core.BaseFragment<FragmentSearchBinding>() {
+    BaseFragment<FragmentSearchBinding>() {
     private val viewModel: SearchViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,38 +1,33 @@
 package com.digital.playground.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.digital.playground.contract.Repository
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * @Details Movie parse view model : Viewmodel to handle all the business logic
  * @Author Roshan Bhagat
+ * StateFlow :https://developer.android.com/topic/architecture/ui-layer#views
  * @property movieContentUseCase: A bridge object to communicate b/w your repo and data source
  * @constructor
  */
 @HiltViewModel
 class MovieViewModel @Inject constructor(
-    private val repository: com.digital.playground.contract.Repository
+    private val repository: Repository
 ) : BaseViewModel() {
 
-    private val _viewState: MutableLiveData<ViewState> by lazy {
-        MutableLiveData<ViewState>()
+    private val _uiState: MutableStateFlow<ViewState> by lazy {
+        MutableStateFlow(ViewState())
     }
+    val uiState: StateFlow<ViewState> = _uiState.asStateFlow()
 
     private var moviesList: ArrayList<MovieModel> = ArrayList()
-
-
-    val viewState: LiveData<ViewState> = _viewState
-
 
     /**
      * Set state intent
@@ -63,18 +58,18 @@ class MovieViewModel @Inject constructor(
             repository
                 .getSearchResultData(searchTitle, 1)
                 .onStart {
-                    _viewState.postValue(ViewState.Loading)
+                    _uiState.emit(ViewState.Loading)
                 }
                 .catch { exception ->
-                    _viewState.postValue(ViewState.Failure(exception))
+                    _uiState.emit(ViewState.Failure(exception))
                 }
-                .collect {
+                .collect { it ->
                     moviesList.addAll(it)
                     moviesList.sortByDescending {
                         it.year
                     }
 
-                    _viewState.postValue(ViewState.Success(moviesList))
+                    _uiState.emit(ViewState.Success(moviesList))
                 }
 
         }

@@ -3,10 +3,14 @@ package com.digital.playground.ui.view.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.digital.playground.R
+import com.digital.playground.core.BaseFragment
 import com.digital.playground.databinding.FragmentMovieListBinding
 import com.digital.playground.ui.adapter.Adapter
 import com.digital.playground.ui.adapter.ItemViewModel
@@ -19,6 +23,8 @@ import com.digital.playground.utils.applyAnimation
 import com.digital.playground.utils.isListNotEmpty
 import com.digital.playground.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -32,11 +38,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MovieListFragment(
     override val layoutId: Int = R.layout.fragment_movie_list
-) : com.digital.playground.core.BaseFragment<FragmentMovieListBinding>() {
+) : BaseFragment<FragmentMovieListBinding>() {
 
     private val viewModel: MovieViewModel by viewModels()
     private val safeArgs: MovieListFragmentArgs by navArgs()
-
 
     @Inject
     lateinit var movieAdapter: Adapter
@@ -99,28 +104,33 @@ class MovieListFragment(
      * subscribeObservers is an Observers function for mutable live data
      */
     private fun subscribeObservers() {
-        viewModel.viewState.observe(viewLifecycleOwner) { dataState ->
-            when (dataState) {
-                is ViewState.Loading -> {
-                    showLoading()
-                }
-                is ViewState.Success -> {
-                    hideLoading()
-                    val moviesList: List<MovieModel> = dataState.data as List<MovieModel>
-                    if (isListNotEmpty(moviesList)) {
-                        movieAdapter.updateItems(moviesList)
-                    }
-                }
-                is ViewState.Failure -> {
-                    hideLoading()
-                    context?.showToast(getString(R.string.error_msg))
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    when (it) {
+                        is ViewState.Loading -> {
+                            showLoading()
+                        }
+                        is ViewState.Success -> {
+                            hideLoading()
+                            val moviesList: List<MovieModel> = it.data as List<MovieModel>
+                            if (isListNotEmpty(moviesList)) {
+                                movieAdapter.updateItems(moviesList)
+                            }
+                        }
+                        is ViewState.Failure -> {
+                            hideLoading()
+                            context?.showToast(getString(R.string.error_msg))
 
+                        }
+                    }
                 }
             }
         }
     }
-
-
 }
+
+
+
 
 

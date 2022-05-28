@@ -15,7 +15,7 @@ data class MovieModel(
 
 ) : BaseObservable(), Parcelable, ItemViewModel {
 
-    override val layoutId: Int = R.layout.list_item_movie
+    override val layoutId: Int = R.layout.item_movie_card
 
     override val viewType: Int = 0
 }

@@ -74,3 +74,6 @@ Handled Error scenario partially due to limited time slot.
 
 #REF
 for "data" package->https://github.com/android/architecture-samples/tree/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/data
+For Architecture: https://developer.android.com/topic/architecture/data-layer#architecture
+For UI_state : https://developer.android.com/topic/architecture/ui-layer#views
+Coroutine Best Practice: https://developer.android.com/kotlin/coroutines/coroutines-best-practices#coroutines-data-layer
