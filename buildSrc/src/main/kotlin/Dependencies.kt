@@ -17,7 +17,8 @@ object Deps {
     val multidex by lazy { "androidx.multidex:multidex:${Versions.multidex}" }
     val navigationFragment by lazy { "androidx.navigation:navigation-fragment-ktx:${Versions.navigationArch}" }
     val navigationUI by lazy { "androidx.navigation:navigation-ui-ktx:${Versions.navigationArch}" }
-    val lifecycle by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}" }
+    val lifecycleExt by lazy { "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExt}" }
+    val lifecycleRuntime by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntime}" }
     val retrofit by lazy { "com.squareup.retrofit2:retrofit:${Versions.retrofit}" }
     val retrofitConverter by lazy { "com.squareup.retrofit2:converter-gson:${Versions.retrofit}" }
     val retrofitLogger by lazy { "com.squareup.okhttp3:logging-interceptor:${Versions.retrofitLogger}" }

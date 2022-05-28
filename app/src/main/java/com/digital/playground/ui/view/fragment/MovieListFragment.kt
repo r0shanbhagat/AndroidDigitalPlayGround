@@ -11,12 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.digital.playground.R
 import com.digital.playground.core.BaseFragment
+import com.digital.playground.data.MoviesRepository
 import com.digital.playground.databinding.FragmentMovieListBinding
 import com.digital.playground.ui.adapter.Adapter
 import com.digital.playground.ui.adapter.ItemViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.ui.callback.IItemClick
-import com.digital.playground.ui.viewmodel.MovieStateEvent
 import com.digital.playground.ui.viewmodel.MovieViewModel
 import com.digital.playground.utils.ViewState
 import com.digital.playground.utils.applyAnimation
@@ -39,19 +39,22 @@ import javax.inject.Inject
 class MovieListFragment(
     override val layoutId: Int = R.layout.fragment_movie_list
 ) : BaseFragment<FragmentMovieListBinding>() {
-
-    private val viewModel: MovieViewModel by viewModels()
     private val safeArgs: MovieListFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var repository: MoviesRepository
 
     @Inject
     lateinit var movieAdapter: Adapter
 
+    private val viewModel by viewModels<MovieViewModel> {
+        viewModelFactory { MovieViewModel(repository, safeArgs.searchText) }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        if (savedInstanceState == null) {
-            fetchMovieList()
-        }
     }
 
     /**
@@ -73,7 +76,7 @@ class MovieListFragment(
          * MVI approach provides more flexibility to perform multiple operation/intent from same state .
          * This way we can remove number of boilerplate code from our repo and easily achieve the asynchronous Programming
          */
-        viewModel.setStateIntent(MovieStateEvent.GetMoviesList(safeArgs.searchText))
+        //  viewModel.setStateIntent(MovieStateEvent.GetMoviesList(safeArgs.searchText))
     }
 
 

@@ -5,21 +5,18 @@ import com.digital.playground.contract.Repository
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.utils.ViewState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * @Details Movie parse view model : Viewmodel to handle all the business logic
  * @Author Roshan Bhagat
  * StateFlow :https://developer.android.com/topic/architecture/ui-layer#views
- * @property movieContentUseCase: A bridge object to communicate b/w your repo and data source
  * @constructor
  */
-@HiltViewModel
-class MovieViewModel @Inject constructor(
-    private val repository: Repository
+class MovieViewModel(
+    private val repository: Repository,
+    searchText: String
 ) : BaseViewModel() {
 
     private val _uiState: MutableStateFlow<ViewState> by lazy {
@@ -29,12 +26,16 @@ class MovieViewModel @Inject constructor(
 
     private var moviesList: ArrayList<MovieModel> = ArrayList()
 
+    init {
+        setStateIntent(MovieStateEvent.GetMoviesList(searchText))
+    }
+
     /**
      * Set state intent
      *
      * @param mainStateEvent
      */
-    fun setStateIntent(mainStateEvent: MovieStateEvent) {
+    private fun setStateIntent(mainStateEvent: MovieStateEvent) {
         when (mainStateEvent) {
             is MovieStateEvent.GetMoviesList -> {
                 getSearchResultData(mainStateEvent.data.toString())

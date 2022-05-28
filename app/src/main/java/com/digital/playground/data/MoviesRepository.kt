@@ -7,9 +7,8 @@ import com.digital.playground.data.mapper.MovieMapper
 import com.digital.playground.data.model.Movie
 import com.digital.playground.di.IoDispatcher
 import com.digital.playground.ui.adapter.MovieModel
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.android.scopes.FragmentScoped
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -23,7 +22,7 @@ import javax.inject.Inject
  * @property ioDispatcher
  * @constructor Create [MoviesRepository]
  */
-@ViewModelScoped
+@FragmentScoped
 class MoviesRepository @Inject constructor(
     override val apiService: MovieService,
     private val movieMapper: MovieMapper,
@@ -50,7 +49,6 @@ class MoviesRepository @Inject constructor(
             val searchResults = apiService.getSearchResultData(
                 searchTitle, BuildConfig.API_KEY, pageIndex
             )
-            delay(5000)
             emit(movieMapper.mapFromEntityList(searchResults))
         }.flowOn(ioDispatcher)
     }

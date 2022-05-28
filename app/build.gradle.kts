@@ -103,7 +103,8 @@ dependencies {
     /**
      ******************************* ViewModel and LiveData ************************************
      **/
-    implementation(Deps.lifecycle)
+    implementation(Deps.lifecycleExt)
+    implementation(Deps.lifecycleRuntime)
 
     /**
      ******************************* Network ************************************
