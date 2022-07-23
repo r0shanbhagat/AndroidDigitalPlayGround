@@ -1,0 +1,114 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.playground.movieapp"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+    }
+
+    flavorDimensions.add("environment")
+    productFlavors {
+        create("dev") {
+            resValue("string", "app_name", "Movie App Dev")
+            buildConfigField("String", "BASE_URL", "\"api.themoviedb.org\"")
+            buildConfigField("String", "API_KEY", "\"c9856d0cb57c3f14bf75bdc6c063b8f3\"")
+
+        }
+        create("production") {
+            resValue("string", "app_name", "Movie App")
+            buildConfigField("String", "BASE_URL", "api.themoviedb.org")
+            buildConfigField("String", "API_KEY", "\"c9856d0cb57c3f14bf75bdc6c063b8f3\"")
+
+        }
+    }
+}
+
+dependencies {
+    /**
+     ******************************* Android Common Component***************************************
+     **/
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
+
+    /**
+     ******************************* UI Component************************************
+     **/
+    implementation "com.facebook.shimmer:shimmer:$shimmer"
+
+    /**
+     ******************************* Navigation Architecture ***************************************
+     **/
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationArch"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationArch"
+
+    /**
+     ******************************* ViewModel and LiveData ****************************************
+     **/
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+
+    /**
+     ******************************* Network-KTOR **************************************************
+     **/
+    implementation "io.ktor:ktor-client-core:1.6.8"
+    implementation "io.ktor:ktor-client-android:1.6.5"
+    implementation "io.ktor:ktor-client-serialization:1.6.8"
+    implementation "io.ktor:ktor-client-logging:1.6.5"
+    implementation "ch.qos.logback:logback-classic:1.2.6" //?
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization"
+
+    /**
+     ******************************* DI ************************************************************
+     **/
+    // dagger hilt
+    implementation "com.google.dagger:hilt-android:2.42"
+    kapt "com.google.dagger:hilt-android-compiler:2.42"
+
+    /**
+     ******************************* Image Loading *************************************************
+     **/
+    implementation "io.coil-kt:coil-compose:$coil"
+
+    /**
+     ******************************* Unit Testing ************************************
+     **/
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    //For InstantTaskExecutorRule
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+
+
+}
