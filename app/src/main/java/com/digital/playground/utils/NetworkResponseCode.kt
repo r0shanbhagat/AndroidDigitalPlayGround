@@ -1,6 +1,6 @@
 package com.digital.playground.utils
 
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import java.nio.channels.UnresolvedAddressException
 
 class NetworkResponseCode {

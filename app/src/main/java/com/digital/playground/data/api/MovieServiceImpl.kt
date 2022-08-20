@@ -3,6 +3,7 @@ package com.digital.playground.data.api
 import com.digital.playground.data.dto.MovieDetailModel
 import com.digital.playground.data.dto.SearchResults
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 
 
@@ -17,9 +18,9 @@ class MovieServiceImpl(private val client: HttpClient) : MovieService {
     }
 
     override suspend fun discoverMovie(pageIndex: Int): SearchResults =
-        client.get(DISCOVER_MOVIE.format(pageIndex))
+        client.get(DISCOVER_MOVIE.format(pageIndex)).body()
 
     override suspend fun getMovieDetail(id: Int): MovieDetailModel =
-        client.get(GET_MOVIE_DETAIL.format(id))
+        client.get(GET_MOVIE_DETAIL.format(id)).body()
 
 }

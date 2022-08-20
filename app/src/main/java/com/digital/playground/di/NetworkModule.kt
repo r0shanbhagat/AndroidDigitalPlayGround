@@ -1,5 +1,6 @@
 package com.digital.playground.di
 
+import android.util.Log
 import com.digital.playground.data.api.MovieService
 import com.digital.playground.data.api.MovieServiceImpl
 import com.playground.movieapp.BuildConfig
@@ -9,12 +10,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 /**
@@ -33,28 +35,29 @@ class NetworkModule {
         install(DefaultRequest) {
             accept(ContentType.Application.Json)
             contentType(ContentType.Application.Json)
-            parameter("api_key", BuildConfig.API_KEY)
-            host = BuildConfig.BASE_URL
             url {
                 protocol = URLProtocol.HTTPS
+                host = BuildConfig.BASE_URL
+                parameters.append("api_key", BuildConfig.API_KEY)
             }
         }
 
-        if (BuildConfig.DEBUG) {
-            install(Logging) {
-                logger = Logger.ANDROID
-                level = LogLevel.ALL
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+                encodeDefaults = false
+            })
+        }
+
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Log.v("Network", message)
+                }
+
             }
-        }
-
-        val json = kotlinx.serialization.json.Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-            encodeDefaults = false
-        }
-
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(json)
+            level = LogLevel.ALL
         }
     }
 

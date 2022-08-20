@@ -27,8 +27,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -81,10 +81,12 @@ dependencies {
     /**
      ******************************* Network-KTOR **************************************************
      **/
-    implementation "io.ktor:ktor-client-core:1.6.8"
-    implementation "io.ktor:ktor-client-android:1.6.5"
-    implementation "io.ktor:ktor-client-serialization:1.6.8"
-    implementation "io.ktor:ktor-client-logging:1.6.5"
+    implementation "io.ktor:ktor-client-core:$ktor"
+    implementation "io.ktor:ktor-client-android:$ktor"
+    implementation "io.ktor:ktor-client-serialization:$ktor"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor"
+    implementation "io.ktor:ktor-client-logging:$ktor"
     implementation "ch.qos.logback:logback-classic:1.2.6" //?
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization"
 
@@ -92,8 +94,8 @@ dependencies {
      ******************************* DI ************************************************************
      **/
     // dagger hilt
-    implementation "com.google.dagger:hilt-android:2.42"
-    kapt "com.google.dagger:hilt-android-compiler:2.42"
+    implementation "com.google.dagger:hilt-android:2.43.2"
+    kapt 'com.google.dagger:hilt-android-compiler:2.43.2'
 
     /**
      ******************************* Image Loading *************************************************
@@ -104,11 +106,11 @@ dependencies {
      ******************************* Unit Testing ************************************
      **/
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'org.mockito:mockito-inline:4.7.0'
     //For InstantTaskExecutorRule
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     //For runBlockingTest, CoroutineDispatcher etc.
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
 
 }
