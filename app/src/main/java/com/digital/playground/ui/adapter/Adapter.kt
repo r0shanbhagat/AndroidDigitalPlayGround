@@ -54,8 +54,8 @@ class Adapter : RecyclerView.Adapter<ViewHolder>() {
 }
 
 class ViewHolder constructor(
-    val binding: ViewDataBinding,
-    var callback: IItemClick<ItemViewModel>?
+    private val binding: ViewDataBinding,
+    private var callback: IItemClick<ItemViewModel>?
 ) : RecyclerView.ViewHolder(binding.root) {
     private lateinit var itemModel: ItemViewModel
 

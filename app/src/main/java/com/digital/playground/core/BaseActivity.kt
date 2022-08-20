@@ -16,7 +16,7 @@ import androidx.databinding.ViewDataBinding
  */
 abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel?> :
     AppCompatActivity() {
-    protected var viewModel: VM? = null
+    private var viewModel: VM? = null
     protected lateinit var binding: B
 
     override fun onCreate(savedInstanceState: Bundle?) {

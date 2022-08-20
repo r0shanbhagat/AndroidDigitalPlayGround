@@ -1,21 +1,20 @@
 package com.digital.playground.di
 
-import android.content.Context
-import com.digital.playground.BuildConfig
 import com.digital.playground.data.api.MovieService
-import com.digital.playground.utils.NoInternetException
-import com.digital.playground.utils.isNetworkConnected
-import com.digital.playground.utils.showLog
+import com.digital.playground.data.api.MovieServiceImpl
+import com.playground.movieapp.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import javax.inject.Singleton
 
 /**
@@ -27,86 +26,40 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    /**
-     * Provide log interceptor
-     *
-     * @return
-     */
-    @Singleton
     @Provides
-    fun provideLogInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor { message ->
-            showLog("OkHttp", message)
-        }.apply {
-            level = when {
-                BuildConfig.DEBUG -> HttpLoggingInterceptor.Level.BODY
-                else -> HttpLoggingInterceptor.Level.NONE
+    @Singleton
+    fun provideHttpClient(): HttpClient = HttpClient(Android) {
+        //Header
+        install(DefaultRequest) {
+            accept(ContentType.Application.Json)
+            contentType(ContentType.Application.Json)
+            parameter("api_key", BuildConfig.API_KEY)
+            host = BuildConfig.BASE_URL
+            url {
+                protocol = URLProtocol.HTTPS
             }
         }
-    }
 
-    /**
-     * Provide error interceptor
-     *
-     * @param context
-     * @return
-     */
-    @Singleton
-    @Provides
-    fun provideErrorInterceptor(@ApplicationContext context: Context): Interceptor {
-        return Interceptor { chain: Interceptor.Chain ->
-            if (!isNetworkConnected(context)) {
-                throw NoInternetException(
-                    "",
-                    Throwable(NoInternetException::class.java.toString())
-                )
+        if (BuildConfig.DEBUG) {
+            install(Logging) {
+                logger = Logger.ANDROID
+                level = LogLevel.ALL
             }
-            val request = chain.request()
-            chain.proceed(request)
+        }
+
+        val json = kotlinx.serialization.json.Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            encodeDefaults = false
+        }
+
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(json)
         }
     }
 
-
-    /**
-     * Provide ok http
-     *
-     * @param error
-     * @param logging
-     * @return
-     */
-    @Singleton
     @Provides
-    fun provideOkHttp(error: Interceptor, logging: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder().run {
-            addInterceptor(logging)
-            addInterceptor(error)
-            build()
-        }
-
-    /**
-     * Provide retrofit
-     *
-     * @param client
-     * @return
-     */
     @Singleton
-    @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder().run {
-        addConverterFactory(GsonConverterFactory.create())
-        baseUrl(BuildConfig.BASE_URL)
-        client(client)
-        build()
-    }
+    fun provideApi(client: HttpClient): MovieService = MovieServiceImpl(client)
 
-
-    /**
-     * Provide api
-     *
-     * @param retrofit
-     * @return
-     */
-    @Singleton
-    @Provides
-    fun provideApi(retrofit: Retrofit): MovieService =
-        retrofit.create(MovieService::class.java)
 }

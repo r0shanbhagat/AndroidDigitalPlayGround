@@ -3,10 +3,10 @@ package com.digital.playground.ui.view
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.digital.playground.R
 import com.digital.playground.core.BaseActivity
 import com.digital.playground.core.BaseViewModel
-import com.digital.playground.databinding.ActivityMovieBinding
+import com.playground.movieapp.R
+import com.playground.movieapp.databinding.ActivityMovieBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 

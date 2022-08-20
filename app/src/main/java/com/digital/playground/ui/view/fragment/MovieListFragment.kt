@@ -8,22 +8,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.digital.playground.R
 import com.digital.playground.core.BaseFragment
-import com.digital.playground.data.MoviesRepository
-import com.digital.playground.databinding.FragmentMovieListBinding
 import com.digital.playground.ui.adapter.Adapter
 import com.digital.playground.ui.adapter.ItemViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.ui.callback.IItemClick
-import com.digital.playground.ui.viewmodel.MovieViewModel
+import com.digital.playground.ui.viewmodel.MovieListViewModel
 import com.digital.playground.utils.ViewState
 import com.digital.playground.utils.applyAnimation
+import com.digital.playground.utils.ext.showToast
 import com.digital.playground.utils.isListNotEmpty
-import com.digital.playground.utils.showToast
+import com.playground.movieapp.R
+import com.playground.movieapp.databinding.FragmentMovieListBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,18 +36,11 @@ import javax.inject.Inject
 class MovieListFragment(
     override val layoutId: Int = R.layout.fragment_movie_list
 ) : BaseFragment<FragmentMovieListBinding>() {
-    private val safeArgs: MovieListFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var repository: MoviesRepository
+    private val viewModel by viewModels<MovieListViewModel>()
 
     @Inject
     lateinit var movieAdapter: Adapter
-
-    private val viewModel by viewModels<MovieViewModel> {
-        viewModelFactory { MovieViewModel(repository, safeArgs.searchText) }
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,19 +54,6 @@ class MovieListFragment(
         setupRecyclerView()
         subscribeObservers()
         setupListener()
-    }
-
-
-    /**
-     * Fetch movie content
-     *
-     */
-    private fun fetchMovieList() {
-        /**
-         * MVI approach provides more flexibility to perform multiple operation/intent from same state .
-         * This way we can remove number of boilerplate code from our repo and easily achieve the asynchronous Programming
-         */
-        //  viewModel.setStateIntent(MovieStateEvent.GetMoviesList(safeArgs.searchText))
     }
 
 
@@ -96,8 +73,11 @@ class MovieListFragment(
             override fun onItemClick(item: ItemViewModel) {
                 applyAnimation(NavOptions.Builder())
                 val movie: MovieModel = item as MovieModel
-                val action = MovieListFragmentDirections.actionSearchFragmentToDetailFragment(movie)
-                findNavController().navigate(action)
+                findNavController().navigate(
+                    MovieListFragmentDirections.actionMovieListFragmentToDetailFragment(
+                        movie.id
+                    )
+                )
             }
         }
 

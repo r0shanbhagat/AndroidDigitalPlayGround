@@ -18,7 +18,7 @@ open class ViewState {
     /**
      * Error
      *
-     * @property exception
+     * @property throwable
      * @constructor Create  Error
      */
     data class Failure(val throwable: Throwable) : ViewState()

@@ -6,8 +6,8 @@ import android.net.NetworkCapabilities
 import android.text.TextUtils
 import android.util.Log
 import androidx.navigation.NavOptions
-import com.digital.playground.BuildConfig
-import com.digital.playground.R
+import com.playground.movieapp.BuildConfig
+import com.playground.movieapp.R
 
 /**
  * @Details AppUtils: Common Utility Class to handle the utils functions

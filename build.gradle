@@ -30,10 +30,10 @@ ext {
     compileSdkVersion = 32
     targetSdkVersion = 32
 
-    appcompat = "1.4.2"
+    appcompat = "1.5.0"
     material = "1.6.1"
     constraintlayout = "2.1.4"
-    navigationArch = "2.5.0"
+    navigationArch = "2.5.1"
     lifecycle = "2.2.0"
     hilt = "2.42"
     serialization = "1.3.2"

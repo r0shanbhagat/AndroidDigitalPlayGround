@@ -33,5 +33,4 @@ class RepositoryModule {
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): Repository =
         MoviesRepository(apiService, movieMapper, ioDispatcher)
-
 }

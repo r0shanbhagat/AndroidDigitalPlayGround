@@ -1,13 +1,12 @@
 package com.digital.playground.data
 
-import com.digital.playground.BuildConfig
 import com.digital.playground.contract.Repository
 import com.digital.playground.data.api.MovieService
+import com.digital.playground.data.dto.MovieDetailModel
 import com.digital.playground.data.mapper.MovieMapper
-import com.digital.playground.data.model.Movie
 import com.digital.playground.di.IoDispatcher
 import com.digital.playground.ui.adapter.MovieModel
-import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +21,7 @@ import javax.inject.Inject
  * @property ioDispatcher
  * @constructor Create [MoviesRepository]
  */
-@FragmentScoped
+@ViewModelScoped
 class MoviesRepository @Inject constructor(
     override val apiService: MovieService,
     private val movieMapper: MovieMapper,
@@ -37,29 +36,16 @@ class MoviesRepository @Inject constructor(
      * might trim down the SearchResults from the network in order to expose an Movie model
      * class to the domain and UI layers: With Helper of Mapper
      *
-     * @param searchTitle
-     * @param pageIndex
      * @return
      */
-    override suspend fun getSearchResultData(
-        searchTitle: String,
-        pageIndex: Int
-    ): Flow<List<MovieModel>> {
-        return flow {
-            val searchResults = apiService.getSearchResultData(
-                searchTitle, BuildConfig.API_KEY, pageIndex
-            )
-            emit(movieMapper.mapFromEntityList(searchResults))
-        }.flowOn(ioDispatcher)
-    }
+    override suspend fun discoverMovies(pageIndex: Int): Flow<List<MovieModel>> = flow {
+        val searchResults = apiService.discoverMovie(pageIndex)
+        emit(movieMapper.mapFromEntityList(searchResults))
+    }.flowOn(ioDispatcher)
+
+    override suspend fun getMovieDetail(movieId: Int): Flow<MovieDetailModel> = flow {
+        emit(apiService.getMovieDetail(movieId))
+    }.flowOn(ioDispatcher)
 
 
-    override suspend fun getMovieDetailsData(imdbId: String): Flow<Movie> {
-        return flow {
-            val movie = apiService.getMovieDetailsData(
-                imdbId, BuildConfig.API_KEY
-            )
-            emit(movie)
-        }.flowOn(ioDispatcher)
-    }
 }

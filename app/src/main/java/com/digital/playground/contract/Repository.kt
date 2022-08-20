@@ -1,7 +1,7 @@
 package com.digital.playground.contract
 
 import com.digital.playground.data.api.MovieService
-import com.digital.playground.data.model.Movie
+import com.digital.playground.data.dto.MovieDetailModel
 import com.digital.playground.ui.adapter.MovieModel
 import kotlinx.coroutines.flow.Flow
 
@@ -18,20 +18,21 @@ interface Repository {
 
     val apiService: MovieService
 
+
     /**
-     * Get search result data.
+     * Performs a GET call to obtain a paginated list of movies
      *
-     * @param searchTitle Search title
      * @param pageIndex Page index
      * @return
      */
-    suspend fun getSearchResultData(searchTitle: String, pageIndex: Int): Flow<List<MovieModel>>
+    suspend fun discoverMovies(pageIndex: Int): Flow<List<MovieModel>>
 
     /**
-     * Get movie details data.
+     * Base on Movies Id fetch the detail of movie
      *
-     * @param imdbId Imdb id
+     * @param movieId movieId id
      * @return [Flow]
      */
-    suspend fun getMovieDetailsData(imdbId: String): Flow<Movie>
+    suspend fun getMovieDetail(movieId: Int): Flow<MovieDetailModel>
+
 }

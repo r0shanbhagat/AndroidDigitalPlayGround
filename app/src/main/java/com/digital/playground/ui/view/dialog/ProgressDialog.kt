@@ -7,8 +7,8 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
-import com.digital.playground.R
-import com.digital.playground.databinding.ProgressDialogBinding
+import com.playground.movieapp.R
+import com.playground.movieapp.databinding.ProgressDialogBinding
 
 
 /**
