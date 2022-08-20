@@ -14,8 +14,7 @@ import androidx.databinding.ViewDataBinding
  * @param VM
  * @constructor Create Base activity
  */
-abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel?> :
-    AppCompatActivity() {
+abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel?> : AppCompatActivity() {
     protected var viewModel: VM? = null
     protected lateinit var binding: B
 

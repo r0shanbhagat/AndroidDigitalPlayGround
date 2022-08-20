@@ -1,4 +1,4 @@
-package com.digital.playground.contract
+package com.digital.playground.utils
 
 /**
  * @Details EntityMapper: It helps to create the Model from Existing response source.

@@ -5,7 +5,7 @@ package com.digital.playground.utils
  * the business logic in more clear way
  * @Author Roshan Bhagat
  */
-open class ViewState {
+sealed class DataState {
 
     /**
      * Success
@@ -13,7 +13,7 @@ open class ViewState {
      * @property data
      * @constructor Create Success
      */
-    data class Success(val data: Any?) : ViewState()
+    data class Success(val data: Any?) : DataState()
 
     /**
      * Error
@@ -21,12 +21,12 @@ open class ViewState {
      * @property exception
      * @constructor Create  Error
      */
-    data class Failure(val throwable: Throwable) : ViewState()
+    data class Error(val exception: Throwable) : DataState()
 
     /**
      * Loading
      *
      * @constructor Create empty Loading
      */
-    object Loading : ViewState()
+    object Loading : DataState()
 }

@@ -5,9 +5,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
-    id("kotlin-android-extensions")
 }
 
 android {
@@ -65,15 +63,11 @@ android {
     productFlavors {
         create("dev") {
             resValue("string", "app_name", "OmDb App Dev")
-            buildConfigField("String", "BASE_URL", "\"http://www.omdbapi.com/\"")
-            buildConfigField("String", "API_KEY", "\"259d2b8b\"")
-
+            buildConfigField("String", "BASE_URL", "\"https://howtodoandroid.com/\"")
         }
         create("production") {
             resValue("string", "app_name", "OmDb App")
-            buildConfigField("String", "BASE_URL", "\"http://www.omdbapi.com/\"")
-            buildConfigField("String", "API_KEY", "\"259d2b8b\"")
-
+            buildConfigField("String", "BASE_URL", "\"https://howtodoandroid.com/\"")
         }
     }
 }
@@ -104,7 +98,6 @@ dependencies {
      ******************************* ViewModel and LiveData ************************************
      **/
     implementation(Deps.lifecycleExt)
-    implementation(Deps.lifecycleRuntime)
 
     /**
      ******************************* Network ************************************

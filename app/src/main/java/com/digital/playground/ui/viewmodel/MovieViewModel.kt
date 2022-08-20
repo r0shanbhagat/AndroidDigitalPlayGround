@@ -1,44 +1,54 @@
 package com.digital.playground.ui.viewmodel
 
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.digital.playground.contract.Repository
+import com.digital.playground.contract.UseCase
 import com.digital.playground.core.BaseViewModel
-import com.digital.playground.ui.adapter.MovieModel
-import com.digital.playground.utils.ViewState
-import kotlinx.coroutines.flow.*
+import com.digital.playground.utils.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @Details Movie parse view model : Viewmodel to handle all the business logic
  * @Author Roshan Bhagat
- * StateFlow :https://developer.android.com/topic/architecture/ui-layer#views
+ * @property movieContentUseCase: A bridge object to communicate b/w your repo and data source
  * @constructor
  */
-class MovieViewModel(
-    private val repository: Repository,
-    searchText: String
+@HiltViewModel
+class MovieViewModel @Inject constructor(
+    private val movieContentUseCase: UseCase
 ) : BaseViewModel() {
 
-    private val _uiState: MutableStateFlow<ViewState> by lazy {
-        MutableStateFlow(ViewState())
+    companion object {
+        const val EMPTY_DATA = 1
+        const val ERROR = 2
+        const val LOADING = 0
+        const val LISTING_ITEM = 1
     }
-    val uiState: StateFlow<ViewState> = _uiState.asStateFlow()
 
-    private var moviesList: ArrayList<MovieModel> = ArrayList()
 
-    init {
-        setStateIntent(MovieStateEvent.GetMoviesList(searchText))
+    private val _dataState: MutableLiveData<DataState> by lazy {
+        MutableLiveData<DataState>()
     }
+
+    val dataState: LiveData<DataState> = _dataState
+    val errorState: ObservableInt = ObservableInt(LOADING)
+
 
     /**
      * Set state intent
      *
      * @param mainStateEvent
      */
-    private fun setStateIntent(mainStateEvent: MovieStateEvent) {
+    fun setStateIntent(mainStateEvent: MovieStateEvent) {
         when (mainStateEvent) {
             is MovieStateEvent.GetMoviesList -> {
-                getSearchResultData(mainStateEvent.data.toString())
+                getMovieList()
             }
 
             is MovieStateEvent.None -> {
@@ -50,31 +60,14 @@ class MovieViewModel(
     /*
      * getBlogContent return the movie parsed data using flow that continuously emit the value
      */
-    private fun getSearchResultData(searchTitle: String) {
-
+    private fun getMovieList() {
         viewModelScope.launch {
-
-            moviesList.clear()
-
-            repository
-                .getSearchResultData(searchTitle, 1)
-                .onStart {
-                    _uiState.emit(ViewState.Loading)
+            movieContentUseCase.getMovieList()
+                .onEach { flowData ->
+                    _dataState.value = flowData
                 }
-                .catch { exception ->
-                    _uiState.emit(ViewState.Failure(exception))
-                }
-                .collect { it ->
-                    moviesList.addAll(it)
-                    moviesList.sortByDescending {
-                        it.year
-                    }
-
-                    _uiState.emit(ViewState.Success(moviesList))
-                }
-
+                .launchIn(viewModelScope)
         }
-
     }
 
 }
@@ -91,7 +84,7 @@ sealed class MovieStateEvent {
      *
      * @constructor
      */
-    data class GetMoviesList(val data: Any?) : MovieStateEvent()
+    object GetMoviesList : MovieStateEvent()
 
     /**
      * None

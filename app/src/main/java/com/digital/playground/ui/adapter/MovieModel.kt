@@ -1,21 +1,17 @@
 package com.digital.playground.ui.adapter
 
-import android.os.Parcelable
 import androidx.databinding.BaseObservable
 import com.digital.playground.R
-import kotlinx.android.parcel.Parcelize
+import com.digital.playground.ui.viewmodel.MovieViewModel
 
-@Parcelize
 data class MovieModel(
     var title: String,
     var body: String,
     var image: String,
-    var year: String,
-    var imdb: String
+    var category: String
+) : BaseObservable(), ItemViewModel {
 
-) : BaseObservable(), Parcelable, ItemViewModel {
+    override val layoutId: Int = R.layout.item_movie_list
 
-    override val layoutId: Int = R.layout.item_movie_card
-
-    override val viewType: Int = 0
+    override val viewType: Int = MovieViewModel.LISTING_ITEM
 }

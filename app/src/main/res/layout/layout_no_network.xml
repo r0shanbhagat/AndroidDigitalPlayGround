@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <merge
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/btnRetry"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivNetworkError"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/no_wifi" />
+
+                <TextView
+                    android:id="@+id/tvNetworkError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_connection"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_extra_large" />
+
+                <TextView
+                    android:id="@+id/tvNetworkErrorMessage"
+                    style="@style/TextNormalRegularGrey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="@dimen/common_margin_normal"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:text="@string/error_msg"
+                    android:textColor="@color/button_text_grey" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnRetry"
+                style="@style/BtnTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin_padding"
+                android:layout_marginEnd="@dimen/small_margin_padding"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:text="@string/retry"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </merge>
+</layout>

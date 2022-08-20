@@ -1,10 +1,13 @@
 package com.digital.playground.di
 
-import com.digital.playground.data.model.SearchModel
+import com.digital.playground.contract.Repository
+import com.digital.playground.contract.UseCase
+import com.digital.playground.domain.MovieUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -18,8 +21,16 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 class AppModule {
 
+    /**
+     * Provide movie content use case.
+     *
+     * @param repository Repository
+     * @param ioDispatcher Io dispatcher
+     * @return [UseCase]
+     */
     @Provides
-    fun provideSearchModel(): SearchModel {
-        return SearchModel()
-    }
+    fun provideBlogContentUseCase(
+        repository: Repository,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): UseCase = MovieUseCase(repository, ioDispatcher)
 }

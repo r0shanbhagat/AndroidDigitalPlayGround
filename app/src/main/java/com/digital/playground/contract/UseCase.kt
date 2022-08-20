@@ -3,23 +3,22 @@ package com.digital.playground.contract
 import com.digital.playground.utils.DataState
 import kotlinx.coroutines.flow.Flow
 
-
 /**
- * @Details :IRepository
- * @Author Roshan Bhagat
+ * I use case
  *
  * @param
- * @constructor Create Repository
+ * @constructor Create empty I use case
  */
-interface Repository {
+interface UseCase {
 
-    val dataSource: MovieDataSource
+    val repository: Repository
 
     /**
-     * Get MovieList
+     * Get movie content
      *
      * @return
      */
     suspend fun getMovieList(): Flow<DataState>
+
 
 }

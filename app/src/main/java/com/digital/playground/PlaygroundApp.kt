@@ -6,23 +6,14 @@ import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
 /**
- * @Details PlaygroundApp is the Application class.
+ * @Details OmDbApp is the Application class to manage the entire App scope
  * @Author Roshan Bhagat
  */
-
 @HiltAndroidApp
 class PlaygroundApp : MultiDexApplication() {
-    companion object {
-        lateinit var mApp: PlaygroundApp
-    }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         MultiDex.install(this)
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        mApp = this
     }
 }

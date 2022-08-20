@@ -12,16 +12,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /**
 /**
- * @Details MovieActivity : Main activity where user0interface will
+ * @Details TruecallerBlogActivity : Main activity where user0interface will
  * be displayed and user can interact with app on launch
  * @Author Roshan Bhagat
 */ *
- * @constructor Create Movie Activity
+ * @constructor Create Truecaller movie activity
  */
 @AndroidEntryPoint
 class MovieActivity(
     override val layoutResId: Int = R.layout.activity_movie
-) : BaseActivity<ActivityMovieBinding, BaseViewModel>() {
+) :
+    BaseActivity<ActivityMovieBinding, BaseViewModel>() {
 
     private lateinit var navController: NavController
 
