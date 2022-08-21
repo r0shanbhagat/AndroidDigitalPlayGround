@@ -32,7 +32,7 @@
         android:id="@+id/detailFragment"
         android:name="com.digital.playground.ui.view.fragment.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment">
+        tools:layout="@layout/fragment_movie_detail">
         <argument
             android:name="movie"
             app:argType="com.digital.playground.ui.adapter.MovieModel" />

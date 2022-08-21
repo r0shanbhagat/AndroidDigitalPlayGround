@@ -1,13 +1,18 @@
 package com.digital.playground.ui.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.digital.playground.R
 import com.digital.playground.core.BaseActivity
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.databinding.ActivityMovieBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_movie.*
 
 
 /**
@@ -24,7 +29,7 @@ class MovieActivity(
 ) : BaseActivity<ActivityMovieBinding, BaseViewModel>() {
 
     private lateinit var navController: NavController
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun createViewModel(): BaseViewModel? = null
 
@@ -39,9 +44,20 @@ class MovieActivity(
     private fun addNavigateCallback() {
         setSupportActionBar(binding.toolbar)
         navController = findNavController(R.id.nav_host_fragment)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.detailFragment -> toolbar.visibility = View.GONE
+                else -> toolbar.visibility = View.VISIBLE
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
 }
