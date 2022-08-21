@@ -3,22 +3,19 @@ package com.digital.playground.ui.view.dialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
-import com.playground.movieapp.R
 import com.playground.movieapp.databinding.ProgressDialogBinding
-
 
 /**
  * @Details ProgressDialog:
  * @Author Roshan Bhagat
- * @constructor Create [ProgressDialog]
  *
  * @param context
  */
 class ProgressDialog(context: Context) : Dialog(context) {
+
+    val binding: ProgressDialogBinding
 
     init {
         window?.setLayout(
@@ -26,16 +23,21 @@ class ProgressDialog(context: Context) : Dialog(context) {
             android.view.ViewGroup.LayoutParams.MATCH_PARENT
         )
 
-        val mBinding = DataBindingUtil.inflate<ProgressDialogBinding>(
-            LayoutInflater.from(context),
-            R.layout.progress_dialog,
-            null,
-            false
+        binding = ProgressDialogBinding.inflate(
+            LayoutInflater.from(context), null, false
         )
-        setContentView(mBinding.root)
-
+        setContentView(binding.root)
         this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val animation = mBinding.ivProgress.background as AnimationDrawable
-        animation.start()
     }
+
+
+    /**
+     * Set the text of the FeedBack
+     * @param text of the FeedBack
+     * @return the instance of ProgressDialog to make a chain of function easily
+     */
+    fun setText(text: String) {
+        binding.tvMessage.text = text
+    }
+
 }
