@@ -19,23 +19,20 @@ import com.facebook.shimmer.ShimmerFrameLayout
  * all other fragment in project.
  * @Author Roshan Bhagat
  * @param B
- * @param VM
  * @constructor Create Base fragment
  */
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     protected lateinit var binding: B
     private lateinit var progressDialog: ProgressDialog
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         progressDialog = ProgressDialog(requireContext())
-
         return binding.root
     }
 
@@ -43,22 +40,14 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
      * @return layout resource id
      */
     @get:LayoutRes
-    abstract val layoutId: Int
-
-
-    /**
-     * Override for set binding variable
-     *
-     * @return variable id
-     */
-    open val bindingVariable: Int = 0
+    protected abstract val layoutId: Int
 
     /**
      * Show loading
      *
      * @param cancelable
      */
-    fun showLoading(cancelable: Boolean = false) {
+    protected fun showLoading(cancelable: Boolean = false) {
         progressDialog.show()
         progressDialog.setCanceledOnTouchOutside(cancelable)
         progressDialog.setCancelable(cancelable)
@@ -68,7 +57,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
      * Hide loading
      *
      */
-    fun hideLoading() {
+    protected fun hideLoading() {
         progressDialog.dismiss()
     }
 
@@ -77,7 +66,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
      *
      * @return
      */
-    fun isLoading(): Boolean {
+    protected fun isLoading(): Boolean {
         return progressDialog.isShowing
     }
 
@@ -100,9 +89,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
      * @param shimmerViewContainer is the shimmer view in your xml view
      * @param layoutMain is your main root layout
      * */
-    fun showShimmer(
-        shimmerViewContainer: ShimmerFrameLayout,
-        layoutMain: View
+    protected fun showShimmer(
+        shimmerViewContainer: ShimmerFrameLayout, layoutMain: View
     ) {
         shimmerViewContainer.visibility = View.VISIBLE
         layoutMain.visibility = View.INVISIBLE
@@ -115,9 +103,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
      * @param shimmerViewContainer is the shimmer view in your xml view
      * @param layoutMain is your main root layout_ad_space_shake
      * */
-    fun hideShimmer(
-        shimmerViewContainer: ShimmerFrameLayout,
-        layoutMain: View
+    protected fun hideShimmer(
+        shimmerViewContainer: ShimmerFrameLayout, layoutMain: View
     ) {
         shimmerViewContainer.visibility = View.GONE
         layoutMain.visibility = View.VISIBLE

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.digital.playground.core.BaseActivity
-import com.digital.playground.core.BaseViewModel
 import com.playground.movieapp.R
 import com.playground.movieapp.databinding.ActivityMovieBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,12 +20,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieActivity(
     override val layoutResId: Int = R.layout.activity_movie
-) : BaseActivity<ActivityMovieBinding, BaseViewModel>() {
+) : BaseActivity<ActivityMovieBinding>() {
 
     private lateinit var navController: NavController
-
-
-    override fun createViewModel(): BaseViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

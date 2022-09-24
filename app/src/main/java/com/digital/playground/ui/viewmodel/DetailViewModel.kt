@@ -28,7 +28,7 @@ class DetailViewModel @Inject constructor(
      *
      * @param movieId Movie id
      */
-    fun getMovieDetailsData(movieId: Int) {
+    internal fun getMovieDetailsData(movieId: Int) {
         viewModelScope.launch {
             repository.getMovieDetail(movieId)
                 .onStart {

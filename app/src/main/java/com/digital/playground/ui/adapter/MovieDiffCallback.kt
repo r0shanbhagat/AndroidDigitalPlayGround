@@ -1,6 +1,5 @@
 package com.digital.playground.ui.adapter
 
-import androidx.annotation.Nullable
 import androidx.core.graphics.component1
 import androidx.core.graphics.component2
 import androidx.core.graphics.component3
@@ -26,7 +25,6 @@ class MovieDiffCallback(
         return name == name1 && value == value1
     }
 
-    @Nullable
     override fun getChangePayload(oldPosition: Int, newPosition: Int): Any? {
         return super.getChangePayload(oldPosition, newPosition)
     }

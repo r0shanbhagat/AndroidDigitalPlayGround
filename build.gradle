@@ -13,8 +13,8 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '7.2.1' apply false
-    id 'com.android.library' version '7.2.1' apply false
+    id 'com.android.application' version '7.3.0' apply false
+    id 'com.android.library' version '7.3.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
     id 'androidx.navigation.safeargs' version '2.4.1' apply false
 
@@ -30,10 +30,10 @@ ext {
     compileSdkVersion = 32
     targetSdkVersion = 32
 
-    appcompat = "1.5.0"
+    appcompat = "1.5.1"
     material = "1.6.1"
     constraintlayout = "2.1.4"
-    navigationArch = "2.5.1"
+    navigationArch = "2.5.2"
     lifecycle = "2.2.0"
     hilt = "2.42"
     ktor = "2.1.0"
