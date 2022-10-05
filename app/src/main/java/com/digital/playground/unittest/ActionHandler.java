@@ -10,12 +10,18 @@ import com.digital.playground.ui.viewmodel.RandomJokesViewState;
 public class ActionHandler {
 
     public MutableLiveData<ViewState> mJokeState;
-    private Service service;
+    public Service service;
 
     public ActionHandler(Service service) {
         this.service = service;
         mJokeState = new MutableLiveData();
     }
+
+    public ActionHandler(ServiceImpl service) {
+        this.service = service;
+        mJokeState = new MutableLiveData();
+    }
+
 
     public void doAction() {
         service.doAction("our-request", new Callback<Response>() {

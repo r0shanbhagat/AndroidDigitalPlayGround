@@ -26,6 +26,7 @@ import com.digital.playground.unittest.Command;
 import com.digital.playground.unittest.Data;
 import com.digital.playground.unittest.Response;
 import com.digital.playground.unittest.Service;
+import com.digital.playground.unittest.ServiceImpl;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,6 +58,10 @@ public class ActionHandlerUnitTest {
     Callback<Response> callback;
     @Mock
     private Service service;
+
+    @Mock
+    private ServiceImpl serviceImpl;
+
     @Mock
     private Command command;
     @Captor
@@ -76,13 +81,13 @@ public class ActionHandlerUnitTest {
         handler.mJokeState.observeForever(observer);
     }
 
-
     @Test
     public void givenServiceWithValidResponse_whenCallbackReceived_thenProcessed() {
-        ActionHandler handler = new ActionHandler(service);
+        ActionHandler handler = new ActionHandler(serviceImpl);
         handler.doAction();
 
-        verify(service).doAction(anyString(), callbackCaptor.capture());
+        verify(serviceImpl).doAction(anyString(), callbackCaptor.capture());
+
         Callback<Response> callback = callbackCaptor.getValue();
         Response response = new Response();
         callback.reply(response);
@@ -92,9 +97,9 @@ public class ActionHandlerUnitTest {
         assertEquals("Should receive a successful message: ", expectedMessage, data.getMessage());
     }
 
+
     @Test
     public void givenServiceWithInvalidResponse_whenCallbackReceived_thenNotProcessed() {
-
         doAnswer((Answer<Void>) invocation -> {
             Callback<Response> callback = invocation.getArgument(1);
             Response response = new Response();
@@ -104,9 +109,9 @@ public class ActionHandlerUnitTest {
             Data data = response.getData();
             assertNull("No data in invalid response: ", data);
             return null;
-        }).when(service).doAction(anyString(), any(Callback.class));
+        }).when(serviceImpl).doAction(anyString(), any(Callback.class));
 
-        ActionHandler handler = new ActionHandler(service);
+        ActionHandler handler = new ActionHandler(serviceImpl);
         handler.doAction();
     }
 

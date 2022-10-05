@@ -8,6 +8,8 @@ import androidx.multidex.MultiDexApplication;
 
 public class AssignmentApp extends MultiDexApplication {
 
+    public static AssignmentApp app;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -17,6 +19,7 @@ public class AssignmentApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
         //TODO Global level Event Handling
     }
 }
