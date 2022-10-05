@@ -61,7 +61,9 @@ class MovieListFragment(
      * Setup recycler view.
      */
     private fun setupRecyclerView() {
-        binding.rvMoviesList.adapter = movieAdapter
+        binding.rvMoviesList.apply {
+            adapter = movieAdapter
+        }
     }
 
     /**

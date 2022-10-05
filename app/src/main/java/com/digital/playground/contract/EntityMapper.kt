@@ -6,6 +6,11 @@ package com.digital.playground.contract
  * @Author Roshan Bhagat
  */
 interface EntityMapper<Entity, DomainModel> {
-
+    /**
+     * Map from entity
+     *
+     * @param entity
+     * @return
+     */
     fun mapFromEntity(entity: Entity): DomainModel
 }
