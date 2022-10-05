@@ -41,14 +41,14 @@ android {
     productFlavors {
         create("dev") {
             resValue("string", "app_name", "Movie App Dev")
-            buildConfigField("String", "BASE_URL", "\"api.themoviedb.org\"")
-            buildConfigField("String", "API_KEY", "\"c9856d0cb57c3f14bf75bdc6c063b8f3\"")
+            buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/"')
+            buildConfigField("String", "API_KEY", '"c9856d0cb57c3f14bf75bdc6c063b8f3"')
 
         }
         create("production") {
             resValue("string", "app_name", "Movie App")
-            buildConfigField("String", "BASE_URL", "api.themoviedb.org")
-            buildConfigField("String", "API_KEY", "\"c9856d0cb57c3f14bf75bdc6c063b8f3\"")
+            buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/"')
+            buildConfigField("String", "API_KEY", '"c9856d0cb57c3f14bf75bdc6c063b8f3"')
 
         }
     }

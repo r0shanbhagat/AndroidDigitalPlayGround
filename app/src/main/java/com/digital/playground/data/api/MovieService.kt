@@ -9,10 +9,6 @@ import com.digital.playground.data.dto.SearchResults
  * @constructor Create Api service
  */
 interface MovieService {
-    companion object {
-        const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/%s"
-    }
-
     /**
      * Performs a GET call to obtain a paginated list of movies
      * @param pageIndex: Integer Page number of the database from which movie should be fetched

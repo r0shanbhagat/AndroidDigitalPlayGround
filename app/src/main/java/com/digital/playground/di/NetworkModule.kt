@@ -35,9 +35,8 @@ class NetworkModule {
         install(DefaultRequest) {
             accept(ContentType.Application.Json)
             contentType(ContentType.Application.Json)
+            url(BuildConfig.BASE_URL)
             url {
-                protocol = URLProtocol.HTTPS
-                host = BuildConfig.BASE_URL
                 parameters.append("api_key", BuildConfig.API_KEY)
             }
         }

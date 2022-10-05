@@ -6,6 +6,7 @@ import com.digital.playground.core.BaseViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,12 +15,16 @@ import javax.inject.Inject
  * @Details Movie parse view model : Viewmodel to handle all the business logic
  * @Author Roshan Bhagat
  * StateFlow :https://developer.android.com/topic/architecture/ui-layer#views
+ * https://medium.com/androiddevelopers/coroutines-patterns-for-work-that-shouldnt-be-cancelled-e26c40f142ad
+ * https://developer.android.com/kotlin/coroutines/coroutines-best-practices#viewmodel-coroutines
+ *
  * @constructor
  */
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel() {
+    private var fetchJob: Job? = null
 
     private val _uiState: MutableStateFlow<ViewState> by lazy {
         MutableStateFlow(ViewState())
@@ -55,7 +60,8 @@ class MovieListViewModel @Inject constructor(
      * getBlogContent return the movie parsed data using flow that continuously emit the value
      */
     private fun discoverMovies() {
-        viewModelScope.launch {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
             moviesList.clear()
             repository
                 .discoverMovies(1)
@@ -75,7 +81,6 @@ class MovieListViewModel @Inject constructor(
                 }
         }
     }
-
 }
 
 

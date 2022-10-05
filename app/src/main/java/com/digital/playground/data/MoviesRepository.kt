@@ -23,7 +23,7 @@ import javax.inject.Inject
  */
 @ViewModelScoped
 class MoviesRepository @Inject constructor(
-    override val apiService: MovieService,
+    private val apiService: MovieService,
     private val movieMapper: MovieMapper,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : Repository {
