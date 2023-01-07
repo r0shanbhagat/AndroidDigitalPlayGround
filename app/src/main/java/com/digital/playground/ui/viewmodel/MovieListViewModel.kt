@@ -1,5 +1,6 @@
 package com.digital.playground.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.digital.playground.contract.Repository
 import com.digital.playground.core.BaseViewModel
@@ -7,6 +8,7 @@ import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,7 +49,16 @@ class MovieListViewModel @Inject constructor(
     internal fun setStateIntent(mainStateEvent: MovieStateEvent) {
         when (mainStateEvent) {
             is MovieStateEvent.DiscoverMovie -> {
-                discoverMovies()
+                //  discoverMovies()
+                viewModelScope.launch {
+                    while (true) {
+                        Log.v("Network", "Yeah Loop Started")
+                        // Thread.sleep(100)
+                        repository.discoverMovies(1).collect()
+                    }
+                }
+
+
             }
 
             is MovieStateEvent.None -> {
@@ -60,8 +71,8 @@ class MovieListViewModel @Inject constructor(
      * getBlogContent return the movie parsed data using flow that continuously emit the value
      */
     private fun discoverMovies() {
-        fetchJob?.cancel()
-        fetchJob = viewModelScope.launch {
+        //  fetchJob?.cancel()
+        val fetchJob = viewModelScope.async {
             moviesList.clear()
             repository
                 .discoverMovies(1)
@@ -80,6 +91,7 @@ class MovieListViewModel @Inject constructor(
                     _uiState.emit(ViewState.Success(moviesList))
                 }
         }
+
     }
 }
 
