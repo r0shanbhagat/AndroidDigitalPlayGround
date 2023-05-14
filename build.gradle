@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.hilt_version = '2.42'
+    ext.hilt_version = '2.46'
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-serialization:1.7.10"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.8.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
     repositories {
@@ -13,10 +13,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '7.3.1' apply false
-    id 'com.android.library' version '7.3.1' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
-    id 'androidx.navigation.safeargs' version '2.4.1' apply false
+    id 'com.android.application' version '8.0.1' apply false
+    id 'com.android.library' version '8.0.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.21' apply false
+    id 'androidx.navigation.safeargs' version '2.5.3' apply false
+    //  id 'com.google.dagger.hilt.android' version '2.42' apply false
 
 }
 
@@ -25,22 +26,22 @@ task clean(type: Delete) {
 }
 
 ext {
-    javaVersion = JavaVersion.VERSION_11
+    javaVersion = JavaVersion.VERSION_18
     minSdkVersion = 24
-    compileSdkVersion = 32
-    targetSdkVersion = 32
+    compileSdkVersion = 33
+    targetSdkVersion = 33
 
-    appcompat = "1.5.1"
-    material = "1.6.1"
+    appcompat = '1.6.1'
+    material = '1.9.0'
     constraintlayout = "2.1.4"
-    navigationArch = "2.5.2"
+    navigationArch = '2.5.3'
     lifecycle = "2.2.0"
     hilt = "2.42"
-    ktor = "2.1.0"
-    serialization = '1.4.0'
-    coil = "2.2.0"
+    ktor = '2.3.0'
+    serialization = '1.5.1'
+    coil = '2.3.0'
     jUnit = "4.13.2"
     swipeRefreshLayout = "1.1.0"
     shimmer = "0.5.0"
-    mockitoVersion = '4.7.0'
+    mockitoVersion = '5.3.1'
 }
