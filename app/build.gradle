@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
+    id "kotlin-kapt"
     id 'androidx.navigation.safeargs'
     id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-parcelize'
@@ -10,6 +11,7 @@ plugins {
 android {
     namespace 'com.digital.playground'
     compileSdk rootProject.ext.compileSdkVersion
+    compileSdkPreview "UpsideDownCake"
 
     defaultConfig {
         applicationId "com.digital.playground"
@@ -28,6 +30,14 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev")
+        create("staging")
+        create("prod")
+    }
+
     compileOptions {
         sourceCompatibility rootProject.ext.javaVersion
         targetCompatibility rootProject.ext.javaVersion
