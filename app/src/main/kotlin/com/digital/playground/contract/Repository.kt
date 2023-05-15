@@ -1,7 +1,7 @@
 package com.digital.playground.contract
 
 import com.digital.playground.data.dto.MovieDetailModel
-import com.digital.playground.ui.adapter.MovieModel
+import com.digital.playground.data.dto.MovieModel
 import kotlinx.coroutines.flow.Flow
 
 

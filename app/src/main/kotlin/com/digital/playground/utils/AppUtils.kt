@@ -5,9 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.text.TextUtils
 import android.util.Log
-import androidx.navigation.NavOptions
-import com.digital.playground.R
-import com.facebook.shimmer.BuildConfig
+import com.digital.playground.BuildConfig
 
 /**
  * @Details AppUtils: Common Utility Class to handle the utils functions
@@ -25,9 +23,9 @@ fun isNetworkConnected(context: Context): Boolean {
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val network = connectivityManager.activeNetwork
     val capabilities = connectivityManager.getNetworkCapabilities(network)
-    return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-            || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-            || capabilities.hasTransport(
+    return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
+        NetworkCapabilities.TRANSPORT_CELLULAR
+    ) || capabilities.hasTransport(
         NetworkCapabilities.TRANSPORT_VPN
     ))
 }
@@ -44,8 +42,7 @@ fun showLog(tagName: String?, message: String) {
         for (i in 0..message.length / maxLogSize) {
             val start = i * maxLogSize
             var end = (i + 1) * maxLogSize
-            end = if (end > message.length)
-                message.length
+            end = if (end > message.length) message.length
             else end
             Log.v(tagName, message.substring(start, end))
         }
@@ -63,18 +60,6 @@ fun logException(t: Throwable?) {
     }
 }
 
-
-/**
- * @method used to apply animation in fragment navigation
- */
-fun applyAnimation(navOptionBuilder: NavOptions.Builder) {
-    navOptionBuilder.apply {
-        setEnterAnim(R.anim.right_in)
-        setExitAnim(R.anim.left_out)
-        setPopExitAnim(R.anim.right_out)
-        setPopEnterAnim(R.anim.left_in)
-    }
-}
 
 /**
  * Is list not empty

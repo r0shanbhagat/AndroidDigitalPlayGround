@@ -3,9 +3,9 @@ package com.digital.playground.data
 import com.digital.playground.contract.Repository
 import com.digital.playground.data.api.MovieService
 import com.digital.playground.data.dto.MovieDetailModel
+import com.digital.playground.data.dto.MovieModel
 import com.digital.playground.data.mapper.MovieMapper
 import com.digital.playground.di.IoDispatcher
-import com.digital.playground.ui.adapter.MovieModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

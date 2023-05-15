@@ -32,15 +32,12 @@ ext {
 
     appcompat = '1.6.1'
     material = '1.9.0'
-    constraintlayout = "2.1.4"
-    navigationArch = '2.5.3'
+    composeVersion = '1.4.3'
     lifecycle = "2.2.0"
     hilt = "2.42"
     ktor = '2.3.0'
     serialization = '1.5.1'
     coil = '2.3.0'
     jUnit = "4.13.2"
-    swipeRefreshLayout = "1.1.0"
-    shimmer = "0.5.0"
     mockitoVersion = '5.3.1'
 }

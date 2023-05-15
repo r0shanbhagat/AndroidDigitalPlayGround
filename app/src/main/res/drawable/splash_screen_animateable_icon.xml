@@ -2,11 +2,11 @@
     android:oneshot="true">
     <item
         android:drawable="@mipmap/ic_launcher_nav"
-        android:duration="400" />
+        android:duration="100" />
     <item
         android:drawable="@mipmap/api12_logo"
-        android:duration="200" />
+        android:duration="100" />
     <item
         android:drawable="@mipmap/ic_launcher_nav"
-        android:duration="200" />
+        android:duration="100" />
 </animation-list>

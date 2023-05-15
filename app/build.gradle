@@ -3,8 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'com.google.devtools.ksp'
     id "kotlin-kapt"
-    id 'androidx.navigation.safeargs'
-    id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
 }
@@ -45,8 +43,13 @@ android {
     kotlinOptions {
         jvmTarget = rootProject.ext.javaVersion
     }
+
     buildFeatures {
-        dataBinding = true
+        compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 }
 
@@ -56,23 +59,22 @@ dependencies {
      **/
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "com.google.android.material:material:$material"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
 
     /**
      ******************************* UI Component************************************
      **/
-    implementation "com.facebook.shimmer:shimmer:$shimmer"
-
-    /**
-     ******************************* Navigation Architecture ***************************************
-     **/
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationArch"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationArch"
+    implementation "androidx.compose.ui:ui:$composeVersion"
+    implementation "androidx.activity:activity-compose:$composeVersion"
+    implementation "androidx.compose.material:material:$composeVersion"
+    implementation "androidx.compose.ui:ui-tooling-preview:$composeVersion"
+    implementation "androidx.compose.material:material-icons-extended:$composeVersion"
 
     /**
      ******************************* ViewModel and LiveData ****************************************
      **/
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
     /**
      ******************************* Network-KTOR **************************************************

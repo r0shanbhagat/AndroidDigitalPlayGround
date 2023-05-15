@@ -6,17 +6,17 @@
 
     <application
         android:name="com.digital.playground.PlaygroundApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/splash_screen_animateable_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.LoginFlow"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.digital.playground.ui.view.MovieActivity"
             android:exported="true"
             android:label="Movie List"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.LoginFlow">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

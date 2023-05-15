@@ -3,7 +3,7 @@ package com.digital.playground.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.digital.playground.contract.Repository
 import com.digital.playground.core.BaseViewModel
-import com.digital.playground.ui.adapter.MovieModel
+import com.digital.playground.data.dto.MovieModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

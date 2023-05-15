@@ -3,15 +3,22 @@
     <string name="empty_value">""</string>
     <string name="error_msg">Oops! Something went wrong. Possibly with your Network connection. Please try again.</string>
     <string name="no_internet_msg">This feature required internet connection. Please check your internet setting and try again.</string>
-    <string name="retry">Retry</string>
-    <string name="no_data_available">No data available.</string>
-    <string name="no_connection">No Internet!</string>
 
-    <string name="btnSearch">Search</string>
-    <string name="search_hint">Enter Movie Name</string>
+    <string name="hello">Hey there, </string>
+    <string name="create_account">Create an Account </string>
+    <string name="welcome">Welcome Back</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="terms_and_conditions">By continuing you accept our Privacy Policy and Term of Use</string>
+    <string name="terms_and_conditions_header">Term of Use</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="or">or</string>
+    <string name="go_to_login">Already have an account? Login</string>
 
-    <string name="rating">%.1f / 10</string>
-    <string name="status">&lt;b>Status:&lt;/b> %1$s</string>
-    <string name="country">&lt;b>Country:&lt;/b> %1$s</string>
-    <string name="runtime">&lt;b>Runtime:&lt;/b> %1$s</string>
+    <string name="forgot_password">Forgot your password</string>
 </resources>
