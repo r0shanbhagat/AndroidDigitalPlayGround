@@ -1,7 +1,7 @@
 package com.digital.playground.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.digital.playground.contract.Repository
+import com.digital.playground.contract.MovieRepository
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: MovieRepository
 ) : BaseViewModel() {
     private val _uiState: MutableStateFlow<ViewState> by lazy {
         MutableStateFlow(ViewState())

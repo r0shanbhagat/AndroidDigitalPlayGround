@@ -1,7 +1,7 @@
 package com.digital.playground.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.digital.playground.contract.Repository
+import com.digital.playground.contract.MovieRepository
 import com.digital.playground.core.BaseViewModel
 import com.digital.playground.ui.adapter.MovieModel
 import com.digital.playground.utils.ViewState
@@ -26,7 +26,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: MovieRepository
 ) : BaseViewModel() {
     private var fetchJob: Job? = null
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  * @param
  * @constructor Create Repository
  */
-interface Repository {
+interface MovieRepository {
 
     /**
      * Performs a GET call to obtain a paginated list of movies

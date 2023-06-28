@@ -1,7 +1,7 @@
 package com.digital.playground
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.digital.playground.data.MoviesRepository
+import com.digital.playground.data.MoviesRepositoryImpl
 import com.digital.playground.data.dto.MovieDetailModel
 import com.digital.playground.data.mapper.MovieMapper
 import com.digital.playground.ui.viewmodel.DetailViewModel
@@ -33,7 +33,7 @@ class MovieDetailViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var repository: MoviesRepository
+    private lateinit var repository: MoviesRepositoryImpl
 
     @Mock
     private lateinit var movieDetailModel: MovieDetailModel

@@ -1,6 +1,6 @@
 package com.digital.playground.data
 
-import com.digital.playground.contract.Repository
+import com.digital.playground.contract.MovieRepository
 import com.digital.playground.data.api.MovieService
 import com.digital.playground.data.dto.MovieDetailModel
 import com.digital.playground.data.mapper.MovieMapper
@@ -19,14 +19,14 @@ import javax.inject.Inject
  * @Author Roshan Bhagat
  * @property movieMapper
  * @property ioDispatcher
- * @constructor Create [MoviesRepository]
+ * @constructor Create [MoviesRepositoryImpl]
  */
 @ViewModelScoped
-class MoviesRepository @Inject constructor(
+class MoviesRepositoryImpl @Inject constructor(
     private val apiService: MovieService,
     private val movieMapper: MovieMapper,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-) : Repository {
+) : MovieRepository {
 
     /**
      * The app doesn't need that much information about the movies because it only displays the
